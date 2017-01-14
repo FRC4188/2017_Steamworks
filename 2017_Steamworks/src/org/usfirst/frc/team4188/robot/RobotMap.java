@@ -4,6 +4,12 @@ import org.usfirst.frc.team4188.robot.subsystems.Climber;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.RobotDrive;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -21,11 +27,51 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-	public static CANTalon climberTalon; 
+	public static CANTalon climberTalon;
+	public static CANTalon frontRightDriveMotor;
+	public static CANTalon frontLeftDriveMotor;
+	public static CANTalon rearRightDriveMotor;
+	public static CANTalon rearLeftDriveMotor;
+	public static CANTalon gearLeftRight;
+	public static CANTalon gearUpDown;
+	public static RobotDrive driveBase;
+	public static RobotDrive chsDriveBase;
+	public static ADXRS450_Gyro gyro;
+	public static Relay cameraLights;
+	public static AxisCamera camera;
 		public static void init() {
 		// TODO Auto-generated method stub
 		climberTalon = new CANTalon(1);
-	}
+		gyro = new ADXRS450_Gyro();
+		cameraLights= new Relay(0);
+		frontLeftDriveMotor = new CANTalon(13);
+		rearLeftDriveMotor = new CANTalon(14);
+		frontRightDriveMotor = new CANTalon(11);
+		rearRightDriveMotor = new CANTalon(12);
+		
+		driveBase = new RobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
+		
+		driveBase.setSafetyEnabled(false);
+		driveBase.setExpiration(0.1);
+		driveBase.setSensitivity(0.5);
+		driveBase.setMaxOutput(1.0);
+		
+		gearLeftRight = new CANTalon(17);
+		gearUpDown = new CANTalon(15);
+		camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		}
+		
 
 
 }

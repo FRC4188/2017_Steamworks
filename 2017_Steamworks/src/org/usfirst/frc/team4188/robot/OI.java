@@ -1,12 +1,18 @@
+
 package org.usfirst.frc.team4188.robot;
 
+import org.usfirst.frc.team4188.robot.commands.CameraLightsOff;
+import org.usfirst.frc.team4188.robot.commands.CameraLightsOn;
 import org.usfirst.frc.team4188.robot.commands.ClimbDown;
 import org.usfirst.frc.team4188.robot.commands.ClimbUp;
+import org.usfirst.frc.team4188.robot.commands.RunGearLeftRight;
+import org.usfirst.frc.team4188.robot.commands.RunGearUpDown;
+import org.usfirst.frc.team4188.robot.commands.StopGearLeftRight;
+import org.usfirst.frc.team4188.robot.commands.StopGearUpDown;
 
-//import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-//import edu.wpi.first.wpilibj.vision.USBCamera;
 
 
 
@@ -44,6 +50,9 @@ public class OI {
 
 	public Joystick pilotJoystick;
 	public Joystick copilotJoystick;
+	public Joystick pilotController;
+	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
+	
 	
 	public JoystickButton pilot1;
 	public JoystickButton pilot2;
@@ -58,66 +67,74 @@ public class OI {
 	public JoystickButton pilot11;
 	public JoystickButton pilot12;
 	
- 	public JoystickButton copilot1;
-    public JoystickButton copilot2;
-    public JoystickButton copilot3;
-    public JoystickButton copilot4;
-    public JoystickButton copilot5;
-    public JoystickButton copilot6;
-    public JoystickButton copilot7;
-    public JoystickButton copilot8;
-    public JoystickButton copilot9;
-    public JoystickButton copilot10;
-    public JoystickButton copilot11;
-
-    //CameraServer camServer;
-
-    //USBCamera LIFECAM_USB_CAM = new USBCamera("cam0");//CHANGE ON TO CAM 1 ON PRACTICE BOT AND CAM 0 ON OFFICIAL BOT
-    private static final boolean SHOW_LIFECAM = false;
+	
+	public JoystickButton copilot1;
+	public JoystickButton copilot2;
+	public JoystickButton copilot3;
+	public JoystickButton copilot4;
+	public JoystickButton copilot5;
+	public JoystickButton copilot6;
+	public JoystickButton copilot7;
+	public JoystickButton copilot8;
+	public JoystickButton copilot9;
+	public JoystickButton copilot10;
+	public JoystickButton copilot11;
+	public JoystickButton copilot12;
+	
+	public double XNegDeadZone = -12;
+	public double XPosDeadZone = 0;
+	public double YNegDeadZone ;
+	public double YPosDeadZone;
+	public double XScale;
+	public double YScale;
+	public double XMaxSpeedPercent;
+	public double YMaxSpeedPercent;
     
-    private static final int PILOT_PORT = 0;
-    private static final int PILOT_NUM_AXES = 4;
-    private static final int PILOT_NUM_BUTTONS = 12;
     
-    private static final int COPILOT_PORT = 1;
-    private static final int COPILOT_NUM_AXES = 3;
-    private static final int COPILOT_NUM_BUTTONS = 11;
-    
-    //Keep track of an instantiated AimHighGoal object, so we can cancel it if needed.
-   
-	    
-    public OI(){
-    	
-		pilot1 = new JoystickButton(pilotJoystick, 1);
-	    pilot2 = new JoystickButton(pilotJoystick, 2);
-	    pilot3 = new JoystickButton(pilotJoystick, 3);
-	    pilot4 = new JoystickButton(pilotJoystick, 4);
-	    pilot5 = new JoystickButton(pilotJoystick, 5);
-	    pilot6 = new JoystickButton(pilotJoystick, 6);
-	    pilot7 = new JoystickButton(pilotJoystick, 7);
-	    pilot8 = new JoystickButton(pilotJoystick, 8);
-	    pilot9 = new JoystickButton(pilotJoystick, 9);
-	    pilot10 = new JoystickButton(pilotJoystick, 10);
-	    pilot11 = new JoystickButton(pilotJoystick, 11);
-	    pilot12 = new JoystickButton(pilotJoystick, 12);
-	    
-	    copilot1 = new JoystickButton(copilotJoystick, 1);
-	    copilot2 = new JoystickButton(copilotJoystick, 2);
-	    copilot3 = new JoystickButton(copilotJoystick, 3);
-	    copilot4 = new JoystickButton(copilotJoystick, 4);
-	    copilot5 = new JoystickButton(copilotJoystick, 5);
-	    copilot6 = new JoystickButton(copilotJoystick, 6);
-	    copilot7 = new JoystickButton(copilotJoystick, 7);
-	    copilot8 = new JoystickButton(copilotJoystick, 8);
-	    copilot9 = new JoystickButton(copilotJoystick, 9);
-	    copilot10 = new JoystickButton(copilotJoystick, 10);
-	    copilot11 = new JoystickButton(copilotJoystick, 11);
-	    
-
-	    
-	    copilot2.whileHeld(new ClimbDown());
-		copilot3.whileHeld(new ClimbUp());
-    }
+	public OI(){
+		
+		
+		pilotController = new Joystick(0);
+		//pilotJoystick = new Joystick(0);
+		copilotJoystick = new Joystick(1);
+	
+		
+		pilot1 = new JoystickButton(pilotController, 1);
+        pilot2 = new JoystickButton(pilotController, 2);
+        pilot3 = new JoystickButton(pilotController, 3);
+        pilot4 = new JoystickButton(pilotController, 4);
+        pilot5 = new JoystickButton(pilotController, 5);
+        pilot6 = new JoystickButton(pilotController, 6);
+        pilot7 = new JoystickButton(pilotController, 7);
+        pilot8 = new JoystickButton(pilotController, 8);
+        pilot9 = new JoystickButton(pilotController, 9);
+        pilot10 = new JoystickButton(pilotController, 10);
+        pilot11 = new JoystickButton(pilotController, 11);
+        pilot12 = new JoystickButton(pilotController, 12);
+        
+        copilot1 = new JoystickButton(copilotJoystick, 1);
+        copilot2 = new JoystickButton(copilotJoystick, 2);
+        copilot3 = new JoystickButton(copilotJoystick, 3);
+        copilot4 = new JoystickButton(copilotJoystick, 4);
+        copilot5 = new JoystickButton(copilotJoystick, 5);
+        copilot6 = new JoystickButton(copilotJoystick, 6);
+        copilot7 = new JoystickButton(copilotJoystick, 7);
+        copilot8 = new JoystickButton(copilotJoystick, 8);
+        copilot9 = new JoystickButton(copilotJoystick, 9);
+        copilot10 = new JoystickButton(copilotJoystick, 10);
+        copilot11 = new JoystickButton(copilotJoystick, 11);
+        
+       pilot1.whenPressed(new CameraLightsOn());
+       pilot2.whenPressed(new CameraLightsOff());
+       
+       copilot2.whileHeld(new RunGearUpDown());
+       copilot2.whenReleased(new StopGearUpDown());
+       copilot3.whileHeld(new RunGearLeftRight());
+       copilot3.whenReleased(new StopGearLeftRight());
+       
+       copilot4.whileHeld(new ClimbDown());
+		copilot5.whileHeld(new ClimbUp());
+   }
 		
 		
 	public Joystick getpilotJoystick(){
@@ -126,5 +143,10 @@ public class OI {
 	
 	public Joystick getcopilotJoystick(){
 		return copilotJoystick;
-    }
+   }
+
 }
+
+
+
+
