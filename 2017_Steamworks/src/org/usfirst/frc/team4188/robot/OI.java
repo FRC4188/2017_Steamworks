@@ -134,6 +134,7 @@ public class OI {
        
        copilot4.whileHeld(new ClimbDown());
 		copilot5.whileHeld(new ClimbUp());
+		copilot6.toggleWhenPressed(new IntakeOn());
    }
 		
 		

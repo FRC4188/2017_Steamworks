@@ -18,6 +18,7 @@ import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4188.robot.subsystems.GearManipulation;
+import org.usfirst.frc.team4188.robot.subsystems.BallIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
 	public static GearManipulation gearManipulation;
 	public static Vision vision;
 	public static Climber climber;
+	public static BallIntake intake;
 
     Command autonomousCommand;
     Command gearAutonomous;
@@ -46,7 +48,6 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 480;
 	
 	private VisionThread visionThread;
-	private double centerX = 0.0;
 	
 	
 	private final Object imgLock = new Object();
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
         chooser = new SendableChooser();
         gearAutonomous = new GearAutonomous();
         climber.init();
+        intake = new BallIntake();
   
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
