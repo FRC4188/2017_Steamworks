@@ -38,7 +38,7 @@ public class DriveTrain extends Subsystem {
     
     public void mecanumDrive(double x, double y, double twist, double throttle, double direction){
     	if (Robot.oi.pilotContoller.getIsXbox()) {
-    	driveBase.mecanumDrive_Cartesian(y*throttle, twist*throttle, x*throttle, direction);
+    	driveBase.mecanumDrive_Cartesian(-y*throttle, -twist*throttle, -x*throttle, direction);
     	}
     	else {
     		driveBase.mecanumDrive_Cartesion(-x*throttle, y*throttle, -twist*throttle, direction);
