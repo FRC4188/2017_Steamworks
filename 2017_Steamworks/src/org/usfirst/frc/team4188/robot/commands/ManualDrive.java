@@ -34,7 +34,7 @@ public class ManualDrive extends Command {
     	
     											// **************Field Oriented*************//
     	if(pilotController.getIsXbox()==true){
-    		Robot.drivetrain.mecanumDrive(-pilotController.getRawAxis(0)/2, -1.0*pilotController.getRawAxis(4)/2, pilotController.getRawAxis(1)/2, 1.0, 0.0);
+    		Robot.drivetrain.mecanumDrive(-pilotController.getRawAxis(0)/2, 1.0*pilotController.getRawAxis(1)/2, pilotController.getRawAxis(4)/2, 1.0, 0.0);
     	}
     	else{
     		Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(2)/2, -1.0*pilotController.getRawAxis(1)/2, pilotController.getRawAxis(0)/2, pilotController.getThrottle(),0.0 );
