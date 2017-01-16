@@ -156,6 +156,10 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("X * Throttle", DriveTrain.xthr);
+        SmartDashboard.putNumber("Y * Throttle", DriveTrain.ythr);
+        SmartDashboard.putNumber("Twist * Throttle", DriveTrain.twthr);
+        SmartDashboard.putNumber("Direction", DriveTrain.direction);
         
     }
     
