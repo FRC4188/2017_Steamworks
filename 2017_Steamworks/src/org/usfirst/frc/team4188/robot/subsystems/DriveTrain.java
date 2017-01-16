@@ -30,9 +30,19 @@ public class DriveTrain extends Subsystem {
     public void init(){
     	RobotMap.gyro.reset();
     }
+    public static double xthr;
+    public static double ythr;
+    public static double twthr;
+    public static double throttle;
+    public static double direction;
     
     public void mecanumDrive(double x, double y, double twist, double throttle, double direction){
     	driveBase.mecanumDrive_Cartesian(x*throttle, y*throttle, twist*throttle, direction);
+    	this.xthr = x * throttle;
+    	this.ythr = y * throttle;
+    	this.twthr = twist * throttle;
+    	this.throttle = throttle;
+    	this.direction = direction;
     }
     
     public void autoDrive(double magnitude, double direction, double rotation){
