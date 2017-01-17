@@ -63,15 +63,7 @@ public class RobotMap {
 		intakeRelay = new Relay(0);
 	
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
 		
 		}
 		

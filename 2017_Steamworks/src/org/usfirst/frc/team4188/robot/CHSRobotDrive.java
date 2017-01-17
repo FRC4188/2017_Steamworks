@@ -27,13 +27,18 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
         //this is for the middle motors
         robotDrive3 = new RobotDrive(leftMotor3, rightMotor3);
     }
+    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
+    	super(rearLeft, frontLeft, rearRight, frontRight);
+    }
+    
+    
 
      public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
     	 robotDrive2.setSafetyEnabled(enabled);
     	 robotDrive3.setSafetyEnabled(enabled);
      }
-
+/**
 
     public void arcadeDrive(double moveValue, double rotateValue) {
 
@@ -41,6 +46,11 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
         robotDrive2.arcadeDrive(moveValue, rotateValue);
         robotDrive3.arcadeDrive(moveValue, rotateValue);
       }
+      **/
+    
+    public void arcadeDrive(double moveValue, double rotateValue){
+    	super.arcadeDrive(moveValue, rotateValue);
+    }
   /**
     public void drive(double outputMagnitude, double curve){
     	super.drive(outputMagnitude, curve);
