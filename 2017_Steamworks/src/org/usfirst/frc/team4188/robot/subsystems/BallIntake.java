@@ -30,5 +30,8 @@ public class BallIntake extends Subsystem {
 	{
 		intakeRelay.set(Relay.Value.kForward);
     }
+    public void IntakeOff(){
+    	intakeRelay.set(Relay.Value.kOff);
+    }
 }
 

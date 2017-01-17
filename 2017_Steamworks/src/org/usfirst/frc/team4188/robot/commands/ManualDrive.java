@@ -28,17 +28,23 @@ public class ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(0), pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0, 0.0);
-    	//Robot.drivetrain.arcadeDrive(pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0);
-    	//Robot.drivetrain.arcadeDrive(pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle());
+    	if(pilotController.getIsXbox()){
+    	Robot.drivetrain.arcadeDrive(pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
+    	}
+    	else{
+    		Robot.drivetrain.arcadeDrive(pilotController.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle()+0.5);
+    	}
     	//Robot.drivetrain.mecanumDrive(pilotJoystick.getX(), pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle(), 0 );
     	
-    											// **************Field Oriented*************//
+    									// **************Field Oriented*************//
+    	/**
     	if(pilotController.getIsXbox()==true){
     		Robot.drivetrain.mecanumDrive(-pilotController.getRawAxis(0)/2, 1.0*pilotController.getRawAxis(1)/2, pilotController.getRawAxis(4)/2, 1.0, 0.0);
     	}
     	else{
     		Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(2)/2, -1.0*pilotController.getRawAxis(1)/2, pilotController.getRawAxis(0)/2, pilotController.getThrottle(),0.0 );
-    }
+    	}
+    	**/
     }
 
     // Make this return true when this Command no longer needs to run execute()

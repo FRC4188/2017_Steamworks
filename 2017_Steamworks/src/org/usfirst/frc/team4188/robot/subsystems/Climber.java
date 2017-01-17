@@ -35,5 +35,9 @@ public class Climber extends Subsystem {
 	{
 		climberTalon.set(-throttle);
 	}
+	
+	public void climberTalonOff(){
+		climberTalon.set(0);
+	}
 
 }

@@ -1,15 +1,7 @@
 
 package org.usfirst.frc.team4188.robot;
 
-import org.usfirst.frc.team4188.robot.commands.CameraLightsOff;
-import org.usfirst.frc.team4188.robot.commands.CameraLightsOn;
-import org.usfirst.frc.team4188.robot.commands.ClimbDown;
-import org.usfirst.frc.team4188.robot.commands.ClimbUp;
-import org.usfirst.frc.team4188.robot.commands.RunGearLeftRight;
-import org.usfirst.frc.team4188.robot.commands.RunGearUpDown;
-import org.usfirst.frc.team4188.robot.commands.StopGearLeftRight;
-import org.usfirst.frc.team4188.robot.commands.StopGearUpDown;
-
+import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -132,9 +124,14 @@ public class OI {
        copilot3.whileHeld(new RunGearLeftRight());
        copilot3.whenReleased(new StopGearLeftRight());
        
+
        copilot4.whileHeld(new ClimbDown());
-		copilot5.whileHeld(new ClimbUp());
-		copilot6.toggleWhenPressed(new IntakeOn());
+       copilot4.whenReleased(new ClimberOff());
+       copilot5.whileHeld(new ClimbUp());
+       copilot5.whenReleased(new ClimberOff());
+
+       copilot1.whileHeld(new IntakeOn());
+       copilot1.whenReleased(new IntakeOff());
    }
 		
 		

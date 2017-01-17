@@ -51,6 +51,7 @@ public class Robot extends IterativeRobot {
 	
 	
 	private final Object imgLock = new Object();
+	private double centerX;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -156,11 +157,8 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("X * Throttle", DriveTrain.xthr);
-        SmartDashboard.putNumber("Y * Throttle", DriveTrain.ythr);
-        SmartDashboard.putNumber("Twist * Throttle", DriveTrain.twthr);
-        SmartDashboard.putNumber("Direction", DriveTrain.direction);
-        
+       
+   
     }
     
     /**
