@@ -19,6 +19,7 @@ import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4188.robot.subsystems.GearManipulation;
 import org.usfirst.frc.team4188.robot.subsystems.BallIntake;
+import org.usfirst.frc.team4188.robot.subsystems.Vision2;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,8 +38,12 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static GearManipulation gearManipulation;
 	public static Vision vision;
+	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
+	
+	public static double aimError;
+	public static double optimalDistance;
 
     Command autonomousCommand;
     Command gearAutonomous;
@@ -52,6 +57,7 @@ public class Robot extends IterativeRobot {
 	
 	private final Object imgLock = new Object();
 	private double centerX;
+	
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,6 +74,7 @@ public class Robot extends IterativeRobot {
         gearAutonomous = new GearAutonomous();
         climber.init();
         intake = new BallIntake();
+        robotVision = new Vision2("10.41.88.11");
   
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
@@ -139,8 +146,8 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-      gearAutonomous.start();
-     
+      //gearAutonomous.start();
+     robotVision.periodic();
         
     }
 
@@ -157,7 +164,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-       
+        robotVision.periodic();
    
     }
     
@@ -166,5 +173,18 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    public static void setAimError(double v){
+    	aimError = v;
+    }
+    public static double getAimError(){
+    	return aimError;
+    }
+    public static void setDistance(double d){
+    	optimalDistance = d;
+    }
+    public static double getDistance(){
+		return optimalDistance;
     }
 }
