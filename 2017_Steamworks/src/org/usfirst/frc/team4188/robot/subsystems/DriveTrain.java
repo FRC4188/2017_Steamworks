@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4188.robot.subsystems;
 
+import org.usfirst.frc.team4188.robot.CHSRobotDrive;
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
 import org.usfirst.frc.team4188.robot.commands.ManualDrive;
@@ -8,6 +9,7 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,8 +25,9 @@ public class DriveTrain extends Subsystem {
 	CANTalon frontLeft = RobotMap.frontLeftDriveMotor;
 	CANTalon rearRight = RobotMap.rearRightDriveMotor;
 	CANTalon rearLeft = RobotMap.rearLeftDriveMotor;
-	RobotDrive driveBase = RobotMap.driveBase;
-	RobotDrive driveBase2 = RobotMap.chsDriveBase;
+	CHSRobotDrive driveBase = RobotMap.driveBase;
+	RobotDrive driveBase2 = RobotMap.DriveBase;
+	ADXRS450_Gyro gyro = RobotMap.gyro;
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new ManualDrive());
@@ -61,6 +64,9 @@ public class DriveTrain extends Subsystem {
 	public void autoDrive(double moveValue, double rotateValue) {
 		// TODO Auto-generated method stub
 		driveBase.arcadeDrive(moveValue, rotateValue);
+	}
+	public void gyroReset(){
+		gyro.reset();
 	}
 }
 

@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 
@@ -34,23 +35,35 @@ public class RobotMap {
 	public static CANTalon rearLeftDriveMotor;
 	public static CANTalon gearLeftRight;
 	public static CANTalon gearUpDown;
-	public static RobotDrive driveBase;
-	public static RobotDrive chsDriveBase;
+	public static CHSRobotDrive driveBase;
+	public static RobotDrive DriveBase;
 	public static ADXRS450_Gyro gyro;
 	public static Relay cameraLights;
 	public static AxisCamera camera;
 	public static Relay intakeRelay;
+	public static PIDController gyroPIDController;
+	public static PIDController driveTrainPIDController;
+	public static PIDController driveAimPIDController;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		public static void init() {
 		// TODO Auto-generated method stub
 		climberTalon = new CANTalon(1);
 		gyro = new ADXRS450_Gyro();
 		cameraLights= new Relay(0);
-		frontLeftDriveMotor = new CANTalon(13);
-		rearLeftDriveMotor = new CANTalon(14);
-		frontRightDriveMotor = new CANTalon(11);
-		rearRightDriveMotor = new CANTalon(12);
+		frontLeftDriveMotor = new CANTalon(2);
+		rearLeftDriveMotor = new CANTalon(1);
+		frontRightDriveMotor = new CANTalon(3);
+		rearRightDriveMotor = new CANTalon(4);
 		
-		driveBase = new RobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);

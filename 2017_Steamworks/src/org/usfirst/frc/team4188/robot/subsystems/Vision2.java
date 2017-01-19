@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
+import edu.wpi.cscore.*;
 
 /**
  *
@@ -89,8 +90,8 @@ public class Vision2 extends Subsystem implements PIDSource {
 	NIVision.ParticleFilterCriteria2 criteria[] = new NIVision.ParticleFilterCriteria2[1];
 	NIVision.ParticleFilterOptions2 filterOptions = new NIVision.ParticleFilterOptions2(0,0,1,1);
 	Scores scores = new Scores();
-	private static final double TARGET_WIDTH = 20.0;
-	private static final double TARGET_HEIGHT = 12-0.25;
+	private static final double TARGET_WIDTH = 10.25;//2017
+	private static final double TARGET_HEIGHT = 5;//2017
 	private static final double TARGET_ASPECT_RATIO = TARGET_WIDTH/TARGET_HEIGHT; //2016 Target is 20 inches Wide and 12 inches tall.
 	private static final double TARGET_TAPE_AREA = (10.0*2.0)+(10.0*2.0)+(TARGET_WIDTH*1.75); //2016 Area of the reflective tape in square inches.
 	private static final double TARGET_BOUNDING_RECTANGLE_AREA = TARGET_WIDTH*TARGET_HEIGHT; // 2016 Bounding rectangle area in square inches.
@@ -297,4 +298,5 @@ public class Vision2 extends Subsystem implements PIDSource {
 		return distance;
 	}
     
+	
 }

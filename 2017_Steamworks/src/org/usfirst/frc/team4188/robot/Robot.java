@@ -85,7 +85,7 @@ public class Robot extends IterativeRobot {
         
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
             camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-            
+            /**
             visionThread = new VisionThread(camera, new Vision(), VisionPipeline -> {
                 if (!VisionPipeline.filterContoursOutput().isEmpty()) {
                     Rect r = Imgproc.boundingRect(VisionPipeline.filterContoursOutput().get(0));
@@ -95,7 +95,7 @@ public class Robot extends IterativeRobot {
                 }
             });
             visionThread.start();
-            
+          **/  
         
     }
     
@@ -147,7 +147,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
       //gearAutonomous.start();
-     robotVision.periodic();
+     //robotVision.periodic();
         
     }
 
@@ -164,7 +164,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        robotVision.periodic();
+        //robotVision.periodic();
    
     }
     
