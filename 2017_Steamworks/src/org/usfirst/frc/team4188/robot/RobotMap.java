@@ -73,7 +73,7 @@ public class RobotMap {
 		gearLeftRight = new CANTalon(17);
 		gearUpDown = new CANTalon(15);
 		camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
-		intakeRelay = new Relay(0);
+		intakeRelay = new Relay(1);
 	
 
 	

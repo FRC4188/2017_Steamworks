@@ -32,7 +32,7 @@ public class ManualDrive extends Command {
     	Robot.drivetrain.arcadeDrive(pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
     	}
     	else{
-    		Robot.drivetrain.arcadeDrive(pilotController.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle()+0.5);
+    		Robot.drivetrain.arcadeDrive(pilotController.getY(), pilotController.getTwist(), pilotController.getThrottle()+0.5);
     	}
     	//Robot.drivetrain.mecanumDrive(pilotJoystick.getX(), pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle(), 0 );
     	

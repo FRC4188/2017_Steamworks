@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
         RobotMap.gyro.calibrate();
         vision = new Vision();
         
-        
+        /**
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
             camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
             /**
@@ -164,7 +164,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        //robotVision.periodic();
+        robotVision.periodic();
    
     }
     

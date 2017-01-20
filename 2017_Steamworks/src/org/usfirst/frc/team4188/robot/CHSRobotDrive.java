@@ -35,9 +35,10 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
 
      public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
-    	 robotDrive2.setSafetyEnabled(enabled);
-    	 robotDrive3.setSafetyEnabled(enabled);
+    	
      }
+     
+     
 /**
 
     public void arcadeDrive(double moveValue, double rotateValue) {
