@@ -6,6 +6,7 @@ package org.usfirst.frc.team4188.robot.subsystems;
 import java.util.Comparator;
 import java.util.Vector;
 
+
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
 
@@ -31,7 +32,8 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
-import edu.wpi.cscore.*;
+import edu.wpi.first.wpilibj.vision.VisionPipeline;
+
 
 /**
  *
@@ -138,7 +140,7 @@ public class Vision2 extends Subsystem implements PIDSource {
 		GOAL_VAL_RANGE.maxValue = (int)SmartDashboard.getNumber("Goal val max", GOAL_VAL_RANGE.maxValue);
 		
 		
-		
+	
 	
 		NIVision.imaqColorThreshold(binaryFrame, frame, 255, NIVision.ColorMode.HSV, GOAL_HUE_RANGE, GOAL_SAT_RANGE, GOAL_VAL_RANGE);
 		numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
@@ -297,6 +299,7 @@ public class Vision2 extends Subsystem implements PIDSource {
 		// TODO Auto-generated method stub
 		return distance;
 	}
-    
+
+
 	
 }

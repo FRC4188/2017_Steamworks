@@ -29,7 +29,7 @@ public class ManualDrive extends Command {
     protected void execute() {
     	//Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(0), pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0, 0.0);
     	if(pilotController.getIsXbox()){
-    	Robot.drivetrain.arcadeDrive(pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
+    	Robot.drivetrain.arcadeDrive(-pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
     	}
     	else{
     		Robot.drivetrain.arcadeDrive(pilotController.getY(), pilotController.getTwist(), pilotController.getThrottle()+0.5);

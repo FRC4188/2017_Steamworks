@@ -4,12 +4,14 @@ import org.usfirst.frc.team4188.robot.subsystems.Climber;
 
 import com.ctre.CANTalon;
 
-import edu.wpi.cscore.AxisCamera;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -44,6 +46,8 @@ public class RobotMap {
 	public static PIDController gyroPIDController;
 	public static PIDController driveTrainPIDController;
 	public static PIDController driveAimPIDController;
+	public static DoubleSolenoid gearRelease;
+	
 	
 	
 	
@@ -55,13 +59,13 @@ public class RobotMap {
 	
 		public static void init() {
 		// TODO Auto-generated method stub
-		climberTalon = new CANTalon(1);
+		climberTalon = new CANTalon(15);
 		gyro = new ADXRS450_Gyro();
 		cameraLights= new Relay(0);
-		frontLeftDriveMotor = new CANTalon(2);
-		rearLeftDriveMotor = new CANTalon(1);
-		frontRightDriveMotor = new CANTalon(3);
-		rearRightDriveMotor = new CANTalon(4);
+		frontLeftDriveMotor = new CANTalon(12);
+		rearLeftDriveMotor = new CANTalon(11);
+		frontRightDriveMotor = new CANTalon(13);
+		rearRightDriveMotor = new CANTalon(14);
 		
 		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
@@ -72,9 +76,8 @@ public class RobotMap {
 		
 		gearLeftRight = new CANTalon(17);
 		gearUpDown = new CANTalon(15);
-		camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
 		intakeRelay = new Relay(1);
-	
+		gearRelease = new DoubleSolenoid(0,1);
 
 	
 		

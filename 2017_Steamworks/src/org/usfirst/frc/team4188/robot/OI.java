@@ -119,8 +119,13 @@ public class OI {
        pilot1.whenPressed(new CameraLightsOn());
        pilot2.whenPressed(new CameraLightsOff());
               
-       pilot5.whenPressed(new IntakeOn());
-       pilot6.whenPressed(new IntakeOff());
+       pilot6.whileHeld(new IntakeOn());
+       pilot6.whenReleased(new IntakeOff());
+       
+       pilot3.whileHeld(new GearRelease());
+       pilot3.whenReleased(new GearOff());
+       pilot4.whileHeld(new GearRetract());
+       pilot4.whenReleased(new GearOff());
               
        copilot2.whileHeld(new RunGearUpDown());
        copilot2.whenReleased(new StopGearUpDown());
@@ -135,6 +140,7 @@ public class OI {
 
        copilot1.whileHeld(new IntakeOn());
        copilot1.whenReleased(new IntakeOff());
+       
    }
 		
 		
