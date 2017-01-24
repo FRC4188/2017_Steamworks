@@ -140,6 +140,8 @@ public class OI {
 
        copilot1.whileHeld(new IntakeOn());
        copilot1.whenReleased(new IntakeOff());
+       copilot7.toggleWhenPressed(new ClimbSlow());
+       copilot8.toggleWhenPressed(new ClimbFast());
        
    }
 		
