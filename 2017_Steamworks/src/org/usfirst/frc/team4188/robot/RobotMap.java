@@ -6,6 +6,7 @@ import com.ctre.CANTalon;
 
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
@@ -35,8 +36,11 @@ public class RobotMap {
 	public static CANTalon frontLeftDriveMotor;
 	public static CANTalon rearRightDriveMotor;
 	public static CANTalon rearLeftDriveMotor;
+	public static CANTalon middleRightDriveMotor;
+	public static CANTalon middleLeftDriveMotor;
 	public static CANTalon gearLeftRight;
 	public static CANTalon gearUpDown;
+	public static CANTalon hoodRotation;	
 	public static CHSRobotDrive driveBase;
 	public static RobotDrive DriveBase;
 	public static ADXRS450_Gyro gyro;
@@ -47,6 +51,7 @@ public class RobotMap {
 	public static PIDController driveTrainPIDController;
 	public static PIDController driveAimPIDController;
 	public static DoubleSolenoid gearRelease;
+	public static AnalogTrigger seatMotorHallSensor;
 	
 	
 	
@@ -62,12 +67,17 @@ public class RobotMap {
 		climberTalon = new CANTalon(15);
 		gyro = new ADXRS450_Gyro();
 		cameraLights= new Relay(0);
-		frontLeftDriveMotor = new CANTalon(12);
-		rearLeftDriveMotor = new CANTalon(11);
-		frontRightDriveMotor = new CANTalon(13);
-		rearRightDriveMotor = new CANTalon(14);
 		
-		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
+		frontLeftDriveMotor = new CANTalon(12);
+		rearLeftDriveMotor = new CANTalon(14);
+		middleLeftDriveMotor = new CANTalon(13);
+		
+		frontRightDriveMotor = new CANTalon(19);
+		rearRightDriveMotor = new CANTalon(18);
+	    middleRightDriveMotor = new CANTalon(17);
+		
+		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);
@@ -79,7 +89,8 @@ public class RobotMap {
 		intakeRelay = new Relay(1);
 		gearRelease = new DoubleSolenoid(0,1);
 
-	
+		seatMotorHallSensor = new AnalogTrigger(0);
+        hoodRotation = new CANTalon(0);
 		
 		}
 		

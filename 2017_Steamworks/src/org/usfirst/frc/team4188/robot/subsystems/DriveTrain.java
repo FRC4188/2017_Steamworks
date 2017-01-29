@@ -25,6 +25,10 @@ public class DriveTrain extends Subsystem {
 	CANTalon frontLeft = RobotMap.frontLeftDriveMotor;
 	CANTalon rearRight = RobotMap.rearRightDriveMotor;
 	CANTalon rearLeft = RobotMap.rearLeftDriveMotor;
+	
+	CANTalon middleRight = RobotMap.middleRightDriveMotor;
+	CANTalon middleLeft = RobotMap.middleLeftDriveMotor;
+	
 	CHSRobotDrive driveBase = RobotMap.driveBase;
 	RobotDrive driveBase2 = RobotMap.DriveBase;
 	ADXRS450_Gyro gyro = RobotMap.gyro;

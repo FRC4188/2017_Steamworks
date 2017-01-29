@@ -14,17 +14,28 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     //static final int kRearLeft_val = 2;
     //static final int kRearRight_val = 3;
     //static final double minValue = 0.17;
-
+	protected RobotDrive robotDrive;
+	
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
     	super(rearLeft, frontLeft, rearRight, frontRight);
     }
     
-     public void setSafetyEnabled(boolean enabled){
+    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
+    		SpeedController middleRight, SpeedController frontRight){
+    	
+    	super(rearLeft, frontLeft, rearRight, frontRight);
+    	robotDrive = new RobotDrive(middleLeft, middleRight);
+    
+    }
+    
+    public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
-     }
+    	 robotDrive.setSafetyEnabled(enabled);
+    }
 
-     public void arcadeDrive(double moveValue, double rotateValue){
+    public void arcadeDrive(double moveValue, double rotateValue){
     	super.arcadeDrive(moveValue, rotateValue);
+    	robotDrive.arcadeDrive(moveValue, rotateValue);
     }
     
     private static final double OUTPUT_MIN = 0.35;
@@ -57,19 +68,22 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	switch(driveType){
     	case turnToAngle:
     		super.setLeftRightMotorOutputs(output,-output);
+    		robotDrive.setLeftRightMotorOutputs(-output,output);
     	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
+        	robotDrive.setLeftRightMotorOutputs(output,output);
         break;
     	}
     }
 
-/*    private int getInverted(SpeedController motor){
+    private int getInverted(SpeedController motor){
     	if(motor.getInverted())
     		return -1;
     	else
     		return 1;
-    */
+    
     }
+}
 
 
 

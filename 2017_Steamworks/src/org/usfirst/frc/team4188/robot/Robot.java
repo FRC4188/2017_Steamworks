@@ -2,6 +2,7 @@
 package org.usfirst.frc.team4188.robot;
 
 
+import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,6 +17,7 @@ import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4188.robot.subsystems.GearManipulation;
+import org.usfirst.frc.team4188.robot.subsystems.Shooter;
 import org.usfirst.frc.team4188.robot.subsystems.BallIntake;
 import org.usfirst.frc.team4188.robot.subsystems.Vision2;
 
@@ -39,10 +41,12 @@ public class Robot extends IterativeRobot {
 	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
+    public static Shooter shooter;
 	
 	public static double aimError;
 	public static double optimalDistance;
-
+	//private AnalogTrigger seatMotorHallSensor;
+	
     Command autonomousCommand;
     Command gearAutonomous;
     SendableChooser chooser;
@@ -68,12 +72,17 @@ public class Robot extends IterativeRobot {
         gearAutonomous = new GearAutonomous();
         climber.init();
         intake = new BallIntake();
-        robotVision = new Vision2("10.41.88.11");
+        shooter = new Shooter();
+        shooter.init();
+        robotVision = new Vision2("10.41.88.12");
+        SmartDashboard.putNumber("Distance", robotVision.distance);
   
-//        chooser.addObject("My Auto", new MyAutoCommand());
+        //chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
+        SmartDashboard.putData("Vision2", robotVision);
         drivetrain.init();
         RobotMap.gyro.calibrate();
+      //  seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
         
         
        /**
@@ -158,6 +167,36 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         robotVision.periodic();
    
+        boolean blockForward, blockReverse;
+        int pos = 0;
+        double speed = 1.0;
+        //Robot.shooter.counter.reset();
+        
+        while(isEnabled() && isOperatorControl()){
+        	
+        	pos = shooter.getPosition();
+        	SmartDashboard.putNumber("Position", pos);
+        	
+        	if(pos >= 175)
+        		blockForward = true;
+        	else{       		
+        		blockForward = false;	
+        	}
+        	
+        	if(pos <= 0)
+        		blockReverse = true;
+            else {
+            	blockReverse = false;
+            }
+        	
+        	if(blockForward)
+        		speed = -1;
+        	if(blockReverse)
+        		speed = 1;
+        	
+       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
+        }
+     
     }
     
     /**
