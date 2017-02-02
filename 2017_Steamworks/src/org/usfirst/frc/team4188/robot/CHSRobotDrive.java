@@ -24,7 +24,10 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     		SpeedController middleRight, SpeedController frontRight){
     	
     	super(rearLeft, frontLeft, rearRight, frontRight);
+    	middleLeft.setInverted(true);
+    	middleRight.setInverted(true);
     	robotDrive = new RobotDrive(middleLeft, middleRight);
+    	
     
     }
     

@@ -6,6 +6,7 @@ import com.ctre.CANTalon;
 
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -51,7 +52,7 @@ public class RobotMap {
 	public static PIDController driveTrainPIDController;
 	public static PIDController driveAimPIDController;
 	public static DoubleSolenoid gearRelease;
-	public static AnalogTrigger seatMotorHallSensor;
+	public static AnalogInput seatMotorHallSensor;
 	
 	
 	
@@ -89,8 +90,8 @@ public class RobotMap {
 		intakeRelay = new Relay(1);
 		gearRelease = new DoubleSolenoid(0,1);
 
-		seatMotorHallSensor = new AnalogTrigger(0);
-        hoodRotation = new CANTalon(0);
+		seatMotorHallSensor = new AnalogInput(0);
+        hoodRotation = new CANTalon(20);
 		
 		}
 		

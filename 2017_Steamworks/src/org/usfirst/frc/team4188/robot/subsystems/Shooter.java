@@ -4,14 +4,15 @@ import org.usfirst.frc.team4188.robot.RobotMap;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Shooter extends Subsystem {
 
-	public static CANTalon hoodRotation = RobotMap.hoodRotation;
-	public static AnalogTrigger seatMotorHallSensor = RobotMap.seatMotorHallSensor;
+	public CANTalon hoodRotation = RobotMap.hoodRotation;
+	public static AnalogInput seatMotorHallSensor = RobotMap.seatMotorHallSensor;
 	public static Counter counter;
 	private double speedPrevious;
 	private int position;

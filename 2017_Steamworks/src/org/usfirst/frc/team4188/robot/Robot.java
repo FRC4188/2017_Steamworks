@@ -45,6 +45,8 @@ public class Robot extends IterativeRobot {
 	
 	public static double aimError;
 	public static double optimalDistance;
+	
+	public AnalogTrigger seatMotorHallSensor;
 	//private AnalogTrigger seatMotorHallSensor;
 	
     Command autonomousCommand;
@@ -74,7 +76,8 @@ public class Robot extends IterativeRobot {
         intake = new BallIntake();
         shooter = new Shooter();
         shooter.init();
-        robotVision = new Vision2("10.41.88.12");
+       // robotVision = new Vision2("10.41.88.12");
+       robotVision = new Vision2();
         SmartDashboard.putNumber("Distance", robotVision.distance);
   
         //chooser.addObject("My Auto", new MyAutoCommand());
@@ -82,22 +85,10 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Vision2", robotVision);
         drivetrain.init();
         RobotMap.gyro.calibrate();
-      //  seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
+        //seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
         
         
-       /**
-            AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
-            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-            
-            visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
-                while (!Thread.interrupted()) {
-                   
-                    }
-             });
-    
-            visionThread.start();
-          **/
-        
+      
     }
     
  
@@ -148,7 +139,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
       //gearAutonomous.start();
-     //robotVision.periodic();
+     robotVision.periodic();
         
     }
 
@@ -166,12 +157,12 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         robotVision.periodic();
-   
+   /**
         boolean blockForward, blockReverse;
         int pos = 0;
         double speed = 1.0;
         //Robot.shooter.counter.reset();
-        
+     
         while(isEnabled() && isOperatorControl()){
         	
         	pos = shooter.getPosition();
@@ -193,9 +184,10 @@ public class Robot extends IterativeRobot {
         		speed = -1;
         	if(blockReverse)
         		speed = 1;
-        	
-       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
+        	 shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
         }
+       
+     **/   
      
     }
     
