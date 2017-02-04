@@ -14,9 +14,9 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     //static final int kRearLeft_val = 2;
     //static final int kRearRight_val = 3;
     //static final double minValue = 0.17;
-	protected RobotDrive robotDrive;
-	
-    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
+	//protected RobotDrive robotDrive;
+    
+	public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
     	super(rearLeft, frontLeft, rearRight, frontRight);
     }
     
@@ -24,21 +24,18 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     		SpeedController middleRight, SpeedController frontRight){
     	
     	super(rearLeft, frontLeft, rearRight, frontRight);
-    	middleLeft.setInverted(true);
-    	middleRight.setInverted(true);
-    	robotDrive = new RobotDrive(middleLeft, middleRight);
-    	
+    //	robotDrive = new RobotDrive(middleLeft, middleRight);
     
     }
     
     public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
-    	 robotDrive.setSafetyEnabled(enabled);
+    //	 robotDrive.setSafetyEnabled(enabled);
     }
 
     public void arcadeDrive(double moveValue, double rotateValue){
     	super.arcadeDrive(moveValue, rotateValue);
-    	robotDrive.arcadeDrive(moveValue, rotateValue);
+    //	robotDrive.arcadeDrive(moveValue, rotateValue);
     }
     
     private static final double OUTPUT_MIN = 0.35;
@@ -47,10 +44,12 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
 
     public enum PIDType {
     	turnToAngle,
-    	driveToDistance
+    	driveToDistance, 
+    	seatMotor
     }
     
     private static PIDType driveType = PIDType.turnToAngle;
+    private static PIDType driveType2 = PIDType.seatMotor;
     public static void setPIDType(PIDType type) {    	
     	driveType = type;
     	switch (driveType) {
@@ -59,7 +58,9 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
         	break;
     	case driveToDistance:
         	SmartDashboard.putString("Setting PIDType =", "driveToDistance");
-        	break;
+    	break;
+    	//case seatMotor;
+        	//break;
     	}
     }
        
@@ -67,16 +68,17 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	if (Math.abs(output)< OUTPUT_MIN) {
     		output = OUTPUT_MIN * Math.signum(output);
     	}
-    	SmartDashboard.putNumber("PID", output);
+/*    	SmartDashboard.putNumber("PID", output);
     	switch(driveType){
     	case turnToAngle:
     		super.setLeftRightMotorOutputs(output,-output);
-    		robotDrive.setLeftRightMotorOutputs(-output,output);
+    	//	robotDrive.setLeftRightMotorOutputs(-output,output);
     	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
-        	robotDrive.setLeftRightMotorOutputs(output,output);
-        break;
-    	}
+      //  	robotDrive.setLeftRightMotorOutputs(output,output);
+    	case seatMotor;
+        	break;
+    	}*/
     }
 
     private int getInverted(SpeedController motor){

@@ -65,20 +65,20 @@ public class RobotMap {
 	
 		public static void init() {
 		// TODO Auto-generated method stub
-		climberTalon = new CANTalon(15);
+		climberTalon = new CANTalon(0);
 		gyro = new ADXRS450_Gyro();
 		cameraLights= new Relay(0);
 		
 		frontLeftDriveMotor = new CANTalon(12);
 		rearLeftDriveMotor = new CANTalon(14);
-		middleLeftDriveMotor = new CANTalon(13);
+		//middleLeftDriveMotor = new CANTalon(13);
 		
 		frontRightDriveMotor = new CANTalon(19);
 		rearRightDriveMotor = new CANTalon(18);
-	    middleRightDriveMotor = new CANTalon(17);
+	    //middleRightDriveMotor = new CANTalon(17);
 		
 		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
-		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);
@@ -90,7 +90,7 @@ public class RobotMap {
 		intakeRelay = new Relay(1);
 		gearRelease = new DoubleSolenoid(0,1);
 
-		seatMotorHallSensor = new AnalogInput(0);
+		seatMotorHallSensor = new AnalogInput(1);
         hoodRotation = new CANTalon(20);
 		
 		}

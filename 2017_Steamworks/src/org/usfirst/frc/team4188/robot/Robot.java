@@ -2,6 +2,7 @@
 package org.usfirst.frc.team4188.robot;
 
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
+import org.usfirst.frc.team4188.robot.commands.EncoderTest;
 import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
@@ -45,9 +47,7 @@ public class Robot extends IterativeRobot {
 	
 	public static double aimError;
 	public static double optimalDistance;
-	
-	public AnalogTrigger seatMotorHallSensor;
-	//private AnalogTrigger seatMotorHallSensor;
+	public AnalogInput seatMotorHallSensor;
 	
     Command autonomousCommand;
     Command gearAutonomous;
@@ -55,49 +55,46 @@ public class Robot extends IterativeRobot {
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
-	
-	//private VisionThread visionThread;
-	
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
     public void robotInit() {
 		oi = new OI();
 		RobotMap.init();
-		climber = new Climber();
-		gearManipulation = new GearManipulation();
-		drivetrain = new DriveTrain();
-		cameraLights = new CameraLights();
-        chooser = new SendableChooser();
-        gearAutonomous = new GearAutonomous();
-        climber.init();
-        intake = new BallIntake();
+		//climber = new Climber();
+		//gearManipulation = new GearManipulation();
+		//drivetrain = new DriveTrain();
+		//cameraLights = new CameraLights();
+        //chooser = new SendableChooser();
+        //gearAutonomous = new GearAutonomous();
+        //climber.init();
+        //intake = new BallIntake();
         shooter = new Shooter();
         shooter.init();
-       // robotVision = new Vision2("10.41.88.12");
-       robotVision = new Vision2();
-        SmartDashboard.putNumber("Distance", robotVision.distance);
+        //robotVision = new Vision2("10.41.88.12");
+        //SmartDashboard.putNumber("Distance", robotVision.distance);
   
         //chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-        SmartDashboard.putData("Vision2", robotVision);
-        drivetrain.init();
-        RobotMap.gyro.calibrate();
+        //SmartDashboard.putData("Auto mode", chooser);
+        //SmartDashboard.putData("Vision2", robotVision);
+        //drivetrain.init();
+       // RobotMap.gyro.calibrate();
         //seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
         
         
-      
-    }
+       /**
+            AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
+            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+            
+            visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
+                while (!Thread.interrupted()) {
+                   
+                    }
+             });
     
+            visionThread.start();
+          **/
+        
+    }
  
-	
-	/**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-     */
     public void disabledInit(){
 
     }
@@ -106,15 +103,6 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
-	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
-	 * Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box
-	 * below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
-	 * or additional comparisons to the switch structure below with additional strings & commands.
-	 */
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
         
@@ -139,7 +127,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
       //gearAutonomous.start();
-     robotVision.periodic();
+     //robotVision.periodic();
         
     }
 
@@ -149,6 +137,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+      //  SmartDashboard.putData(new EncoderTest(1.0));
     }
 
     /**
@@ -156,39 +145,14 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        robotVision.periodic();
-   /**
-        boolean blockForward, blockReverse;
-        int pos = 0;
-        double speed = 1.0;
-        //Robot.shooter.counter.reset();
-     
-        while(isEnabled() && isOperatorControl()){
-        	
-        	pos = shooter.getPosition();
-        	SmartDashboard.putNumber("Position", pos);
-        	
-        	if(pos >= 175)
-        		blockForward = true;
-        	else{       		
-        		blockForward = false;	
-        	}
-        	
-        	if(pos <= 0)
-        		blockReverse = true;
-            else {
-            	blockReverse = false;
-            }
-        	
-        	if(blockForward)
-        		speed = -1;
-        	if(blockReverse)
-        		speed = 1;
-        	 shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
-        }
-       
-     **/   
-     
+       /* SmartDashboard.putNumber("Counter", EncoderTest.counter);
+        SmartDashboard.putNumber("Position", EncoderTest.pos);
+        SmartDashboard.putString("Encoder Status", "Initializing");
+	 	SmartDashboard.putNumber("Accumulator Output", RobotMap.seatMotorHallSensor.getAccumulatorValue());
+    	SmartDashboard.putNumber("TicksPerSecond", RobotMap.seatMotorHallSensor.kSystemClockTicksPerMicrosecond);
+    	SmartDashboard.putData("EncoderPIDController", EncoderTest.seatMotorPIDController);
+    	*/
+        // robotVision.periodic();
     }
     
     /**
