@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
-import org.usfirst.frc.team4188.robot.commands.EncoderTest;
 import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4188.robot.subsystems.FuelElevator;
 import org.usfirst.frc.team4188.robot.subsystems.GearManipulation;
 import org.usfirst.frc.team4188.robot.subsystems.Shooter;
 import org.usfirst.frc.team4188.robot.subsystems.BallIntake;
@@ -43,42 +43,51 @@ public class Robot extends IterativeRobot {
 	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
-    public static Shooter shooter;
-	
+	public static  AnalogInput seatMotorHallSensor;
+	public static Shooter shooter;
+	public static FuelElevator fuelElevator;
+    
 	public static double aimError;
 	public static double optimalDistance;
-	public AnalogInput seatMotorHallSensor;
-	
+
     Command autonomousCommand;
     Command gearAutonomous;
     SendableChooser chooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
+	
+	//private VisionThread visionThread;
+	
 
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
     public void robotInit() {
 		oi = new OI();
 		RobotMap.init();
-		//climber = new Climber();
-		//gearManipulation = new GearManipulation();
-		//drivetrain = new DriveTrain();
-		//cameraLights = new CameraLights();
-        //chooser = new SendableChooser();
-        //gearAutonomous = new GearAutonomous();
-        //climber.init();
-        //intake = new BallIntake();
-        shooter = new Shooter();
+		shooter = new Shooter();
+		climber = new Climber();
+		gearManipulation = new GearManipulation();
+		drivetrain = new DriveTrain();
+		cameraLights = new CameraLights();
+        chooser = new SendableChooser();
+        gearAutonomous = new GearAutonomous();
+        climber.init();
         shooter.init();
-        //robotVision = new Vision2("10.41.88.12");
-        //SmartDashboard.putNumber("Distance", robotVision.distance);
+        intake = new BallIntake();
+        shooter = new Shooter();
+        fuelElevator = new FuelElevator();
+        fuelElevator.init();
+      //  robotVision = new Vision2("10.41.88.12");
+      // SmartDashboard.putNumber("Distance", robotVision.distance);
   
-        //chooser.addObject("My Auto", new MyAutoCommand());
-        //SmartDashboard.putData("Auto mode", chooser);
-        //SmartDashboard.putData("Vision2", robotVision);
-        //drivetrain.init();
-       // RobotMap.gyro.calibrate();
-        //seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
-        
+      //chooser.addObject("My Auto", new MyAutoCommand());
+        SmartDashboard.putData("Auto mode", chooser);
+      //SmartDashboard.putData("Vision2", robotVision);
+        drivetrain.init();
+      RobotMap.gyro.calibrate();
         
        /**
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
@@ -94,7 +103,14 @@ public class Robot extends IterativeRobot {
           **/
         
     }
+    
  
+	
+	/**
+     * This function is called once each time the robot enters Disabled mode.
+     * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+     */
     public void disabledInit(){
 
     }
@@ -103,6 +119,15 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
+	/**
+	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
+	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
+	 * Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box
+	 * below the Gyro
+	 *
+	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
+	 * or additional comparisons to the switch structure below with additional strings & commands.
+	 */
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
         
@@ -137,7 +162,6 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-      //  SmartDashboard.putData(new EncoderTest(1.0));
     }
 
     /**
@@ -145,14 +169,38 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-       /* SmartDashboard.putNumber("Counter", EncoderTest.counter);
-        SmartDashboard.putNumber("Position", EncoderTest.pos);
-        SmartDashboard.putString("Encoder Status", "Initializing");
-	 	SmartDashboard.putNumber("Accumulator Output", RobotMap.seatMotorHallSensor.getAccumulatorValue());
-    	SmartDashboard.putNumber("TicksPerSecond", RobotMap.seatMotorHallSensor.kSystemClockTicksPerMicrosecond);
-    	SmartDashboard.putData("EncoderPIDController", EncoderTest.seatMotorPIDController);
-    	*/
-        // robotVision.periodic();
+        //robotVision.periodic();
+   
+       /* boolean blockForward, blockReverse;
+        int pos = 0;
+        double speed = 1.0;
+        //Robot.shooter.counter.reset();
+        
+        while(isEnabled() && isOperatorControl()){
+        	
+        	pos = shooter.getPosition();
+        	SmartDashboard.putNumber("Position", pos);
+        	
+        	if(pos >= 175)
+        		blockForward = true;
+        	else{       		
+        		blockForward = false;	
+        	}
+        	
+        	if(pos <= 0)
+        		blockReverse = true;
+            else {
+            	blockReverse = false;
+            }
+        	
+        	if(blockForward)
+        		speed = -1;
+        	if(blockReverse)
+        		speed = 1;
+    */    	
+       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
+        
+     
     }
     
     /**

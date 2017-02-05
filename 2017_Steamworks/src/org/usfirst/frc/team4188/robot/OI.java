@@ -89,8 +89,7 @@ public class OI {
 		pilotController = new Joystick(0);
 		//pilotJoystick = new Joystick(0);
 		copilotJoystick = new Joystick(1);
-	
-		
+			
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);
         pilot3 = new JoystickButton(pilotController, 3);
@@ -118,38 +117,41 @@ public class OI {
         
        pilot1.whenPressed(new CameraLightsOn());
        pilot2.whenPressed(new CameraLightsOff());
+              
        pilot3.whileHeld(new GearRelease());
        pilot3.whenReleased(new GearOff());
        pilot4.whileHeld(new GearRetract());
        pilot4.whenReleased(new GearOff());
-       EncoderTest encoderTest = new EncoderTest(1.0);
-       pilot9.whenPressed(encoderTest);
-       pilot10.cancelWhenPressed(encoderTest);
-              
-       pilot6.whileHeld(new IntakeOn());
-       pilot6.whenReleased(new IntakeOff());
-              
-       copilot2.whileHeld(new RunGearUpDown());
-       copilot2.whenReleased(new StopGearUpDown());
-       copilot3.whileHeld(new RunGearLeftRight());
-       copilot3.whenReleased(new StopGearLeftRight());
        
+       RunFuelElevator lift = new RunFuelElevator();
+       pilot5.whenPressed(lift);
+       pilot6.cancelWhenPressed(lift);
+       
+       pilot10.whileHeld(new IntakeOn());
+       pilot10.whenReleased(new IntakeOff());
 
-       copilot4.whileHeld(new ClimbDown());
-       copilot4.whenReleased(new ClimberOff());
-       copilot5.whileHeld(new ClimbUp());
-       copilot5.whenReleased(new ClimberOff());
-
-       copilot1.whileHeld(new IntakeOn());
-       copilot1.whenReleased(new IntakeOff());
+       pilot11.whenPressed(new GearShiftIn());
+       pilot12.whenPressed(new GearShiftOut());
+       
+//      
+       copilot1.whenPressed(new IntakeOn());
+       copilot2.whenPressed(new IntakeOff());
+       
+       copilot3.whenPressed(lift);
+       copilot4.cancelWhenPressed(lift);
+      
        copilot7.toggleWhenPressed(new ClimbSlow());
        copilot8.toggleWhenPressed(new ClimbFast());
-       
+       copilot9.toggleWhenPressed(new ClimberOff()); 
    }
 		
 		
 	public Joystick getpilotJoystick(){
 		return pilotJoystick;
+	}
+	
+	public Joystick getpilotController(){
+		return pilotController;
 	}
 	
 	public Joystick getcopilotJoystick(){

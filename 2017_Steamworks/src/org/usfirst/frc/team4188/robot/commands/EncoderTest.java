@@ -5,7 +5,10 @@ import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
 import org.usfirst.frc.team4188.robot.CHSRobotDrive.PIDType;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,20 +32,23 @@ public class EncoderTest extends Command {
 	
 	protected void initialize(){
 	  
-	 	RobotMap.seatMotorHallSensor.resetAccumulator();
+		//accumulator could possibly be used to determine when the encoder stops and starts
+	/*	RobotMap.seatMotorHallSensor.resetAccumulator();
 	 	SmartDashboard.putNumber("Oversample Bits", RobotMap.seatMotorHallSensor.getOversampleBits());
 	 	SmartDashboard.putNumber("seatMotor Value", RobotMap.seatMotorHallSensor.getValue());
 	 	
 	 	SmartDashboard.putNumber("Average Voltage Value", RobotMap.seatMotorHallSensor.getAverageVoltage());
     	seatMotorPIDController = new PIDController(KP, KI, KD, RobotMap.seatMotorHallSensor, RobotMap.hoodRotation); 
+    	
     	SmartDashboard.putData("seatMotorPIDController", seatMotorPIDController);
 		SmartDashboard.putNumber("DefaultPeriod_seatMotorPIDController", PIDController.kDefaultPeriod);
     	seatMotorPIDController.setAbsoluteTolerance(tolerance);
 
-    	seatMotorPIDController.setSetpoint(50.0);
+    	//currently controls speed based on the setpoint
+    	seatMotorPIDController.setSetpoint(200.0);
 		seatMotorPIDController.enable();
 	  
-	  }
+*/	  }
 	
 	/*@Override
 	protected void initialize() {      

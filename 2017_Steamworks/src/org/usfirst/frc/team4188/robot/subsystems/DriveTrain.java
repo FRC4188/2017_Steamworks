@@ -7,9 +7,8 @@ import org.usfirst.frc.team4188.robot.commands.ManualDrive;
 
 import com.ctre.CANTalon;
 
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,6 +31,8 @@ public class DriveTrain extends Subsystem {
 	CHSRobotDrive driveBase = RobotMap.driveBase;
 	RobotDrive driveBase2 = RobotMap.DriveBase;
 	ADXRS450_Gyro gyro = RobotMap.gyro;
+	DoubleSolenoid gearShift = RobotMap.gearShift;
+    
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new ManualDrive());
@@ -47,13 +48,12 @@ public class DriveTrain extends Subsystem {
     
     public void mecanumDrive(double x, double y, double twist, double direction, double throttle){
     	
-    		driveBase.mecanumDrive_Cartesian(x*throttle, y*throttle, twist*throttle, direction);
+    driveBase.mecanumDrive_Cartesian(x*throttle, y*throttle, twist*throttle, direction);
     		
     }
     
     public void autoDrive(double magnitude, double direction, double rotation){
     	driveBase.mecanumDrive_Polar(magnitude, direction, rotation);
-    	
     	
     }
     
@@ -71,6 +71,14 @@ public class DriveTrain extends Subsystem {
 	}
 	public void gyroReset(){
 		gyro.reset();
+	}
+	public void shiftGearIn() {
+		// TODO Auto-generated method stub
+		gearShift.set(DoubleSolenoid.Value.kForward);
+	}
+	public void shiftGearOut() {
+		// TODO Auto-generated method stub
+		gearShift.set(DoubleSolenoid.Value.kReverse);
 	}
 }
 
