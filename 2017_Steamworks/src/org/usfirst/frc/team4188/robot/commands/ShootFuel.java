@@ -12,6 +12,7 @@ public class ShootFuel extends Command {
     public ShootFuel() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	//requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time

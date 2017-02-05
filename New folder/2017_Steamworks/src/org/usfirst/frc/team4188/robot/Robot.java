@@ -2,6 +2,9 @@
 package org.usfirst.frc.team4188.robot;
 
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -10,7 +13,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.CameraServer;
 
-
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
@@ -23,6 +28,7 @@ import org.usfirst.frc.team4188.robot.subsystems.Vision2;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 
 /**
@@ -42,6 +48,7 @@ public class Robot extends IterativeRobot {
 	public static Climber climber;
 	public static BallIntake intake;
     public static Shooter shooter;
+    public static Vision newRobotVision;
 	
 	public static double aimError;
 	public static double optimalDistance;
@@ -52,6 +59,7 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     Command gearAutonomous;
     SendableChooser chooser;
+    VisionThread visionThread;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
@@ -77,7 +85,8 @@ public class Robot extends IterativeRobot {
         shooter = new Shooter();
         shooter.init();
        // robotVision = new Vision2("10.41.88.12");
-       robotVision = new Vision2();
+      // robotVision = new Vision2();
+      
         SmartDashboard.putNumber("Distance", robotVision.distance);
   
         //chooser.addObject("My Auto", new MyAutoCommand());
@@ -86,6 +95,31 @@ public class Robot extends IterativeRobot {
         drivetrain.init();
         RobotMap.gyro.calibrate();
         //seatMotorHallSensor.setLimitsVoltage(3.5, 3.5);
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setBrightness(30);
+        camera.setExposureManual(0);
+        camera.setFPS(10);
+        
+    	camera.setResolution(640, 480);
+        visionThread = new VisionThread(camera, new Vision(), VisionPipeline -> {
+        CvSink cvSink = CameraServer.getInstance().getVideo();
+        CvSource outputStream = CameraServer.getInstance().putVideo("Processed Image", 640 , 480);
+        	
+        	Mat source = new Mat();
+        	
+        	
+        	 if (!VisionPipeline.filterContoursOutput().isEmpty()){
+        		
+        		 cvSink.grabFrame(source);
+        		 newRobotVision.process(source);
+        		 Imgproc.drawContours(source,VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255));
+        		outputStream.putFrame(source);
+        		
+        
+        		
+        	}
+        });
+        		visionThread.start();
         
         
       
@@ -156,7 +190,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        robotVision.periodic();
+       // robotVision.periodic();
    /**
         boolean blockForward, blockReverse;
         int pos = 0;
