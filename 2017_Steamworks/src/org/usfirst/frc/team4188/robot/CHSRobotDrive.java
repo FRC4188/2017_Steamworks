@@ -17,17 +17,18 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
 	protected RobotDrive robotDrive;
 	
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
-    	super(rearLeft, frontLeft, rearRight, frontRight);
+    	super( frontLeft,rearLeft,frontRight, rearRight);
     }
     
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
     		SpeedController middleRight, SpeedController frontRight){
     	
-    	super(rearLeft, frontLeft, rearRight, frontRight);
+    	super(frontLeft, rearLeft, frontRight, rearRight);
+    /*
     	middleLeft.setInverted(true);
     	middleRight.setInverted(true);
     	robotDrive = new RobotDrive(middleLeft, middleRight);
-    
+    */
     }
     
     public void setSafetyEnabled(boolean enabled){

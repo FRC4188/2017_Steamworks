@@ -40,9 +40,9 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-	public Joystick pilotJoystick;
-	public Joystick copilotJoystick;
-	public Joystick pilotController;
+	public CHSJoystick pilotJoystick;
+	public CHSJoystick copilotJoystick;
+	public CHSJoystick pilotController;
 	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
 	
 	
@@ -86,9 +86,9 @@ public class OI {
 	public OI(){
 		
 		
-		pilotController = new Joystick(0);
-		//pilotJoystick = new Joystick(0);
-		copilotJoystick = new Joystick(1);
+		pilotController = new CHSJoystick(0);
+		//pilotJoystick = new CHSJoystick(0);
+		copilotJoystick = new CHSJoystick(1);
 			
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);

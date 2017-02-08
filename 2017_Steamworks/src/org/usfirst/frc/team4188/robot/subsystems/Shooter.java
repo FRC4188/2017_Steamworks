@@ -14,7 +14,7 @@ public class Shooter extends Subsystem {
 
 	public static CANTalon hoodRotation = RobotMap.hoodRotation;
 	public static CANTalon shooterTalon = RobotMap.shooterTalon;
-	public static AnalogInput seatMotorHallSensor = RobotMap.seatMotorHallSensor;
+	public static AnalogTrigger seatMotorHallSensor = RobotMap.seatMotorHallSensor;
 	
 	public double speedPrevious;
 	public int position;

@@ -64,7 +64,7 @@ public class RobotMap {
 	public static DoubleSolenoid gearShift;
 	public static DoubleSolenoid gearRelease;
 	
-	public static AnalogInput seatMotorHallSensor;
+	public static AnalogTrigger seatMotorHallSensor;
 	
 
 	
@@ -90,7 +90,7 @@ public class RobotMap {
 		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
 		//drive for three motor transmission	
-		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, middleRightDriveMotor,rearRightDriveMotor, frontRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);
@@ -103,7 +103,7 @@ public class RobotMap {
 		gearShift = new DoubleSolenoid(0,1);
 		gearRelease = new DoubleSolenoid(2,3);
 		
-		seatMotorHallSensor = new AnalogInput(0);
+		seatMotorHallSensor = new AnalogTrigger(0);
         
 		}
 		

@@ -30,6 +30,7 @@ public class EncoderTest extends Command {
 	
 	// Called just before this Command runs the first time
 	
+	//currently the PID controller setpoint controls motor speed
 	protected void initialize(){
 	  
 		//accumulator could possibly be used to determine when the encoder stops and starts
@@ -50,6 +51,8 @@ public class EncoderTest extends Command {
 	  
 */	  }
 	
+
+	
 	/*@Override
 	protected void initialize() {      
 			
@@ -60,13 +63,13 @@ public class EncoderTest extends Command {
 			         	pos = Robot.shooter.getPosition();
 			        	//SmartDashboard.putNumber("Position", pos);
 			        	
-			        	//maximum position forward
+			        //maximum position forward
 			        	if(pos >= 175)
 			        		blockForward = true;
 			        	else     		
 			        		blockForward = false;	
 			        	
-			        	//is the position is less than zero, it is turning in the reverse direction
+			        //if the position is less than zero, it is turning in the reverse direction
 			        	if(pos <= 0)
 			        		blockReverse = true;
 			            else 
@@ -80,7 +83,7 @@ public class EncoderTest extends Command {
 			        		speed = 1;
 			        	
 			        Robot.shooter.hoodRotation.set(Robot.shooter.checkDirectionChange(speed));
-			      //  Robot.shooter.hoodRotation.set(.2);
+			      //Robot.shooter.hoodRotation.set(.2);
 	}
 */
 	// Called repeatedly when this Command is scheduled to run
