@@ -2,16 +2,24 @@
 package org.usfirst.frc.team4188.robot;
 
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.CameraServer;
 
-
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
@@ -25,10 +33,12 @@ import org.usfirst.frc.team4188.robot.subsystems.Vision2;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionPipeline;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 
-/**
- * The VM is configured to automatically run this class, and to call the
+/*
+ is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
@@ -46,16 +56,27 @@ public class Robot extends IterativeRobot {
 	public static  AnalogInput seatMotorHallSensor;
 	public static Shooter shooter;
 	public static FuelElevator fuelElevator;
+	public static Shooter spinTurret;
+	public static GripPipeline vision;
+	
+	private VisionThread visionThread;
     
 	public static double aimError;
 	public static double optimalDistance;
 
-    Command autonomousCommand;
-    Command gearAutonomous;
+    //Command autonomousCommand;
+    //Command gearAutonomous;
     SendableChooser chooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
+	NetworkTable table;
+	
+	
+	
+	public Robot() {
+		table = NetworkTable.getTable("GRIP/myContoursReport");
+	}
 	
 	//private VisionThread visionThread;
 	
@@ -73,13 +94,22 @@ public class Robot extends IterativeRobot {
 		drivetrain = new DriveTrain();
 		cameraLights = new CameraLights();
         chooser = new SendableChooser();
-        gearAutonomous = new GearAutonomous();
+        //gearAutonomous = new GearAutonomous();
         climber.init();
         shooter.init();
         intake = new BallIntake();
         shooter = new Shooter();
         fuelElevator = new FuelElevator();
         fuelElevator.init();
+        spinTurret = new Shooter();
+        
+        
+        
+        
+    
+        	
+        	
+        
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
   
@@ -88,7 +118,54 @@ public class Robot extends IterativeRobot {
       //SmartDashboard.putData("Vision2", robotVision);
         drivetrain.init();
       RobotMap.gyro.calibrate();
-        
+       /* while (true) {
+        	double[] areas = table.getNumberArray("area", defaultValue);
+        	System.out.print("areas: ");
+        	for (double area : areas) {
+        		System.out.print(area + " ");
+        	}
+        	System.out.println();
+        	Timer.delay(1);
+        } */
+      	UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+			// Set the resolution
+			camera.setResolution(640, 480);
+      visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
+    	  
+
+			// Get a CvSink. This will capture Mats from the camera
+			CvSink cvSink = CameraServer.getInstance().getVideo();
+			// Setup a CvSource. This will send images back to the Dashboard
+			CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+
+			// Mats are very memory expensive. Lets reuse this Mat.
+			Mat mat = new Mat();
+
+			// This cannot be 'true'. The program will never exit if it is. This
+			// lets the robot stop this thread when restarting robot code or
+			// deploying.
+			while (!Thread.interrupted()) {
+				// Tell the CvSink to grab a frame from the camera and put it
+				// in the source mat.  If there is an error notify the output.
+				if (cvSink.grabFrame(mat) == 0) {
+					// Send the output the error.
+					outputStream.notifyError(cvSink.getError());
+					// skip the rest of the current iteration
+					continue;
+				}
+				// Put a rectangle on the image
+				/*
+				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
+						new Scalar(0, 0, 255), 5);*/
+				VisionPipeline.process(mat);
+				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
+				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
+				// Give the output stream a new image to display
+				outputStream.putFrame(mat);
+			}
+       });
+      
+       visionThread.start();
        /**
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
             camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
@@ -129,7 +206,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
+        //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -143,7 +220,8 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
+        //if (autonomousCommand != null) autonomousCommand.start();
+    //}
     }
 
     /**
@@ -161,7 +239,8 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.cancel();
+        //if (autonomousCommand != null) autonomousCommand.cancel();
+    //}
     }
 
     /**
