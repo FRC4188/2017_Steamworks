@@ -31,7 +31,7 @@ public class GripPipeline implements VisionPipeline {
 	private Mat cvResizeOutput = new Mat();
 	private Mat hslThresholdOutput = new Mat();
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
-	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
+	private static ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -214,8 +214,6 @@ public class GripPipeline implements VisionPipeline {
 			output.add(contour);
 		}
 	}
-
-
 
 
 }
