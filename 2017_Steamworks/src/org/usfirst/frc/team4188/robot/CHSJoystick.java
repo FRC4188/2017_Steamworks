@@ -288,6 +288,33 @@ public class CHSJoystick extends Joystick {
         	return twist;
         }
     }
+    
+    public double getTwist()
+    {
+        double twist = super.getTwist();
+        
+        // Configure Dead Zone from negDeadZone to posDeadZone on twist axis.
+        if (((twist*128)>twistNegDeadZone)&&((twist*128)<twistPosDeadZone))
+            twist = 0.0;
+        else
+        {
+            // Multiply inputs.
+            for(int i = 0; i < twistScale; i++) {
+                twist *= Math.abs(twist);
+            }
+            // Multiply by max output.
+            twist *= twistMaxSpeedPercent;
+        }
+       
+        if (this.getYOutput() > MinPoint && this.getXOutput() > MinPoint){
+        	twist*=TWIST_FRACTION;	
+        	return twist; 
+        
+        } else{
+        	
+        	return twist;
+        }
+    }
 
     /**
      * Get the throttle value of the current joystick.

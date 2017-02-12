@@ -86,7 +86,7 @@ public class OI {
 	public OI(){
 		
 		
-		pilotController = new CHSJoystick(0);
+		pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
 		//pilotJoystick = new CHSJoystick(0);
 		copilotJoystick = new CHSJoystick(1);
 			
@@ -130,8 +130,10 @@ public class OI {
        pilot10.whileHeld(new IntakeOn());
        pilot10.whenReleased(new IntakeOff());
 
-       pilot11.whenPressed(new GearShiftIn());
-       pilot12.whenPressed(new GearShiftOut());
+       pilot11.whileHeld(new GearShiftIn());
+       pilot11.whenReleased(new GearShiftOff());
+       pilot12.whileHeld(new GearShiftOut());
+       pilot12.whenReleased(new GearShiftOff());
        
 //      
        copilot1.whenPressed(new IntakeOn());

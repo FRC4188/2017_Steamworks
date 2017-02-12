@@ -80,5 +80,8 @@ public class DriveTrain extends Subsystem {
 		// TODO Auto-generated method stub
 		gearShift.set(DoubleSolenoid.Value.kReverse);
 	}
+	public void shiftGearOff(){
+		gearShift.set(DoubleSolenoid.Value.kOff);
+	}
 }
 

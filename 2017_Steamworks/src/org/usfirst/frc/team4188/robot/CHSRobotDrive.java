@@ -21,27 +21,27 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     }
     
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
-    		SpeedController middleRight, SpeedController frontRight){
+    		SpeedController frontRight, SpeedController middleRight){
     	
     	super(frontLeft, rearLeft, frontRight, rearRight);
-    /*
+    
     	middleLeft.setInverted(true);
     	middleRight.setInverted(true);
     	robotDrive = new RobotDrive(middleLeft, middleRight);
-    */
+  
     }
     
     public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
-    	/*uncomment for 2.0 
+    	
     	robotDrive.setSafetyEnabled(enabled);
-    */}
+    }
 
     public void arcadeDrive(double moveValue, double rotateValue){
     	super.arcadeDrive(moveValue, rotateValue);
-    	/* uncomment for 2.0
+    	
     	robotDrive.arcadeDrive(moveValue, rotateValue);
-    */}
+    }
     
     private static final double OUTPUT_MIN = 0.35;
     // at 0.05, even the motors with no gears could barely run.
@@ -73,13 +73,13 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	switch(driveType){
     	case turnToAngle:
     		super.setLeftRightMotorOutputs(output,-output);
-    		/* uncomment for 2.0
+    	
     	robotDrive.setLeftRightMotorOutputs(-output,output);
-    */	case driveToDistance:
+    	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
-       /* uncomment for 2.0	
+       
         	robotDrive.setLeftRightMotorOutputs(output,output);
-       */ break;
+        break;
     	}
     }
 
