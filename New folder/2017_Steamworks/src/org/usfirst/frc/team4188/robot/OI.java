@@ -5,7 +5,6 @@ import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -41,9 +40,9 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 
-	public CHSJoystick pilotJoystick;
-	public CHSJoystick copilotJoystick;
-	public CHSJoystick pilotController;
+	public Joystick pilotJoystick;
+	public Joystick copilotJoystick;
+	public Joystick pilotController;
 	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
 	
 	
@@ -83,22 +82,15 @@ public class OI {
 	public double XMaxSpeedPercent;
 	public double YMaxSpeedPercent;
     
-	private static final int PILOT_PORT = 0;
-    private static final int PILOT_NUM_AXES = 4;
-    private static final int PILOT_NUM_BUTTONS = 12;
     
 	public OI(){
 		
-		/*
-		pilotController = new CHSJoystick(PILOT_PORT, PILOT_NUM_AXES, PILOT_NUM_BUTTONS);
-		pilotController.xDeadZone(-12.0,12.0).xMult(1).xMaxSpeed(1.0);
-		pilotController.yDeadZone(-12.0,12.0).yMult(1).yMaxSpeed(1.0);
-		pilotController.twistDeadZone(-12.0,12.0).twistMult(1).twistMaxSpeed(1.0);
-		*/
-		pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
-		//pilotJoystick = new CHSJoystick(0);
-		copilotJoystick = new CHSJoystick(1);
-			
+		
+		pilotController = new Joystick(0);
+		//pilotJoystick = new Joystick(0);
+		copilotJoystick = new Joystick(1);
+	
+		
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);
         pilot3 = new JoystickButton(pilotController, 3);
@@ -127,45 +119,35 @@ public class OI {
        pilot1.whenPressed(new CameraLightsOn());
        pilot2.whenPressed(new CameraLightsOff());
               
+       pilot6.whileHeld(new IntakeOn());
+       pilot6.whenReleased(new IntakeOff());
+       
        pilot3.whileHeld(new GearRelease());
        pilot3.whenReleased(new GearOff());
        pilot4.whileHeld(new GearRetract());
        pilot4.whenReleased(new GearOff());
+              
+       copilot2.whileHeld(new RunGearUpDown());
+       copilot2.whenReleased(new StopGearUpDown());
+       copilot3.whileHeld(new RunGearLeftRight());
+       copilot3.whenReleased(new StopGearLeftRight());
        
-       RunFuelElevator lift = new RunFuelElevator();
-       pilot5.whenPressed(lift);
-       pilot6.cancelWhenPressed(lift);
-       
-       pilot10.whileHeld(new IntakeOn());
-       pilot10.whenReleased(new IntakeOff());
-       SmartDashboard.putData(new CameraLightsOn());
-       SmartDashboard.putData(new CameraLightsOff());
 
+       copilot4.whileHeld(new ClimbDown());
+       copilot4.whenReleased(new ClimberOff());
+       copilot5.whileHeld(new ClimbUp());
+       copilot5.whenReleased(new ClimberOff());
 
-       pilot11.whenPressed(new GearShiftIn());
-       pilot12.whenPressed(new GearShiftOut());
+       copilot1.whileHeld(new IntakeOn());
+       copilot1.whenReleased(new IntakeOff());
+       copilot7.toggleWhenPressed(new ClimbSlow());
+       copilot8.toggleWhenPressed(new ClimbFast());
        
-//      
-       copilot1.whenPressed(new IntakeOn());
-       copilot2.whenPressed(new IntakeOff());
-       
-       copilot3.whenPressed(lift);
-       copilot4.cancelWhenPressed(lift);
-      
-       pilot7.toggleWhenPressed(new ClimbSlow());
-       pilot8.toggleWhenPressed(new ClimbFast());
-       pilot9.toggleWhenPressed(new ClimberOff()); 
    }
 		
 		
-
-	
 	public Joystick getpilotJoystick(){
 		return pilotJoystick;
-	}
-	
-	public Joystick getpilotController(){
-		return pilotController;
 	}
 	
 	public Joystick getcopilotJoystick(){

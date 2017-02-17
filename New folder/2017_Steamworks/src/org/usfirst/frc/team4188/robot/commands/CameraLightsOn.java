@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4188.robot.commands;
 
 import org.usfirst.frc.team4188.robot.Robot;
-import org.usfirst.frc.team4188.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -19,7 +18,7 @@ public class CameraLightsOn extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.cameraLights.cameraLightsOn();
-    	}
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
@@ -27,7 +26,8 @@ public class CameraLightsOn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return true
+        		;
     	
     }
 

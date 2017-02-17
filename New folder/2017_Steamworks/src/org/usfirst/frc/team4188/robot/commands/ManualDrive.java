@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4188.robot.commands;
 
-import org.usfirst.frc.team4188.robot.CHSJoystick;
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
 
@@ -13,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualDrive extends Command {
-	CHSJoystick pilotController = Robot.oi.pilotController;
-	CHSJoystick pilotJoystick = Robot.oi.pilotJoystick;
+	Joystick pilotController = Robot.oi.pilotController;
+	Joystick pilotJoystick = Robot.oi.pilotJoystick;
 	
     public ManualDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -33,7 +32,7 @@ public class ManualDrive extends Command {
     	Robot.drivetrain.arcadeDrive(-pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
     	}
     	else{
-    		Robot.drivetrain.arcadeDrive(pilotController.getYOutput(), -pilotController.getTwist(), pilotController.getThrottle()+0.5);
+    		Robot.drivetrain.arcadeDrive(pilotController.getY(), pilotController.getTwist(), pilotController.getThrottle()+0.5);
     	}
     	//Robot.drivetrain.mecanumDrive(pilotJoystick.getX(), pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle(), 0 );
     	

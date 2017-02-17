@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 
@@ -39,8 +40,9 @@ import edu.wpi.first.wpilibj.vision.VisionPipeline;
  *
  */
 public class Vision2 extends Subsystem implements PIDSource {
+	int cameraType;
 	public double aimError;
-	double pixelErrorAdjustment = SmartDashboard.getNumber("EnterPixelError", 25.0);
+	double pixelErrorAdjustment = SmartDashboard.getNumber("EnterPixelError", 0.0);
 	//
 	public class ParticleReport implements Comparator<ParticleReport>, Comparable<ParticleReport>{
 		
@@ -72,6 +74,7 @@ public class Vision2 extends Subsystem implements PIDSource {
 	Image binaryFrame;
 	int imaqError;
 	AxisCamera camera;
+	USBCamera usbCamera;
 	private static final int HUE_GREEN = 102;//Changed to 128 from 115 changed to 102 Championship from 120
 	private static final int HUE_TOLERANCE = 18; //Changed to 18 Championship from 10
 	/*
@@ -118,6 +121,31 @@ public class Vision2 extends Subsystem implements PIDSource {
 		SmartDashboard.putNumber("Goal val min", GOAL_VAL_RANGE.minValue);
 		SmartDashboard.putNumber("Goal val max", GOAL_VAL_RANGE.maxValue);
 		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+		
+		cameraType=1;
+	}
+	
+	public Vision2(){
+		
+		this.usbCamera = new USBCamera("cam1");
+		//this.usbCamera.setSize(width, height);
+		this.usbCamera.setBrightness(30);
+		this.usbCamera.setExposureManual(0);
+		this.usbCamera.setFPS(10);
+		frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
+		binaryFrame = NIVision.imaqCreateImage(ImageType.IMAGE_U8, 0);
+		criteria[0] = new NIVision.ParticleFilterCriteria2(NIVision.MeasurementType.MT_AREA_BY_IMAGE_AREA, AREA_MINIMUM, 100.0, 0, 0);
+
+		//Put default values to SmartDashboard so fields will appear
+		SmartDashboard.putNumber("Goal hue min", GOAL_HUE_RANGE.minValue);
+		SmartDashboard.putNumber("Goal hue max", GOAL_HUE_RANGE.maxValue);
+		SmartDashboard.putNumber("Goal sat min", GOAL_SAT_RANGE.minValue);
+		SmartDashboard.putNumber("Goal sat max", GOAL_SAT_RANGE.maxValue);
+		SmartDashboard.putNumber("Goal val min", GOAL_VAL_RANGE.minValue);
+		SmartDashboard.putNumber("Goal val max", GOAL_VAL_RANGE.maxValue);
+		SmartDashboard.putNumber("Area min %", AREA_MINIMUM);
+		
+		cameraType = 0;
 	}
 	
 	public double distance;
@@ -125,7 +153,11 @@ public class Vision2 extends Subsystem implements PIDSource {
 	public double constantVariation;
 	public void periodic() throws VisionException {
 		try {
-		camera.getImage(frame);
+			switch(cameraType){
+			case 0: usbCamera.getImage(frame);
+			case 1: camera.getImage(frame);
+			break;
+			}
 		}
 		catch(VisionException ex) {
 			ex.printStackTrace();

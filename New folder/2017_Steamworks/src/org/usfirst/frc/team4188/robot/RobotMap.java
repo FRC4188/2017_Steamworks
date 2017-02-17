@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.vision.AxisCamera;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-
-
 public class RobotMap {
 	// For example to map the left and right motors, you could define the
 	// following variables to use with your drivetrain subsystem.
@@ -34,81 +32,69 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-
+	public static CANTalon climberTalon;
 	public static CANTalon frontRightDriveMotor;
 	public static CANTalon frontLeftDriveMotor;
 	public static CANTalon rearRightDriveMotor;
 	public static CANTalon rearLeftDriveMotor;
 	public static CANTalon middleRightDriveMotor;
 	public static CANTalon middleLeftDriveMotor;
-	
-	public static CANTalon climberTalon;
 	public static CANTalon gearLeftRight;
 	public static CANTalon gearUpDown;
-	public static CANTalon hoodRotation;
-	public static CANTalon shooterTalon;
-	
+	public static CANTalon hoodRotation;	
 	public static CHSRobotDrive driveBase;
 	public static RobotDrive DriveBase;
-	
 	public static ADXRS450_Gyro gyro;
-	
 	public static Relay cameraLights;
-	public static Relay intakeRelay;
-	public static Relay fuelElevator;
-	
 	public static AxisCamera camera;
-
+	public static Relay intakeRelay;
 	public static PIDController gyroPIDController;
 	public static PIDController driveTrainPIDController;
 	public static PIDController driveAimPIDController;
-	
-	public static DoubleSolenoid gearShift;
 	public static DoubleSolenoid gearRelease;
+	public static AnalogInput seatMotorHallSensor;
 	
-	public static AnalogTrigger seatMotorHallSensor;
+	
+	
+	
+	
+	
+	
+	
 	
 	
 		public static void init() {
 		// TODO Auto-generated method stub
+		climberTalon = new CANTalon(15);
 		gyro = new ADXRS450_Gyro();
-		
 		cameraLights= new Relay(0);
-		intakeRelay = new Relay(1);
-		fuelElevator = new Relay(2);
-		
-		climberTalon = new CANTalon(17);
 		
 		frontLeftDriveMotor = new CANTalon(12);
-		rearLeftDriveMotor = new CANTalon(11);
+		rearLeftDriveMotor = new CANTalon(14);
 		middleLeftDriveMotor = new CANTalon(13);
 		
-		frontRightDriveMotor = new CANTalon(15);
-		rearRightDriveMotor = new CANTalon(14);
-		middleRightDriveMotor = new CANTalon(16);
+		frontRightDriveMotor = new CANTalon(19);
+		rearRightDriveMotor = new CANTalon(18);
+	    middleRightDriveMotor = new CANTalon(17);
 		
-		//drive for two motor transmission
 		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
-		
-		//drive for three motor transmission	
-		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor,  rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);
 		driveBase.setSensitivity(0.5);
 		driveBase.setMaxOutput(1.0);
 		
-		hoodRotation = new CANTalon(0);
-		shooterTalon = new CANTalon(0);
+		gearLeftRight = new CANTalon(17);
+		gearUpDown = new CANTalon(15);
+		intakeRelay = new Relay(1);
+		gearRelease = new DoubleSolenoid(0,1);
+
+		seatMotorHallSensor = new AnalogInput(0);
+        hoodRotation = new CANTalon(20);
 		
-		gearShift = new DoubleSolenoid(0,1);
-		gearRelease = new DoubleSolenoid(2,3);
-		
-		seatMotorHallSensor = new AnalogTrigger(0);
-        
 		}
 		
 
 
 }
-

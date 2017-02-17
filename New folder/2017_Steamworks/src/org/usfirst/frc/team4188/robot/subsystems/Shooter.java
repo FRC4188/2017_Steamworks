@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4188.robot.subsystems;
 
 import org.usfirst.frc.team4188.robot.RobotMap;
-import org.usfirst.frc.team4188.robot.commands.ShootFuel;
 
 import com.ctre.CANTalon;
 
@@ -12,31 +11,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Shooter extends Subsystem {
 
-	public static CANTalon hoodRotation = RobotMap.hoodRotation;
-	public static CANTalon shooterTalon = RobotMap.shooterTalon;
-	public static AnalogTrigger seatMotorHallSensor = RobotMap.seatMotorHallSensor;
+	public CANTalon hoodRotation = RobotMap.hoodRotation;
+	public static AnalogInput seatMotorHallSensor = RobotMap.seatMotorHallSensor;
+	public static Counter counter;
+	private double speedPrevious;
+	private int position;
 	
-	public double speedPrevious;
-	public int position;
-
-
-	public void init() {
+	@Override
+	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		/*seatMotorHallSensor.setLimitsVoltage(3.5,3.5);*/
+		
 	}
 	
-	public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-		//setDefaultCommand(new ShootFuel());
-    }
-    
-    public void shootFuel(double speed){
-    	shooterTalon.setInverted(true);
-    	shooterTalon.set(speed);
+	public void init(){
+    	RobotMap.gyro.reset();
     }
 	
-    /*public double checkDirectionChange(double newSpeed){
+	public double checkDirectionChange(double newSpeed){
 		
 		if((speedPrevious < 0 && newSpeed >= 0) || (speedPrevious >= 0 && newSpeed < 0)){
 			
@@ -54,6 +45,8 @@ public class Shooter extends Subsystem {
 		}	
 		return position-counter.get();
 		
-	}*/
-    
+	}
+
+	
+	
 }
