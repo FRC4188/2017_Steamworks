@@ -5,6 +5,8 @@ import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -115,6 +117,9 @@ public class OI {
         copilot10 = new JoystickButton(copilotJoystick, 10);
         copilot11 = new JoystickButton(copilotJoystick, 11);
         
+        SmartDashboard.putData(Scheduler.getInstance());
+        
+        
        pilot1.whenPressed(new CameraLightsOn());
        pilot2.whenPressed(new CameraLightsOff());
               
@@ -126,6 +131,10 @@ public class OI {
        RunFuelElevator lift = new RunFuelElevator();
        pilot5.whenPressed(lift);
        pilot6.cancelWhenPressed(lift);
+       
+       pilot7.whileHeld(new GetVisionValues());
+       
+       pilot9.whenPressed(new AimHighGoal(4.0));
        
        pilot10.whileHeld(new IntakeOn());
        pilot10.whenReleased(new IntakeOff());

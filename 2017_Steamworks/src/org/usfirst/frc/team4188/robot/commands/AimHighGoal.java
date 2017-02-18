@@ -34,7 +34,7 @@ public class AimHighGoal extends Command {
 	
     public AimHighGoal(double tolerance) {
         // Use requires() here to declare subsystem dependencies 
-    	requires(Robot.drivetrain);
+    	//requires(Robot.drivetrain);
     	this.tolerance = tolerance;
     	int a = 0;
     }

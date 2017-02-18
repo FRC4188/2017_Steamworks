@@ -76,21 +76,22 @@ public class RobotMap {
 		intakeRelay = new Relay(1);
 		fuelElevator = new Relay(2);
 		
-		climberTalon = new CANTalon(17);
+		//climberTalon = new CANTalon(17);
 		
-		frontLeftDriveMotor = new CANTalon(12);
-		rearLeftDriveMotor = new CANTalon(11);
-		middleLeftDriveMotor = new CANTalon(13);
+		frontLeftDriveMotor = new CANTalon(14);
+		rearLeftDriveMotor = new CANTalon(15);
+		middleLeftDriveMotor = new CANTalon(16);
 		
-		frontRightDriveMotor = new CANTalon(15);
-		rearRightDriveMotor = new CANTalon(14);
-		middleRightDriveMotor = new CANTalon(16);
+		frontRightDriveMotor = new CANTalon(11);
+		rearRightDriveMotor = new CANTalon(12);
+		middleRightDriveMotor = new CANTalon(13);
+		
 		
 		//drive for two motor transmission
-		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
+		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);
 		
 		//drive for three motor transmission	
-		driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
+		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, middleLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor, middleRightDriveMotor);
 		
 		driveBase.setSafetyEnabled(false);
 		driveBase.setExpiration(0.1);
