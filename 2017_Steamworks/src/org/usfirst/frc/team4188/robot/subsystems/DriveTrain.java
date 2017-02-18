@@ -83,5 +83,9 @@ public class DriveTrain extends Subsystem {
 	public void shiftGearOff(){
 		gearShift.set(DoubleSolenoid.Value.kOff);
 	}
+	public void setRampRate(int rampRate){
+		frontLeft.setVoltageRampRate(rampRate);
+		frontRight.setVoltageCompensationRampRate(rampRate);
+	}
 }
 

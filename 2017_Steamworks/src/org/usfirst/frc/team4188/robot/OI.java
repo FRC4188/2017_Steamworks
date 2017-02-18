@@ -1,4 +1,5 @@
 
+
 package org.usfirst.frc.team4188.robot;
 
 import org.usfirst.frc.team4188.robot.commands.*;
@@ -132,9 +133,9 @@ public class OI {
        pilot5.whenPressed(lift);
        pilot6.cancelWhenPressed(lift);
        
-       pilot7.whileHeld(new GetVisionValues());
+       //copilot7.whileHeld(new GetVisionValues());
        
-       pilot9.whenPressed(new AimHighGoal(4.0));
+       copilot9.whenPressed(new AimHighGoal(4.0));
        
        pilot10.whileHeld(new IntakeOn());
        pilot10.whenReleased(new IntakeOff());
@@ -151,9 +152,9 @@ public class OI {
        copilot3.whenPressed(lift);
        copilot4.cancelWhenPressed(lift);
       
-       copilot7.toggleWhenPressed(new ClimbSlow());
-       copilot8.toggleWhenPressed(new ClimbFast());
-       copilot9.toggleWhenPressed(new ClimberOff()); 
+       pilot7.toggleWhenPressed(new ClimbSlow());
+       pilot8.toggleWhenPressed(new ClimbFast());
+       pilot9.toggleWhenPressed(new ClimberOff()); 
    }
 		
 		
