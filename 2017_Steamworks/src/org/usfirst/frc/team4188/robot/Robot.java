@@ -150,18 +150,10 @@ public class Robot extends IterativeRobot {
 						new Scalar(0, 0, 255), 5);*/
 				VisionPipeline.process(mat);
 				
-						
-				//if(!VisionPipeline.filterContoursOutput.isEmpty()&& Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0)).area()>5000 && Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1)).area()>5000){
-				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
-				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 				// Give the output stream a new image to display
-				
 				outputStream.putFrame(mat);
-				//Imgproc.drawContours(sourceMat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
-				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
+				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
 				// Give the output stream a new image to display
-				//outputStream.putFrame(sourceMat);
-				//returnCenterX();
 				distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
 				angle = VisionProcessing.getAngle(VisionPipeline);
 				Robot.setAimError(angle);
@@ -173,20 +165,9 @@ public class Robot extends IterativeRobot {
 				//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
 				//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
 				SmartDashboard.putString("Vision Status", "Running");
-				
-				
-				SmartDashboard.putBoolean("THREADRunning", true);
-				while (!Thread.interrupted()) {
-					// Tell the CvSink to grab a frame from the camera and put it
-					// in the source mat.  If there is an error notify the output.
-					if (cvSink.grabFrame(mat) == 0) {
-						// Send the output the error.
-						outputStream.notifyError(cvSink.getError());
-						// skip the rest of the current iteration
-					//	continue;
-					}
 		
-		}
+		
+		
 			//}
        });
       
@@ -267,6 +248,7 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
         //if (autonomousCommand != null) autonomousCommand.cancel();
     //}
+    	Robot.drivetrain.setRampRate(12/0.2);//MaxVoltage/rampTime
     }
 
     /**

@@ -29,12 +29,12 @@ public class ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(0), pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0, 0.0);
-    	/*
+    	
     	if(pilotController.getIsXbox()){
-    	Robot.drivetrain.arcadeDrive(-pilotController.getRawAxis(1), pilotController.getRawAxis(4), 1.0);
+    	Robot.drivetrain.arcadeDrive(-pilotController.getRawAxis(1), -pilotController.getRawAxis(4)*0.85 , 1.0);
     	}
     	else{
-    	*/
+    	
     	double rotateValue;
     	if(Math.abs(pilotController.getTwist()) > Math.abs(pilotController.getX())){
     		rotateValue = pilotController.getTwist();
@@ -45,7 +45,7 @@ public class ManualDrive extends Command {
     	}
     		Robot.drivetrain.arcadeDrive(-pilotController.getYOutput(), rotateValue, pilotController.getThrottle());
     	
-    	
+    	}
     	//Robot.drivetrain.mecanumDrive(pilotJoystick.getX(), pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle(), 0 );
     	
     									// **************Field Oriented*************//
