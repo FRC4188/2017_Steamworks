@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
@@ -46,169 +48,111 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  */
 public class Robot extends IterativeRobot {
 	public static DriveTrain drivetrain;
-	public static CameraLights cameraLights;
 	public static OI oi;
+	
 	public static GearManipulation gearManipulation;
 	
-	public static Vision2 robotVision;
 	public static Climber climber;
+	
 	public static BallIntake intake;
 	public static  AnalogInput seatMotorHallSensor;
 	public static Shooter shooter;
-	public static FuelElevator fuelElevator;
 	public static Shooter spinTurret;
-	public static GripPipeline vision;
-	private static Mat mat;
-	public static double distance, angle, lengthBetweenContours;
-	
-	public static VisionThread visionThread;
-    
-	public static double aimError;
-	public static double optimalDistance;
+	public static FuelElevator fuelElevator;
 
+	
+	public static Vision2 robotVision;
+	public static GripPipeline gripVision;		//Vision
+	public static VisionProcessing visionProcessing;
+	//public static double distance, angle, lengthBetweenContours, aimError, optimalDistance, x;
+	public static double aimError, optimalDistance;
+	public static VisionThread visionThread;
+	public static UsbCamera camera;
+	public static CameraLights cameraLights;
+
+	//public static Rect r, r1;
+	//static double[] centerX;
+	//private static Mat mat;
+		
     //Command autonomousCommand;
     //Command gearAutonomous;
     SendableChooser chooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
-//	NetworkTable table;
-	
-	
-	
-	public Robot() {
-		//table = NetworkTable.getTable("GRIP/myContoursReport");
-	}
-	
-	//private VisionThread visionThread;
+	NetworkTable table;
 	
 
-    /**
+	public Robot() {
+		table = NetworkTable.getTable("GRIP/targets");
+	}
+	
+	 /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-		oi = new OI();
-		RobotMap.init();
+    	RobotMap.init();
+    	oi = new OI();
 		
-		shooter = new Shooter();
-		climber = new Climber();
-		gearManipulation = new GearManipulation();
 		drivetrain = new DriveTrain();
+		drivetrain.init();
+        RobotMap.gyro.calibrate();
+		
+        shooter = new Shooter();
+		spinTurret = new Shooter();
+		shooter.init();
+		fuelElevator = new FuelElevator();
+        fuelElevator.init();
+        intake = new BallIntake();
+		
+		climber = new Climber();
+		climber.init();
+		
+		gearManipulation = new GearManipulation();
+		
 		cameraLights = new CameraLights();
+		cameraLights.cameraLightsOn();
+        camera = CameraServer.getInstance().startAutomaticCapture();
+ 	    camera.setResolution(640, 480);
+        Object imgLock = new Object();
+    	
         chooser = new SendableChooser();
         //gearAutonomous = new GearAutonomous();
-        climber.init();
-        shooter.init();
-        intake = new BallIntake();
-        shooter = new Shooter();
-        fuelElevator = new FuelElevator();
-        fuelElevator.init();
-        spinTurret = new Shooter();
-        drivetrain.init();
+        //SmartDashboard.putData("Auto mode", chooser);
+       
+		//VisionThread Start
         
-        
-        
-        
-    
+        visionThread = new VisionThread(camera, gripVision = new GripPipeline(), VisionPipeline ->{
         	
-        	
-        
-      //  robotVision = new Vision2("10.41.88.12");
-      // SmartDashboard.putNumber("Distance", robotVision.distance);
-  
-      //chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-      //SmartDashboard.putData("Vision2", robotVision);
-         RobotMap.gyro.calibrate();
-         
-        // UsbCamera camera;
-         // Set the resolution
-      	  
- 	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
- 	    camera.setResolution(640, 480);
-         
-		visionThread = new VisionThread(camera, new GripPipeline(), VisionPipeline ->{
- 
-			
-			
-			// Get a CvSink. This will capture Mats from the camera
-		CvSink cvSink = CameraServer.getInstance().getVideo();
-		// Setup a CvSource. This will send images back to the Dashboard
-		CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+        	//synchronized (imgLock) {
+        		try {
+					//visionProcessing.periodic(gripVision, camera );
+					
+					CvSink cvSink = CameraServer.getInstance().getVideo();	// Get a CvSink. This will capture Mats from the camera
+					CvSource outputStream = CameraServer.getInstance().putVideo("Processed Image", 640, 480);			// Setup a CvSource. This will send images back to the Dashboard
 
-		// Mats are very memory expensive. Lets reuse this Mat.
-		mat = new Mat();
+					Mat sourceMat = new Mat();	// Mats are very memory expensive. Lets reuse this Mat.
 
-			// This cannot be 'true'. The program will never exit if it is. This
-			// lets the robot stop this thread when restarting robot code or
-			// deploying.
-			
-				// Put a rectangle on the image
-				/*
-				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
-						new Scalar(0, 0, 255), 5);*/
-				VisionPipeline.process(mat);
+					gripVision.process(sourceMat);
+					Imgproc.drawContours(sourceMat, gripVision.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
+					outputStream.putFrame(sourceMat);
+					
+        		} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Robot.setAimError(visionProcessing.getAngle(gripVision));
 				
-						
-				//if(!VisionPipeline.filterContoursOutput.isEmpty()&& Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0)).area()>5000 && Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1)).area()>5000){
-				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
-				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
-				// Give the output stream a new image to display
-				
-				outputStream.putFrame(mat);
-				//Imgproc.drawContours(sourceMat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
-				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
-				// Give the output stream a new image to display
-				//outputStream.putFrame(sourceMat);
-				//returnCenterX();
-				distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
-				angle = VisionProcessing.getAngle(VisionPipeline);
-				Robot.setAimError(angle);
-				lengthBetweenContours = VisionProcessing.returnCenterX(VisionPipeline);
-				SmartDashboard.putNumber("Distance From Target", distance);
-				//SmartDashboard.putNumber("Return Center X of Target",VisionProcessing.distanceFromTarget(VisionPipeline));
-				SmartDashboard.putNumber("Change angle", angle);
-				SmartDashboard.putNumber("Length Between Contours", VisionProcessing.returnCenterX(VisionPipeline));
-				//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
-				//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
-				SmartDashboard.putString("Vision Status", "Running");
-				
-				
-				SmartDashboard.putBoolean("THREADRunning", true);
-				while (!Thread.interrupted()) {
-					// Tell the CvSink to grab a frame from the camera and put it
-					// in the source mat.  If there is an error notify the output.
-					if (cvSink.grabFrame(mat) == 0) {
-						// Send the output the error.
-						outputStream.notifyError(cvSink.getError());
-						// skip the rest of the current iteration
-					//	continue;
-					}
-		
-		}
-			//}
-       });
+				SmartDashboard.putNumber("PrintAimError", getAimError());
+				//Timer.delay(1.0);
+				SmartDashboard.putString("Vision Status", "Thread_Running");
+        	//}		
+        });
       
        visionThread.start();
     }
-       /**
-            AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
-            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-            
-            visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
-                while (!Thread.interrupted()) {
-                   
-                    }
-             });
-    
-            visionThread.start();
-          **/
        
-    
-    
- 
-	
 	/**
      * This function is called once each time the robot enters Disabled mode.
      * You can use it to reset any subsystem information you want to clear when
@@ -274,69 +218,11 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
-        //robotVision.periodic();
-        
-     /*   while(isEnabled() && isOperatorControl()){
-        	RobotMap.seatMotorHallSensor.setLimitsVoltage(3.5,5.0);
-        	SmartDashboard.putBoolean("Is it in the Window", RobotMap.seatMotorHallSensor.getInWindow());
-        	
-        	if(RobotMap.seatMotorHallSensor.getInWindow()){
-        		
-        	   RobotMap.hoodRotation.set(0);
-        		
-        	}
-        	
-        	else{
-        		RobotMap.hoodRotation.set(-1);
-        	}	
-        	
-        	RobotMap.seatMotorHallSensor.free();
-        	
-        }
-     */   
-        
-        /* boolean blockForward, blockReverse;
-        int pos = 0;
-        double speed = 1.0;
-        //Robot.shooter.counter.reset();
-        
-        while(isEnabled() && isOperatorControl()){
-        	
-        	pos = shooter.getPosition();
-        	SmartDashboard.putNumber("Position", pos);
-        	
-        	if(pos >= 175)
-        		blockForward = true;
-        	else{       		
-        		blockForward = false;	
-        	}
-        	
-        	if(pos <= 0)
-        		blockReverse = true;
-            else {
-            	blockReverse = false;
-            }
-        	
-        	if(blockForward)
-        		speed = -1;
-        	if(blockReverse)
-        		speed = 1;
-    */    	
-       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
-     SmartDashboard.putBoolean("running", true);   
-     
     }
     
     /**
      * This function is called periodically during test mode
      */
-    
-    public static Mat getMat(){
-    	
-    	return mat;
-    	
-    }
     
     public void testPeriodic() {
         LiveWindow.run();

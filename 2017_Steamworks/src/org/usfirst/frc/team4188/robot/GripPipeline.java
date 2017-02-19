@@ -27,8 +27,7 @@ import org.opencv.objdetect.*;
 */
 public class GripPipeline implements VisionPipeline {
 
-	//Outputs
-	public Mat cvResizeOutput = new Mat();
+	public Mat cvResizeOutput = new Mat();				//Outputs
 	public Mat hslThresholdOutput = new Mat();
 	public ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	public ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
@@ -40,29 +39,26 @@ public class GripPipeline implements VisionPipeline {
 	/**
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
-	@Override	public void process(Mat source0) {
-		// Step CV_resize0:
-		Mat cvResizeSrc = source0;
+	public void process(Mat source0) {
+		
+		Mat cvResizeSrc = source0;			// Step Resize Image0
 		Size cvResizeDsize = new Size(0, 0);
 		double cvResizeFx = 1.0;
 		double cvResizeFy = 1.0;
 		int cvResizeInterpolation = Imgproc.INTER_LINEAR;
 		cvResize(cvResizeSrc, cvResizeDsize, cvResizeFx, cvResizeFy, cvResizeInterpolation, cvResizeOutput);
 
-		// Step HSL_Threshold0:
-		Mat hslThresholdInput = cvResizeOutput;
+		Mat hslThresholdInput = cvResizeOutput;		// Step HSL_Threshold0
 		double[] hslThresholdHue = {63.12949640287769, 95.95925297113753};
 		double[] hslThresholdSaturation = {167.40107913669064, 255.0};
 		double[] hslThresholdLuminance = {52.74280575539568, 161.91850594227503};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
-		// Step Find_Contours0:
-		Mat findContoursInput = hslThresholdOutput;
+		Mat findContoursInput = hslThresholdOutput;			// Step Find_Contours0:
 		boolean findContoursExternalOnly = false;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
-		// Step Filter_Contours0:
-		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
+		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;		// Step Filter_Contours0:
 		double filterContoursMinArea = 0.0;
 		double filterContoursMinPerimeter = 0.0;
 		double filterContoursMinWidth = 0.0;

@@ -132,9 +132,7 @@ public class OI {
        RunFuelElevator lift = new RunFuelElevator();
        pilot5.whenPressed(lift);
        pilot6.cancelWhenPressed(lift);
-       
-       //copilot7.whileHeld(new GetVisionValues());
-       
+            
        copilot9.whenPressed(new AimHighGoal(4.0));
        
        pilot10.whileHeld(new IntakeOn());
