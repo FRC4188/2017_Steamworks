@@ -3,7 +3,7 @@ package org.usfirst.frc.team4188.robot;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 
 import com.ctre.CANTalon;
-
+import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -86,6 +86,8 @@ public class RobotMap {
 		rearRightDriveMotor = new CANTalon(12);
 		middleRightDriveMotor = new CANTalon(13);
 		
+		rearLeftDriveMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		rearRightDriveMotor.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		
 		//drive for two motor transmission
 		//driveBase = new CHSRobotDrive( rearLeftDriveMotor,frontLeftDriveMotor, rearRightDriveMotor, frontRightDriveMotor);

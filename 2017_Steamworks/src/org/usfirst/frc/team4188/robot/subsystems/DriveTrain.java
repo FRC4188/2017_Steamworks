@@ -84,6 +84,7 @@ public class DriveTrain extends Subsystem {
 		gearShift.set(DoubleSolenoid.Value.kOff);
 	}
 	public void setRampRate(double rampRate){
+		
 		frontLeft.setVoltageRampRate(rampRate);
 		frontRight.setVoltageRampRate(rampRate);
 		rearLeft.setVoltageRampRate(rampRate);
@@ -91,5 +92,22 @@ public class DriveTrain extends Subsystem {
 		middleLeft.setVoltageRampRate(rampRate);
 		middleRight.setVoltageRampRate(rampRate);
 	}
+	public void resetEncoders(){
+		rearRight.setPosition(0);
+		rearLeft.setPosition(0);
+	}
+	public double getRightEncoderDistance(){
+		double distance = ((4*Math.PI)*rearRight.getPosition());
+		SmartDashboard.putNumber("Encoder Right Distance", distance);
+		return distance;
+	}
+	public double getLeftEncoderDistance(){
+		double distance = ((4*Math.PI)*rearLeft.getPosition());
+		SmartDashboard.putNumber("Encoder Left Distance", distance);
+		return distance;
+	}
+	
+	
+	
 }
 

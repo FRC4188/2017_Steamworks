@@ -49,15 +49,23 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
 
     public enum PIDType {
     	turnToAngle,
+    	turnToAngleRight,
+    	turnToAngleLeft,
     	driveToDistance
     }
     
-    private static PIDType driveType = PIDType.turnToAngle;
+    private static PIDType driveType;
     public static void setPIDType(PIDType type) {    	
     	driveType = type;
     	switch (driveType) {
     	case turnToAngle:
         	SmartDashboard.putString("Setting PIDType =", "turnToAngle");
+        	break;
+    	case turnToAngleRight:
+        	SmartDashboard.putString("Setting PIDType =", "turnToAngleRight");
+        	break;
+    	case turnToAngleLeft:
+        	SmartDashboard.putString("Setting PIDType =", "turnToAngleLeft");
         	break;
     	case driveToDistance:
         	SmartDashboard.putString("Setting PIDType =", "driveToDistance");
@@ -73,8 +81,17 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	switch(driveType){
     	case turnToAngle:
     		super.setLeftRightMotorOutputs(output,-output);
+        	
+        	robotDrive.setLeftRightMotorOutputs(-output,output);
+    	case turnToAngleRight:
+    		super.setLeftRightMotorOutputs(0,output);
     	
-    	robotDrive.setLeftRightMotorOutputs(-output,output);
+    	robotDrive.setLeftRightMotorOutputs(output,-output);
+    	case turnToAngleLeft:
+    		super.setLeftRightMotorOutputs(output,0);
+        	
+        	robotDrive.setLeftRightMotorOutputs(-output,output);
+    		
     	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
        

@@ -23,7 +23,7 @@ public class ClimbDown extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.climber.climberTalonDown(Robot.oi.copilotJoystick.getThrottle()+0.5);
+		Robot.climber.climberTalonDown(Robot.oi.copilotController.getThrottle()+0.5);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

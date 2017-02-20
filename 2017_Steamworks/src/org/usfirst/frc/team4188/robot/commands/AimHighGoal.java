@@ -34,7 +34,7 @@ public class AimHighGoal extends Command {
 	
     public AimHighGoal(double tolerance) {
         // Use requires() here to declare subsystem dependencies 
-    	//requires(Robot.drivetrain);
+    	requires(Robot.drivetrain);
     	this.tolerance = tolerance;
     	int a = 0;
     }
@@ -47,8 +47,8 @@ public class AimHighGoal extends Command {
     	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
     	//new CameraLightsOff();
     	
-    	angle = Robot.getAimError();
-    	//angle = createFinalAngle(90);
+    	//angle = Robot.getAimError();
+    	angle = 30;
     	//SmartDashboard.putNumber("Final Angle", createFinalAngle(Robot.getAimError()));
     	//SmartDashboard.putNumber("Dynamic Change Angle",Robot.getAimError());
     	//angle = 90.0;

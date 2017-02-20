@@ -66,9 +66,9 @@ public class Robot extends IterativeRobot {
 	public static double aimError;
 	public static double optimalDistance;
 
-    //Command autonomousCommand;
+    Command autonomousCommand;
     //Command gearAutonomous;
-    SendableChooser chooser;
+    SendableChooser autoChooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
@@ -96,7 +96,7 @@ public class Robot extends IterativeRobot {
 		gearManipulation = new GearManipulation();
 		drivetrain = new DriveTrain();
 		cameraLights = new CameraLights();
-        chooser = new SendableChooser();
+        autoChooser = new SendableChooser();
         //gearAutonomous = new GearAutonomous();
         climber.init();
         shooter.init();
@@ -116,9 +116,10 @@ public class Robot extends IterativeRobot {
         
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
-  
-      //chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+        
+        autoChooser.addObject("My Auto", new GearAutonomous());
+        
+        SmartDashboard.putData("AUTONOMOUS", autoChooser);
       //SmartDashboard.putData("Vision2", robotVision);
          RobotMap.gyro.calibrate();
          
@@ -213,7 +214,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        //autonomousCommand = (Command) chooser.getSelected();
+        autonomousCommand = (Command) autoChooser.getSelected();
+        Robot.drivetrain.resetEncoders();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -227,7 +229,8 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
-        //if (autonomousCommand != null) autonomousCommand.start();
+        if (autonomousCommand != null) autonomousCommand.start();
+    	
     //}
     }
 
@@ -236,6 +239,8 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        Robot.drivetrain.getRightEncoderDistance();
+        Robot.drivetrain.getLeftEncoderDistance();
       //gearAutonomous.start();
      //robotVision.periodic();
         
@@ -249,6 +254,7 @@ public class Robot extends IterativeRobot {
         //if (autonomousCommand != null) autonomousCommand.cancel();
     //}
     	Robot.drivetrain.setRampRate(12/0.2);//MaxVoltage/rampTime
+    	Robot.drivetrain.resetEncoders();
     }
 
     /**
@@ -256,6 +262,8 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        Robot.drivetrain.getRightEncoderDistance();
+        Robot.drivetrain.getLeftEncoderDistance();
         
         //robotVision.periodic();
         

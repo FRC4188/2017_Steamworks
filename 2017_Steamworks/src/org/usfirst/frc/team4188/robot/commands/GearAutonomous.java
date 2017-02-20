@@ -26,6 +26,15 @@ public class GearAutonomous extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	//addSequential(new GearShiftOut(),1);
+		
+    	
+    	//addSequential(new EncoderDriveToDistance((45)/12.0, 0.8),2);
+    	//Robot.drivetrain.resetEncoders();
+    	addSequential(new EncoderTurnToAngleRight((100)/12.0, 0.8));
+    	//addSequential(new AutoDrive(0.0,0.8, 3));
+		//addSequential(new GearRelease(),2);
+		//addSequential(new GearRetract(),1);
     	
      	
     }

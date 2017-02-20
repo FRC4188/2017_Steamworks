@@ -14,23 +14,17 @@ public class AutoDrive extends Command {
 	boolean doneYet;
 	
 	double timerValue;
-	double moveValue;
-	double magnitude;
-	double direction;
+	double moveDirection;
 	double rotation;
-	double rotateValue;
 	
 
-    public AutoDrive(double magnitude, double direction, double rotation, double moveValue, double rotateValue, double timerValue) {
+    public AutoDrive(double moveValue, double rotateValue, double timerValue) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drivetrain);
     	
-    	this.moveValue = moveValue;
-    	this.magnitude = magnitude;
-    	this.rotateValue = rotateValue;
-    	this.rotation = rotation;
-    	this.direction = direction;
+    	moveDirection = moveValue;
+    	rotation = rotateValue;
     	this.timerValue = timerValue;
     	
     	
@@ -39,6 +33,7 @@ public class AutoDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drivetrain.resetEncoders();
     	timer = new Timer();
     	isTimerStartedYet = false;
     	doneYet = false;
@@ -54,11 +49,11 @@ public class AutoDrive extends Command {
     	
     	else{
     		if(timer.get() < this.timerValue) {
-    			Robot.drivetrain.autoDrive(magnitude, direction, rotation);//negative means it goes right
+    		Robot.drivetrain.autoDrive(moveDirection, rotation); //negative means it goes right
     		
     		}
     		else{
-    			Robot.drivetrain.autoDrive(0, 0, 0 );
+    			Robot.drivetrain.autoDrive(0, 0);
     			doneYet = true;
     		}
     	}
@@ -85,62 +80,3 @@ public class AutoDrive extends Command {
 	}
 }
 
-/*
-package org.usfirst.frc.team4188.robot.commands;
-
-import org.usfirst.frc.team4188.robot.CHSLog;
-import org.usfirst.frc.team4188.robot.Robot;
-
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-
-public class AutoDrive extends Command {
-	Timer timer;
-	boolean isTimerStartedYet;
-	boolean doneYet;
-	
-	double timerValue;
-	double moveDirection;
-	double rotation;
-	
-
-    public AutoDrive(double moveValue, double rotateValue, double timerValue) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.drivetrain);
-    	
-    	moveDirection = moveValue;
-    	rotation = rotateValue;
-    	this.timerValue = timerValue;
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.drivetrain.resetEncoders();
-    	timer = new Timer();
-		timer.start();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-		Robot.drivetrain.autoDrive(moveDirection, rotation); //negative means it goes right
-    }
-    	
-    
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return (timer.get() < this.timerValue);
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-		Robot.drivetrain.autoDrive(0, 0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-	}
-}
-*/

@@ -44,7 +44,7 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 	public CHSJoystick pilotJoystick;
-	public CHSJoystick copilotJoystick;
+	public Joystick copilotController;
 	public CHSJoystick pilotController;
 	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
 	
@@ -91,7 +91,7 @@ public class OI {
 		
 		pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
 		//pilotJoystick = new CHSJoystick(0);
-		copilotJoystick = new CHSJoystick(1);
+		copilotController = new Joystick(1);
 			
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);
@@ -106,17 +106,17 @@ public class OI {
         pilot11 = new JoystickButton(pilotController, 11);
         pilot12 = new JoystickButton(pilotController, 12);
         
-        copilot1 = new JoystickButton(copilotJoystick, 1);
-        copilot2 = new JoystickButton(copilotJoystick, 2);
-        copilot3 = new JoystickButton(copilotJoystick, 3);
-        copilot4 = new JoystickButton(copilotJoystick, 4);
-        copilot5 = new JoystickButton(copilotJoystick, 5);
-        copilot6 = new JoystickButton(copilotJoystick, 6);
-        copilot7 = new JoystickButton(copilotJoystick, 7);
-        copilot8 = new JoystickButton(copilotJoystick, 8);
-        copilot9 = new JoystickButton(copilotJoystick, 9);
-        copilot10 = new JoystickButton(copilotJoystick, 10);
-        copilot11 = new JoystickButton(copilotJoystick, 11);
+        copilot1 = new JoystickButton(copilotController, 1);
+        copilot2 = new JoystickButton(copilotController, 2);
+        copilot3 = new JoystickButton(copilotController, 3);
+        copilot4 = new JoystickButton(copilotController, 4);
+        copilot5 = new JoystickButton(copilotController, 5);
+        copilot6 = new JoystickButton(copilotController, 6);
+        copilot7 = new JoystickButton(copilotController, 7);
+        copilot8 = new JoystickButton(copilotController, 8);
+        copilot9 = new JoystickButton(copilotController, 9);
+        copilot10 = new JoystickButton(copilotController, 10);
+        copilot11 = new JoystickButton(copilotController, 11);
         
         SmartDashboard.putData(Scheduler.getInstance());
         
@@ -164,10 +164,18 @@ public class OI {
            pilot4.toggleWhenPressed(new ClimbFast());
            pilot3 .toggleWhenPressed(new ClimberOff());
 
-           pilot1.whileHeld(new GearShiftIn());
-           pilot1.whenReleased(new GearShiftOff());
-           pilot2.whileHeld(new GearShiftOut());
-           pilot2.whenReleased(new GearShiftOff());
+           pilot1.toggleWhenPressed(new IntakeOn());
+           pilot2.toggleWhenPressed(new IntakeOff());
+           
+           pilot9.whileHeld(new GearShiftIn());
+           pilot9.whenReleased(new GearShiftOff());
+           pilot10.whileHeld(new GearShiftOut());
+           pilot10.whenReleased(new GearShiftOff());
+           
+           pilot8.whenPressed(new CameraLightsOn());
+           pilot7.whenPressed(new CameraLightsOff());
+           //copilot1.whenPressed(new AimHighGoal(1.0));
+           
            
        }
    
@@ -181,8 +189,8 @@ public class OI {
 		return pilotController;
 	}
 	
-	public Joystick getcopilotJoystick(){
-		return copilotJoystick;
+	public Joystick getcopilotController(){
+		return copilotController;
    }
 
 }
