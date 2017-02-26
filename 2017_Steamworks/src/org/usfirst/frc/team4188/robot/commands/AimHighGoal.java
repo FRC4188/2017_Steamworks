@@ -16,7 +16,7 @@ public class AimHighGoal extends Command {
 	private int a = 0;
 	double finalAngle;
 
-	public PIDController gyroPIDController = RobotMap.gyroPIDController;
+	public PIDController gyroPIDController;
 	
 //	PID tuned for competition bot
 //	private static final double KP = 0.03;
@@ -25,9 +25,9 @@ public class AimHighGoal extends Command {
 	
 	
 	//PID tuned for practice bot
-	private static final double KP = 0.03;//0.015
-	private static final double KI = 0.0001;//0.0
-	private static final double KD = 0.00001;//0.0
+	private static final double KP = 0.5;//0.015
+	private static final double KI = 0.0000;//0.0
+	private static final double KD = 0.00000;//0.0
 	 
 	private double angle;
 	private double tolerance;
@@ -42,50 +42,39 @@ public class AimHighGoal extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {  
     	SmartDashboard.putString("Aim Status", "Initializing");
+    	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
     	
     	CHSRobotDrive.setPIDType(PIDType.turnToAngle);
     	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
-    	//new CameraLightsOff();
     	
-    	angle = Robot.getAimError();
-    	//angle = createFinalAngle(90);
-    	//SmartDashboard.putNumber("Final Angle", createFinalAngle(Robot.getAimError()));
-    	//SmartDashboard.putNumber("Dynamic Change Angle",Robot.getAimError());
-    	//angle = 90.0;
+    	angle = Robot.getAngleToGoal();
     	
-        Robot.drivetrain.gyroReset();
-
+    	Robot.drivetrain.gyroReset();
 		gyroPIDController.setAbsoluteTolerance(tolerance);
-		gyroPIDController.setSetpoint(angle);
-		gyroPIDController.enable();
+		SmartDashboard.putNumber("SETPOINT", angle);
+		gyroPIDController.setSetpoint(90);
+		gyroPIDController.enable();	
+		
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putString("Aim Status", "Running");
-   }
+    	SmartDashboard.putString("Aim Status", "Running");	
+    	SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
+    }
     
-       public double createFinalAngle(double dynamicChangeAngle){
-    	if(a == 0){
-    		finalAngle = dynamicChangeAngle;
-    		a++;
-        	return finalAngle;
-    	}
-    	return 0;
-    	}
-
-
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-		gyroPIDController.setAbsoluteTolerance(tolerance);
-    	return gyroPIDController.onTarget();
+    	boolean onTarget = gyroPIDController.onTarget();
+    	SmartDashboard.putString("Aim Status", "On Target =" + onTarget) ;	
+    	return onTarget;
     }        
 
     // Called once after isFinished returns true
     protected void end() {    	
     	gyroPIDController.disable();
-        gyroPIDController.free();
-      
+        gyroPIDController.free();  
     }
 
     // Called when another command which requires one or more of the same

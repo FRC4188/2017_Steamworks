@@ -57,7 +57,7 @@ public class RobotMap {
 	
 	public static AxisCamera camera;
 
-	public static PIDController gyroPIDController;
+	//public static PIDController gyroPIDController;
 	public static PIDController driveTrainPIDController;
 	public static PIDController driveAimPIDController;
 	

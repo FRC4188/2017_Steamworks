@@ -179,7 +179,7 @@ public class Vision2 extends Subsystem implements PIDSource {
 			aimError = computePanAngle(distance,particles.elementAt(0));
 			SmartDashboard.putNumber("Pixel Error", pixel_Error);
 			SmartDashboard.putNumber("Change Angle", aimError); 
-			Robot.setAimError(aimError);
+			//Robot.setAimError(aimError);
 			
 			double height = particles.firstElement().BoundingRectBottom - particles.firstElement().BoundingRectTop; 
 			double width = particles.firstElement().BoundingRectRight - particles.firstElement().BoundingRectLeft;
@@ -194,7 +194,7 @@ public class Vision2 extends Subsystem implements PIDSource {
 			
 	 	} else {
 			SmartDashboard.putBoolean("IsGoalHot", false);
-			Robot.setAimError(Double.NaN);
+			//Robot.setAimError(Double.NaN);
 		}
 //	 	CameraServer.getInstance().setImage(frame);
 	 }

@@ -27,6 +27,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     
     	middleLeft.setInverted(true);
     	middleRight.setInverted(true);
+    	//Inverted Middle Motors
     	robotDrive = new RobotDrive(middleLeft, middleRight);
   
     }
@@ -44,6 +45,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     }
     
     private static final double OUTPUT_MIN = 0.35;
+    //private static final double OUTPUT_MIN = 0.35;
     // at 0.05, even the motors with no gears could barely run.
     // same at 0.1
 
@@ -73,13 +75,12 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	switch(driveType){
     	case turnToAngle:
     		super.setLeftRightMotorOutputs(output,-output);
-    	
-    	robotDrive.setLeftRightMotorOutputs(-output,output);
+    		robotDrive.setLeftRightMotorOutputs(-output,output);
+    		break;
     	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
-       
         	robotDrive.setLeftRightMotorOutputs(output,output);
-        break;
+        	break;
     	}
     }
 

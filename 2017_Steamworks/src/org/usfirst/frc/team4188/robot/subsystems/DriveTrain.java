@@ -79,13 +79,17 @@ public class DriveTrain extends Subsystem {
 	public void shiftGearOut() {
 		// TODO Auto-generated method stub
 		gearShift.set(DoubleSolenoid.Value.kReverse);
-	}
+	}/*]\[]]\[]*/	
 	public void shiftGearOff(){
 		gearShift.set(DoubleSolenoid.Value.kOff);
 	}
-	public void setRampRate(int rampRate){
+	public void setRampRate(double rampRate){
 		frontLeft.setVoltageRampRate(rampRate);
-		frontRight.setVoltageCompensationRampRate(rampRate);
+		frontRight.setVoltageRampRate(rampRate);
+		rearLeft.setVoltageRampRate(rampRate);
+		rearRight.setVoltageRampRate(rampRate);
+		middleLeft.setVoltageRampRate(rampRate);
+		middleRight.setVoltageRampRate(rampRate);
 	}
 }
 

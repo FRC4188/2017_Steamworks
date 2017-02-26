@@ -1,3 +1,4 @@
+/*
 package org.usfirst.frc.team4188.robot;
 
 import org.opencv.core.Mat;
@@ -43,7 +44,7 @@ public class VisionProcessing {
 			outputStream.putFrame(sourceMat);
 			//returnCenterX();
 			SmartDashboard.putNumber("Distance From Target",distanceFromTarget(vision));
-			SmartDashboard.putNumber("Change angle", getAngle(vision));*/
+			SmartDashboard.putNumber("Change angle", getAngle(vision));
 		
    //});
 }
@@ -82,7 +83,7 @@ SmartDashboard.putBoolean("Running getAngle", false);
 	// 8.5in is for the distance from center to center from goal, then divide by lengthBetweenCenters in pixels to get proportion
 	double constant = WIDTH_BETWEEN_TARGET / returnCenterX(vision);
 SmartDashboard.putNumber("Constant", constant);
-	/*double angleToGoal = 0;*/
+	double angleToGoal = 0;
 	//Looking for the 2 blocks to actually start trig
 	if(!vision.filterContoursOutput.isEmpty() && vision.filterContoursOutput.size() >= 2){
 
@@ -98,7 +99,6 @@ SmartDashboard.putNumber("Constant", constant);
 	}
 return angleToGoal;
 }
+*/
 
 
-
-}

@@ -119,29 +119,31 @@ public class OI {
         copilot11 = new JoystickButton(copilotJoystick, 11);
         
         SmartDashboard.putData(Scheduler.getInstance());
-        
-        
+       SmartDashboard.putData(new CameraLightsOn());
+       SmartDashboard.putData(new CameraLightsOff()); 
+       /** 
        pilot1.whenPressed(new CameraLightsOn());
        pilot2.whenPressed(new CameraLightsOff());
-              
+          **/
+       /**  
        pilot3.whileHeld(new GearRelease());
        pilot3.whenReleased(new GearOff());
        pilot4.whileHeld(new GearRetract());
        pilot4.whenReleased(new GearOff());
+      
+       // pilot1.whileHeld(new GearRelease());
        
        RunFuelElevator lift = new RunFuelElevator();
        pilot5.whenPressed(lift);
        pilot6.cancelWhenPressed(lift);
-            
-       copilot9.whenPressed(new AimHighGoal(4.0));
        
+       //copilot7.whileHeld(new GetVisionValues());
+ /**       
+       copilot9.whenPressed(new AimHighGoal(4.0));
+                  
        pilot10.whileHeld(new IntakeOn());
        pilot10.whenReleased(new IntakeOff());
-
-       pilot11.whileHeld(new GearShiftIn());
-       pilot11.whenReleased(new GearShiftOff());
-       pilot12.whileHeld(new GearShiftOut());
-       pilot12.whenReleased(new GearShiftOff());
+ 
        
 //      
        copilot1.whenPressed(new IntakeOn());
@@ -153,7 +155,25 @@ public class OI {
        pilot7.toggleWhenPressed(new ClimbSlow());
        pilot8.toggleWhenPressed(new ClimbFast());
        pilot9.toggleWhenPressed(new ClimberOff()); 
-   }
+       **/                  
+       
+    	pilot9.whenPressed(new AimHighGoal(1.0));  
+        
+           pilot6.whileHeld(new GearRelease());
+           pilot6.whenReleased(new GearOff());
+           pilot5.whileHeld(new GearRetract());
+           pilot5.whenReleased(new GearOff());
+          
+           pilot4.toggleWhenPressed(new ClimbFast());
+           pilot3 .toggleWhenPressed(new ClimberOff());
+
+           pilot1.whileHeld(new GearShiftIn());
+           pilot1.whenReleased(new GearShiftOff());
+           pilot2.whileHeld(new GearShiftOut());
+           pilot2.whenReleased(new GearShiftOff());
+           
+       }
+   
 		
 		
 	public Joystick getpilotJoystick(){
