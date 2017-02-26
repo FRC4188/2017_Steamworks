@@ -4,6 +4,7 @@ package org.usfirst.frc.team4188.robot;
 
 import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -44,8 +45,9 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 	public CHSJoystick pilotJoystick;
-	public Joystick copilotController;
+	public CHSJoystick copilotController;
 	public CHSJoystick pilotController;
+	public XboxController pilotXboxSample;
 	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
 	
 	
@@ -89,10 +91,11 @@ public class OI {
 	public OI(){
 		
 		
-		pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
+	//	pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
+		pilotXboxSample = new XboxController(0);
 		//pilotJoystick = new CHSJoystick(0);
-		copilotController = new Joystick(1);
-			
+		copilotController = new CHSJoystick(1,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
+	/*		
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);
         pilot3 = new JoystickButton(pilotController, 3);
@@ -105,7 +108,7 @@ public class OI {
         pilot10 = new JoystickButton(pilotController, 10);
         pilot11 = new JoystickButton(pilotController, 11);
         pilot12 = new JoystickButton(pilotController, 12);
-        
+        */
         copilot1 = new JoystickButton(copilotController, 1);
         copilot2 = new JoystickButton(copilotController, 2);
         copilot3 = new JoystickButton(copilotController, 3);
@@ -118,6 +121,18 @@ public class OI {
         copilot10 = new JoystickButton(copilotController, 10);
         copilot11 = new JoystickButton(copilotController, 11);
         
+        pilot1 = new JoystickButton(pilotXboxSample, 1);
+        pilot2 = new JoystickButton(pilotXboxSample, 2);
+        pilot3 = new JoystickButton(pilotXboxSample, 3);
+        pilot4 = new JoystickButton(pilotXboxSample, 4);
+        pilot5 = new JoystickButton(pilotXboxSample, 5);
+        pilot6 = new JoystickButton(pilotXboxSample, 6);
+        pilot7 = new JoystickButton(pilotXboxSample, 7);
+        pilot8 = new JoystickButton(pilotXboxSample, 8);
+        pilot9 = new JoystickButton(pilotXboxSample, 9);
+        pilot10 = new JoystickButton(pilotXboxSample, 10);
+        pilot11 = new JoystickButton(pilotXboxSample, 11);
+        pilot12 = new JoystickButton(pilotXboxSample, 12);
         SmartDashboard.putData(Scheduler.getInstance());
         
        /** 
@@ -175,8 +190,16 @@ public class OI {
            pilot8.whenPressed(new CameraLightsOn());
            pilot7.whenPressed(new CameraLightsOff());
            //copilot1.whenPressed(new AimHighGoal(1.0));
+           copilot1.whileHeld(new ShootFuel());
+           copilot2.whileHeld(new RunFuelElevator());
+           copilot3.toggleWhenPressed(new IntakeOn());
+           copilot4.toggleWhenPressed(new IntakeOff());
            
-           
+           copilot6.whileHeld(new GearRelease());
+           copilot6.whenReleased(new GearOff());
+           copilot5.whileHeld(new GearRetract());
+           copilot5.whenReleased(new GearOff());
+           copilot11.whenPressed(new AimHighGoal(1.0));
        }
    
 		

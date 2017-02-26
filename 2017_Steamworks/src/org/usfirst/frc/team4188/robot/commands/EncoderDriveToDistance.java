@@ -24,7 +24,7 @@ public class EncoderDriveToDistance extends Command {
     double speed;
 	public EncoderDriveToDistance(double distance, double speed) {
     	this.distance = distance;
-    	this.speed = speed;
+    	this.speed = -speed;
     	requires(Robot.drivetrain);
     }
 
@@ -56,5 +56,6 @@ public class EncoderDriveToDistance extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

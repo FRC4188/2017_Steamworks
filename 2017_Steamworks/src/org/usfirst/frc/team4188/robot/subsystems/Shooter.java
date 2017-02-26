@@ -35,6 +35,9 @@ public class Shooter extends Subsystem {
     	shooterTalon.setInverted(true);
     	shooterTalon.set(speed);
     }
+    public void shooterOff(){
+    	shooterTalon.set(0);
+    }
 	
     /*public double checkDirectionChange(double newSpeed){
 		

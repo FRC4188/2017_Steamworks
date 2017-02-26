@@ -17,7 +17,7 @@ public class RunFuelElevator extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.fuelElevator.elevatorUp();
+    	Robot.fuelElevator.elevatorDown();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -26,12 +26,13 @@ public class RunFuelElevator extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     	
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.fuelElevator.elevatorOff();
     }
 
     // Called when another command which requires one or more of the same

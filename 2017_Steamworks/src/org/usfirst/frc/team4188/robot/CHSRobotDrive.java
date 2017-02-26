@@ -14,7 +14,8 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     //static final int kRearLeft_val = 2;
     //static final int kRearRight_val = 3;
     //static final double minValue = 0.17;
-	protected RobotDrive robotDrive;
+	protected RobotDrive robotDrive2;
+	protected RobotDrive robotDrive3;
 	
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
     	super( frontLeft,rearLeft,frontRight, rearRight);
@@ -23,24 +24,30 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
     		SpeedController frontRight, SpeedController middleRight){
     	
-    	super(frontLeft, rearLeft, frontRight, rearRight);
-    
+    	super(frontLeft, frontRight);
+    	robotDrive2 = new RobotDrive(rearLeft, rearRight);
+    	
     	middleLeft.setInverted(true);
     	middleRight.setInverted(true);
-    	robotDrive = new RobotDrive(middleLeft, middleRight);
+    	robotDrive3 = new RobotDrive(middleLeft, middleRight);
+    	
   
     }
     
     public void setSafetyEnabled(boolean enabled){
     	 super.setSafetyEnabled(enabled);
     	
-    	robotDrive.setSafetyEnabled(enabled);
+    	robotDrive2.setSafetyEnabled(enabled);
+    	robotDrive3.setSafetyEnabled(enabled);
+    	
     }
 
     public void arcadeDrive(double moveValue, double rotateValue){
     	super.arcadeDrive(moveValue, rotateValue);
     	
-    	robotDrive.arcadeDrive(moveValue, rotateValue);
+    	robotDrive2.arcadeDrive(moveValue, rotateValue);
+    	robotDrive3.arcadeDrive(moveValue, rotateValue);
+    	
     }
     
     private static final double OUTPUT_MIN = 0.35;
@@ -61,12 +68,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	case turnToAngle:
         	SmartDashboard.putString("Setting PIDType =", "turnToAngle");
         	break;
-    	case turnToAngleRight:
-        	SmartDashboard.putString("Setting PIDType =", "turnToAngleRight");
-        	break;
-    	case turnToAngleLeft:
-        	SmartDashboard.putString("Setting PIDType =", "turnToAngleLeft");
-        	break;
+    
     	case driveToDistance:
         	SmartDashboard.putString("Setting PIDType =", "driveToDistance");
         	break;
@@ -80,22 +82,17 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	SmartDashboard.putNumber("PID", output);
     	switch(driveType){
     	case turnToAngle:
-    		super.setLeftRightMotorOutputs(output,-output);
-        	
-        	robotDrive.setLeftRightMotorOutputs(-output,output);
-    	case turnToAngleRight:
-    		super.setLeftRightMotorOutputs(0,output);
     	
-    	robotDrive.setLeftRightMotorOutputs(output,-output);
-    	case turnToAngleLeft:
-    		super.setLeftRightMotorOutputs(output,0);
-        	
-        	robotDrive.setLeftRightMotorOutputs(-output,output);
+    		super.setLeftRightMotorOutputs(output,-output);
     		
+        	robotDrive2.setLeftRightMotorOutputs(output, -output);
+        	robotDrive3.setLeftRightMotorOutputs(-output,output);
+    	
     	case driveToDistance:
         	super.setLeftRightMotorOutputs(output,output);
        
-        	robotDrive.setLeftRightMotorOutputs(output,output);
+        	robotDrive2.setLeftRightMotorOutputs(output,output);
+        	robotDrive3.setLeftRightMotorOutputs(output, output);
         break;
     	}
     }

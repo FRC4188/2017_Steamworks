@@ -18,10 +18,14 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
-import org.usfirst.frc.team4188.robot.commands.GearAutonomous;
+import org.usfirst.frc.team4188.robot.commands.GearAutonomousLeft;
+import org.usfirst.frc.team4188.robot.commands.GearAutonomousMiddle;
+import org.usfirst.frc.team4188.robot.commands.GearAutonomousRight;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
@@ -59,25 +63,27 @@ public class Robot extends IterativeRobot {
 	public static Shooter spinTurret;
 	public static GripPipeline vision;
 	private static Mat mat;
-	public static double distance, angle, lengthBetweenContours;
+	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
 	
 	public static VisionThread visionThread;
-    
-	public static double aimError;
-	public static double optimalDistance;
+	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
+//	public static final double AIM_ERROR = 0;
+	public static final double AIM_ERROR = 21.904;
 
+	public static final double WIDTH_BETWEEN_TARGET = 8.5;
+	public static final double CAMERA_WIDTH = 640;
     Command autonomousCommand;
     //Command gearAutonomous;
     SendableChooser autoChooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
-//	NetworkTable table;
+	NetworkTable table;
 	
 	
 	
 	public Robot() {
-		//table = NetworkTable.getTable("GRIP/myContoursReport");
+		table = NetworkTable.getTable("GRIP/myContoursReport");
 	}
 	
 	//private VisionThread visionThread;
@@ -117,7 +123,9 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
-        autoChooser.addObject("My Auto", new GearAutonomous());
+        autoChooser.addDefault("Gear Right Auto", new GearAutonomousRight());
+        autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
+        autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
       //SmartDashboard.putData("Vision2", robotVision);
@@ -126,71 +134,192 @@ public class Robot extends IterativeRobot {
         // UsbCamera camera;
          // Set the resolution
       	  
- 	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
- 	    camera.setResolution(640, 480);
-         
-		visionThread = new VisionThread(camera, new GripPipeline(), VisionPipeline ->{
- 
-			
-			
-			// Get a CvSink. This will capture Mats from the camera
-		CvSink cvSink = CameraServer.getInstance().getVideo();
-		// Setup a CvSource. This will send images back to the Dashboard
-		CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+         camera.getProperty("contrast").set(10);
+         camera.getProperty("saturation").set(100);
+         camera.getProperty("brightness").set(10);
+         // Set the resolution
+//    			camera.setResolution(640, 480);
+   
+    visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
+  	  
 
-		// Mats are very memory expensive. Lets reuse this Mat.
-		mat = new Mat();
+			// Get a CvSink. This will capture Mats from the camera
+			CvSink cvSink = CameraServer.getInstance().getVideo();
+			// Setup a CvSource. This will send images back to the Dashboard
+			CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+
+			// Mats are very memory expensive. Lets reuse this Mat.
+			Mat mat = new Mat();
 
 			// This cannot be 'true'. The program will never exit if it is. This
 			// lets the robot stop this thread when restarting robot code or
 			// deploying.
-			
+			while (!Thread.interrupted()) {
+				// Tell the CvSink to grab a frame from the camera and put it
+				// in the source mat.  If there is an error notify the output.
+				if (cvSink.grabFrame(mat) == 0) {
+					// Send the output the error.
+					outputStream.notifyError(cvSink.getError());
+					// skip the rest of the current iteration
+					continue;
+				}
 				// Put a rectangle on the image
 				/*
 				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
 						new Scalar(0, 0, 255), 5);*/
 				VisionPipeline.process(mat);
+				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
+//get distance from target || or length between contours         				
 				
+				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
+					Rect r = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1));
+					Rect r1 = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0)); 
+					double [] centerX = new double[]{r1.x, r.x};
+					SmartDashboard.putBoolean("Found two rectangles", true);
+					
+					Imgcodecs.imwrite("output.png", mat);
+					
+						if(centerX.length == 2){
+							// subtracts one another to get length in pixels
+							lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);         						
+						}
+					
+					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
+//get distance from target
+					
+					distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
+					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
+					
+					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
+//get Angle     						
+					
+					if(centerX.length == 2){
+						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
+						// Converts pixels to inches using the constant from above.
+						double distanceFromCenterInch = distanceFromCenterPixels * constant;
+						// math brought to you buy Chris and Jones
+						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
+						angleToGoal = Math.toDegrees(angleToGoal);
+						 
+						//AIM_ERROR on chassis 1.0 is 21.904
+						
+				//if angle to goal is negative, add the aim error ; else subtract the aim Error
+				if(angleToGoal < 0){
+					angleToGoal += AIM_ERROR;
+				}else{
+					angleToGoal -= AIM_ERROR;
+				}
+						/* 						
+* Robot.setAngleToGoal(angleToGoal);
+*/					
+					}
+						SmartDashboard.putNumber("Angle to Goal", angleToGoal);
+
+				}
+				
+				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 				// Give the output stream a new image to display
 				outputStream.putFrame(mat);
-				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
-				// Give the output stream a new image to display
-				distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
-				angle = VisionProcessing.getAngle(VisionPipeline);
-				Robot.setAimError(angle);
-				lengthBetweenContours = VisionProcessing.returnCenterX(VisionPipeline);
-				SmartDashboard.putNumber("Distance From Target", distance);
-				//SmartDashboard.putNumber("Return Center X of Target",VisionProcessing.distanceFromTarget(VisionPipeline));
-				SmartDashboard.putNumber("Change angle", angle);
-				SmartDashboard.putNumber("Length Between Contours", VisionProcessing.returnCenterX(VisionPipeline));
-				//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
-				//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
-				SmartDashboard.putString("Vision Status", "Running");
-		
-		
-		
-			//}
-       });
-      
-       visionThread.start();
-    }
-       /**
-            AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
-            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-            
-            visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
-                while (!Thread.interrupted()) {
-                   
-                    }
-             });
+			}
+     });
     
-            visionThread.start();
-          **/
-       
-    
-    
+     visionThread.start();
+
+
+
+/* UsbCamera camera;
+camera = CameraServer.getInstance().startAutomaticCapture();
+camera.setResolution(640, 480);
+camera.getProperty("saturation").set(50);
+camera.getProperty("contrast").set(50);
+camera.getProperty("brightness").set(50);
+
+
+//  robotVision = new Vision2("10.41.88.12");
+// SmartDashboard.putNumber("Distance", robotVision.distance);
+
+//chooser.addObject("My Auto", new MyAutoCommand());
+SmartDashboard.putData("Auto mode", chooser);
+//SmartDashboard.putData("Vision2", robotVision);
+RobotMap.gyro.calibrate();
+
+// UsbCamera camera;
+// Set the resolution
  
+visionThread = new VisionThread(camera, new GripPipeline(), VisionPipeline ->{	
+	// Get a CvSink. This will capture Mats from the camera
+	CvSink cvSink = CameraServer.getInstance().getVideo();
 	
+	// Setup a CvSource. This will send images back to the Dashboard
+	CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+
+	// Mats are very memory expensive. Lets reuse this Mat.
+	mat = new Mat();
+
+	// This cannot be 'true'. The program will never exit if it is. This
+	// lets the robot stop this thread when restarting robot code or
+	// deploying.
+	
+	VisionPipeline.process(mat);
+	
+	Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(255,255,255), 100);
+		
+	// Put a rectangle on the image
+		
+		Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
+				new Scalar(0, 0, 255), 5);
+		
+	// Give the output stream a new image to display
+		
+
+//outputStream.putFrame(mat);
+		// Give the output stream a new image to display
+		
+distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
+		angle = VisionProcessing.getAngle(VisionPipeline);
+		Robot.setAimError(angle);
+		lengthBetweenContours = VisionProcessing.returnCenterX(VisionPipeline);
+		SmartDashboard.putNumber("Distance From Target", distance);
+		//SmartDashboard.putNumber("Return Center X of Target",VisionProcessing.distanceFromTarget(VisionPipeline));
+		SmartDashboard.putNumber("Change angle", angle);
+		SmartDashboard.putNumber("Length Between Contours", VisionProcessing.returnCenterX(VisionPipeline));
+		//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
+		//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
+		SmartDashboard.putString("Vision Status", "Running");
+
+
+
+b		//}
+});
+
+visionThread.start();
+*/    }
+/**
+ AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
+ camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+ 
+ visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
+     while (!Thread.interrupted()) {
+        
+         }
+  });
+
+ visionThread.start();
+**/
+
+
+
+
+
+public static double getAngleToGoal() {
+return angleToGoal;
+}
+
+public static void setAngleToGoal(double angleToGoal) {
+Robot.angleToGoal = angleToGoal;
+}
+
 	/**
      * This function is called once each time the robot enters Disabled mode.
      * You can use it to reset any subsystem information you want to clear when
@@ -253,7 +382,7 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
         //if (autonomousCommand != null) autonomousCommand.cancel();
     //}
-    	Robot.drivetrain.setRampRate(12/0.2);//MaxVoltage/rampTime
+    	Robot.drivetrain.setRampRate(12/0.1);//MaxVoltage/rampTime was 12/0.2
     	Robot.drivetrain.resetEncoders();
     }
 
@@ -332,16 +461,4 @@ public class Robot extends IterativeRobot {
         LiveWindow.run();
     }
     
-    public static void setAimError(double v){
-    	aimError = v;
-    	 }
-    public static double getAimError(){
-    	return aimError;
-    }
-    public static void setDistance(double d){
-    	optimalDistance = d;
-    }
-    public static double getDistance(){
-		return optimalDistance;
-    }
 }
