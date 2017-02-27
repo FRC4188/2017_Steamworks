@@ -25,9 +25,9 @@ public class AimHighGoal extends Command {
 	
 	
 	//PID tuned for practice bot
-	private static final double KP = 0.5;//0.015
+	private static final double KP = 0.001;//0.015
 	private static final double KI = 0.0000;//0.0
-	private static final double KD = 0.00000;//0.0
+	private static final double KD = 0.002;//0.0
 	 
 	private double angle;
 	private double tolerance;
@@ -45,23 +45,25 @@ public class AimHighGoal extends Command {
     	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
     	
     	CHSRobotDrive.setPIDType(PIDType.turnToAngle);
-    	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
     	
     	angle = Robot.getAngleToGoal();
     	
     	Robot.drivetrain.gyroReset();
-		gyroPIDController.setAbsoluteTolerance(tolerance);
-		SmartDashboard.putNumber("SETPOINT", angle);
-		gyroPIDController.setSetpoint(90);
-		gyroPIDController.enable();	
-		
-    	
+			
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putString("Aim Status", "Running");	
     	SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
+   
+    	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
+    	gyroPIDController.setAbsoluteTolerance(tolerance);
+		SmartDashboard.putNumber("SETPOINT", angle);
+		
+    	gyroPIDController.setSetpoint(90);
+		gyroPIDController.enable();
+    
     }
     
     // Make this return true when this Command no longer needs to run execute()
