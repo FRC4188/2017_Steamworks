@@ -81,15 +81,10 @@ public class Robot extends IterativeRobot {
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
 	NetworkTable table;
-	//public static UsbCamera camera; 
 	
 	
 	public Robot() {
-		 //table = NetworkTable.getTable("GRIP/targets");
 	}
-	
-	//private VisionThread visionThread;
-	
 
     /**
      * This function is run when the robot is first started up and should be
@@ -190,106 +185,19 @@ public class Robot extends IterativeRobot {
      					}else{
      						angleToGoal -= AIM_ERROR;
      					}
-     							/* 						
-     	 * Robot.setAngleToGoal(angleToGoal);
-     	*/					
      						}
          						SmartDashboard.putNumber("Angle to Goal", angleToGoal);
 
          				}
          				
-         				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
          				// Give the output stream a new image to display
          				outputStream.putFrame(mat);
          			}
                 });
                
                 visionThread.start();
-    
-        
-        
-       /* UsbCamera camera;
-        camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(640, 480);
- 	    camera.getProperty("saturation").set(50);
- 	    camera.getProperty("contrast").set(50);
- 	    camera.getProperty("brightness").set(50);
-  
-        
-      //  robotVision = new Vision2("10.41.88.12");
-      // SmartDashboard.putNumber("Distance", robotVision.distance);
-  
-      //chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-      //SmartDashboard.putData("Vision2", robotVision);
-         RobotMap.gyro.calibrate();
-         
-        // UsbCamera camera;
-         // Set the resolution
-      	  
- 	    visionThread = new VisionThread(camera, new GripPipeline(), VisionPipeline ->{	
-			// Get a CvSink. This will capture Mats from the camera
- 	    	CvSink cvSink = CameraServer.getInstance().getVideo();
- 	    	
- 	    	// Setup a CvSource. This will send images back to the Dashboard
- 	    	CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+}
 
- 	    	// Mats are very memory expensive. Lets reuse this Mat.
- 	    	mat = new Mat();
-
-			// This cannot be 'true'. The program will never exit if it is. This
-			// lets the robot stop this thread when restarting robot code or
-			// deploying.
-			
- 	    	VisionPipeline.process(mat);
-			
- 	    	Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(255,255,255), 100);
-				
-			// Put a rectangle on the image
-				
-				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
-						new Scalar(0, 0, 255), 5);
- 	    		
-			// Give the output stream a new image to display
-				
-		
-		//outputStream.putFrame(mat);
-				// Give the output stream a new image to display
-				
-		distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
-				angle = VisionProcessing.getAngle(VisionPipeline);
-				Robot.setAimError(angle);
-				lengthBetweenContours = VisionProcessing.returnCenterX(VisionPipeline);
-				SmartDashboard.putNumber("Distance From Target", distance);
-				//SmartDashboard.putNumber("Return Center X of Target",VisionProcessing.distanceFromTarget(VisionPipeline));
-				SmartDashboard.putNumber("Change angle", angle);
-				SmartDashboard.putNumber("Length Between Contours", VisionProcessing.returnCenterX(VisionPipeline));
-				//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
-				//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
-				SmartDashboard.putString("Vision Status", "Running");
-		
-		
-		
-	b		//}
-       });
-      
-       visionThread.start();
-*/    }
-       /**
-            AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
-            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-            
-            visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
-                while (!Thread.interrupted()) {
-                   
-                    }
-             });
-    
-            visionThread.start();
-          **/
-       
-    
-    
  
 	
 	public static double getAngleToGoal() {
@@ -367,57 +275,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 		Robot.setAngleToGoal(angleToGoal);
-     	SmartDashboard.putNumber("GyroAngle = %7.3f", RobotMap.gyro.getAngle());
+     	SmartDashboard.putString("Gyro", String.format("Value = ", RobotMap.gyro.getAngle()));
         
-        //robotVision.periodic();
-        
-     /*   while(isEnabled() && isOperatorControl()){
-        	RobotMap.seatMotorHallSensor.setLimitsVoltage(3.5,5.0);
-        	SmartDashboard.putBoolean("Is it in the Window", RobotMap.seatMotorHallSensor.getInWindow());
-        	
-        	if(RobotMap.seatMotorHallSensor.getInWindow()){
-        		
-        	   RobotMap.hoodRotation.set(0);
-        		
-        	}
-        	
-        	else{
-        		RobotMap.hoodRotation.set(-1);
-        	}	
-        	
-        	RobotMap.seatMotorHallSensor.free();
-        	
-        }
-     */   
-        
-        /* boolean blockForward, blockReverse;
-        int pos = 0;
-        double speed = 1.0;
-        //Robot.shooter.counter.reset();
-        
-        while(isEnabled() && isOperatorControl()){
-        	
-        	pos = shooter.getPosition();
-        	SmartDashboard.putNumber("Position", pos);
-        	
-        	if(pos >= 175)
-        		blockForward = true;
-        	else{       		
-        		blockForward = false;	
-        	}
-        	
-        	if(pos <= 0)
-        		blockReverse = true;
-            else {
-            	blockReverse = false;
-            }
-        	
-        	if(blockForward)
-        		speed = -1;
-        	if(blockReverse)
-        		speed = 1;
-    */    	
-       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
      SmartDashboard.putBoolean("running", true);   
      
     }
@@ -425,12 +284,6 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during test mode
      */
-    
-    public static Mat getMat(){
-    	
-    	return mat;
-    	
-    }
     
     public void testPeriodic() {
         LiveWindow.run();

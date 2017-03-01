@@ -13,21 +13,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class AimHighGoal extends Command {
-	private int a = 0;
 	double finalAngle;
 
 	public PIDController gyroPIDController;
 	
-//	PID tuned for competition bot
-//	private static final double KP = 0.03;
-//	private static final double KI = 0.00001;
-//	private static final double KD = 0.0;
-	
-	
 	//PID tuned for practice bot
-	private static final double KP = 0.001;//0.015
+	private static final double KP = 0.0001;//0.015
 	private static final double KI = 0.0000;//0.0
-	private static final double KD = 0.002;//0.0
+	private static final double KD = 0.000;//0.0
 	 
 	private double angle;
 	private double tolerance;

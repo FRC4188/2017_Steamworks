@@ -44,7 +44,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	robotDrive.arcadeDrive(moveValue, rotateValue);
     }
     
-    private static final double OUTPUT_MIN = 0.35;
+    private static final double OUTPUT_MIN = 0.0;
     //private static final double OUTPUT_MIN = 0.35;
     // at 0.05, even the motors with no gears could barely run.
     // same at 0.1
