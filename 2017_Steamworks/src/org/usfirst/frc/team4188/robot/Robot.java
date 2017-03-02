@@ -99,7 +99,7 @@ public class Robot extends IterativeRobot {
 		gearManipulation = new GearManipulation();
 		drivetrain = new DriveTrain();
 		cameraLights = new CameraLights();
-        //cameraLights.cameraLightsOn();
+        cameraLights.cameraLightsOn();
 		chooser = new SendableChooser();
         //gearAutonomous = new GearAutonomous();
         climber.init();
@@ -275,7 +275,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 		Robot.setAngleToGoal(angleToGoal);
-     	SmartDashboard.putString("Gyro", String.format("Value = ", RobotMap.gyro.getAngle()));
+     	SmartDashboard.putString("Gyro", String.format("Value = %7.3f ", RobotMap.gyro.getAngle()));
         
      SmartDashboard.putBoolean("running", true);   
      

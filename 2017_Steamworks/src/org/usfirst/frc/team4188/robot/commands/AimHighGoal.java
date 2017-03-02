@@ -42,7 +42,7 @@ public class AimHighGoal extends Command {
     	angle = Robot.getAngleToGoal();
     	
     	Robot.drivetrain.gyroReset();
-			
+	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -50,13 +50,15 @@ public class AimHighGoal extends Command {
     	SmartDashboard.putString("Aim Status", "Running");	
     	SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
    
+    	SmartDashboard.putNumber("SETPOINT", angle);
+		
     	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
     	gyroPIDController.setAbsoluteTolerance(tolerance);
-		SmartDashboard.putNumber("SETPOINT", angle);
 		
     	gyroPIDController.setSetpoint(90);
-		gyroPIDController.enable();
-    
+		
+    	
+    	gyroPIDController.enable();
     }
     
     // Make this return true when this Command no longer needs to run execute()
