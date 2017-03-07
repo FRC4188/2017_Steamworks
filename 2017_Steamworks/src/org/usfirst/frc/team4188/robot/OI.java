@@ -95,7 +95,8 @@ public class OI {
 		pilotXboxSample = new XboxController(0);
 		//pilotJoystick = new CHSJoystick(0);
 		copilotController = new CHSJoystick(1,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
-	/*		
+		//copilotController = new Joystick(1);
+		/*		
 		pilot1 = new JoystickButton(pilotController, 1);
         pilot2 = new JoystickButton(pilotController, 2);
         pilot3 = new JoystickButton(pilotController, 3);
@@ -190,6 +191,8 @@ public class OI {
            pilot8.whenPressed(new CameraLightsOn());
            pilot7.whenPressed(new CameraLightsOff());
            //copilot1.whenPressed(new AimHighGoal(1.0));
+          
+           /**
            copilot1.whileHeld(new ShootFuel());
            copilot2.whileHeld(new RunFuelElevator());
            copilot3.toggleWhenPressed(new IntakeOn());
@@ -200,6 +203,19 @@ public class OI {
            copilot5.whileHeld(new GearRetract());
            copilot5.whenReleased(new GearOff());
            copilot11.whenPressed(new AimHighGoal(1.0));
+      
+           **/
+           
+           copilot7.whileHeld(new ShootFuel());
+           copilot8.whileHeld(new RunFuelElevator());
+           copilot8.whenReleased(new FuelElevatorOff());
+           copilot2.toggleWhenPressed(new IntakeOn());
+           copilot3.toggleWhenPressed(new IntakeOff());
+           copilot6.whileHeld(new GearRelease());
+           copilot6.whenReleased(new GearOff());
+           copilot5.whileHeld(new GearRetract());
+           copilot5.whenReleased(new GearOff());
+           
        }
    
 		

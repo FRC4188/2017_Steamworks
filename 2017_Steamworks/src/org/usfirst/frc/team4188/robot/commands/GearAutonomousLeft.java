@@ -30,8 +30,9 @@ public class GearAutonomousLeft extends CommandGroup {
     	Robot.drivetrain.resetEncoders();
     	addSequential(new EncoderDriveToDistance((6.5-(33/12)), 1.0),3);
     	Robot.drivetrain.resetEncoders();
-    	addSequential(new AutoDrive(0,-0.8,0.35),3);
+    	addSequential(new AutoDrive(0,-0.8,0.28),3);
     	Robot.drivetrain.resetEncoders();
-    	addSequential(new EncoderDriveToDistance(71.5/12.0,1.0),3);
+    	//addSequential(new EncoderDriveToDistance(71.5/12.0,1.0),3);
+    	addSequential(new EncoderDriveToDistance(3.3,1.0),3);
     }
 }

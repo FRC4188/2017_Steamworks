@@ -19,7 +19,7 @@ public class EncoderDriveToDistance extends Command {
 	private static final double KI = 0.0;
 	private static final double KD = 0.0;
 	PIDController drivePID = new PIDController(KP,KI,KD,RobotMap.rearRightDriveMotor, RobotMap.driveBase);
-    
+   
     double distance;
     double speed;
 	public EncoderDriveToDistance(double distance, double speed) {
@@ -31,7 +31,7 @@ public class EncoderDriveToDistance extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-    	CHSRobotDrive.setPIDType(PIDType.driveToDistance);
+    	CHSRobotDrive.setPIDType(PIDType.driveToDistanceTwoEncoder);
     	drivePID.setAbsoluteTolerance(1.0);
     	drivePID.setSetpoint(distance);
     	drivePID.enable();

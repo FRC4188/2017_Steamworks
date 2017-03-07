@@ -31,7 +31,8 @@ public class GearAutonomousMiddle extends CommandGroup {
     	
     	
     	
-    	addSequential(new EncoderDriveToDistance((78.0/12.0), 0.8));
+    	//addSequential(new EncoderDriveToDistance((78.0/12.0), 0.8));
+    	addSequential(new EncoderDriveToDistance(70.0/12.0,0.4));
     	//addSequential(new EncoderDriveToAngle(36, 0.8));
     	//Robot.drivetrain.resetEncoders();
     	//addSequential(new EncoderDriveToAngle(20,0.8));

@@ -123,9 +123,9 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
-        autoChooser.addDefault("Gear Right Auto", new GearAutonomousRight());
+        autoChooser.addObject("Gear Right Auto", new GearAutonomousRight());
         autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
-        autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
+        autoChooser.addDefault("Gear Center Auto", new GearAutonomousMiddle());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
       //SmartDashboard.putData("Vision2", robotVision);

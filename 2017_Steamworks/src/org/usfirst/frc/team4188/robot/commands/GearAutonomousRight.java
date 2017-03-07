@@ -37,8 +37,8 @@ public class GearAutonomousRight extends CommandGroup {
     	Robot.drivetrain.resetEncoders();
     	addSequential(new AutoDrive(0,0.8,0.28),3);
     	Robot.drivetrain.resetEncoders();
-    	addSequential(new EncoderDriveToDistance(8.8,1.0),3);
-    	
+    	//addSequential(new EncoderDriveToDistance(8.8,1.0),3);
+    	addSequential(new EncoderDriveToDistance(6.6, 1.0),3);
     	
      	
     }
