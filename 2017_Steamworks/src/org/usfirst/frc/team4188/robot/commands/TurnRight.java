@@ -27,6 +27,9 @@ public class TurnRight extends Command {
 
     public TurnRight(double angle) {
       // Use requires() here to declare subsystem dependencies
+			if (Robot.drivetrain == null) {
+				throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
+			}
     	requires(Robot.drivetrain);
 			this.angle = angle;
 			CHSRobotDrive.setPIDType(PIDType.turnToAngle);
