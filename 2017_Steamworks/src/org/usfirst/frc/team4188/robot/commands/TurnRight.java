@@ -23,7 +23,8 @@ public class TurnRight extends Command {
 	private  double KD = 0.0;
 
 	private long start = 0l;
-	private double angle;
+	private static double angle;
+	private double angleFromVision;
 	private static final double tolerance = 0.25; // to within 1.0 degree
 	// private static final int ONE = 1;
 	// private static final int TWO = 2;
@@ -41,8 +42,9 @@ public class TurnRight extends Command {
 		  throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
 	  }
     requires(Robot.drivetrain);
-	  this.angle = targetAngle;
-	  if(Robot.whichBot == Robot.WhichBot.SKETCHY){
+	this.angle = targetAngle;
+	  
+	if(Robot.whichBot == Robot.WhichBot.SKETCHY){
 		  KP = 0.02;
 		  KI = 0.002;
 		  KD = 0.002;
@@ -56,20 +58,17 @@ public class TurnRight extends Command {
 		  KI = 0.0;
 		  KD = 0.0;
 	  }
-		this.getAngleFromVision  = false;
-
-    }
+	this.getAngleFromVision  = false;
+   }
 
     public TurnRight(){
 
-    	this.getAngleFromVision = true;
+    	this.angle = Robot.getAngleToGoal();
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(this.getAngleFromVision){
-    		this.angle = Robot.getAngleToGoal();
-    	}
+    	
     	this.start = System.currentTimeMillis();
     	
     	SmartDashboard.putString("Aim Status", "Initializing");
@@ -85,12 +84,14 @@ public class TurnRight extends Command {
      	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
      	gyroPIDController.setAbsoluteTolerance(tolerance);
 
-     	gyroPIDController.setSetpoint(this.angle);
+     	gyroPIDController.setSetpoint(Robot.getAngleToGoal());
 
      	gyroPIDController.enable();
 
      	initCount++;
      	SmartDashboard.putNumber("Init Count", initCount);
+     	SmartDashboard.putNumber("ANGLE FROM VISION", Robot.getAngleToGoal());
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -138,7 +138,7 @@ public class OI {
 		//           pilot8.whenPressed(new CameraLightsOn());
 		//           pilot7.whenPressed(new CameraLightsOff());
 
-		pilot9.whenPressed(new TurnRight());
+		pilot9.whenPressed(new TurnRight(Robot.getAngleToGoal()));
 		pilot10.whenPressed(new TurnRight(90));
 		
 		copilot7.whileHeld(new ShootFuel());

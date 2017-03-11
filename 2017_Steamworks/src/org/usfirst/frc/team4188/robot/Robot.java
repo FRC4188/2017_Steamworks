@@ -74,7 +74,7 @@ public class Robot extends IterativeRobot {
 
 	public static VisionThread visionThread;
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
-	public static final double AIM_ERROR = 0.0;//21.904;
+	public static final double AIM_ERROR = 21.904;
 	
 
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
@@ -202,7 +202,7 @@ public class Robot extends IterativeRobot {
 							targetAngle -= AIM_ERROR;
 						}
 					 setAngleToGoal(targetAngle);
-					
+				
 					SmartDashboard.putString("Target_Angle", String.format("%6.1f", targetAngle));
 				}
 		
