@@ -50,6 +50,12 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	// COMPETITION is the 3.0 robot we expect to use in competition.
+	// PRACTICE is the 2.0 robot that's similar to COMPETITION
+	// SKETCHY is the 1.0 robot
+	public enum WhichBot { COMPETITION, PRACTICE, SKETCHY }
+	public static bot whichBot = PRACTICE;
+
 	public static DriveTrain drivetrain;
 	public static CameraLights cameraLights;
 	public static OI oi;
@@ -77,7 +83,7 @@ public class Robot extends IterativeRobot {
 	//SendableChooser<GearAutonomous> autoChooser;
 	SendableChooser autoChooser;
 
-	
+
 	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
 	NetworkTable table;
@@ -116,7 +122,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Gear Center Auto :|", new GearAutonomous("MIDDLE"));
 		autoChooser.addObject("Gear Right Auto :|", new GearAutonomous("RIGHT"));
 		autoChooser.addObject("Gear Left Auto :|", new GearAutonomous("LEFT"));
-		
+
 		SmartDashboard.putData("CHOOSE AN AUTONOMOUS", autoChooser);
 		RobotMap.gyro.calibrate();
 
@@ -154,7 +160,7 @@ public class Robot extends IterativeRobot {
 
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
 					Rect r = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1));
-					Rect r1 = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0)); 
+					Rect r1 = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0));
 					double [] centerX = new double[]{r1.x, r.x};
 					SmartDashboard.putBoolean("Found two rectangles", true);
 
@@ -162,7 +168,7 @@ public class Robot extends IterativeRobot {
 
 					if(centerX.length == 2){
 						// subtracts one another to get length in pixels
-						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);         						
+						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
 					}
 
 					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
@@ -172,12 +178,12 @@ public class Robot extends IterativeRobot {
 					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
 
 					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
-					//get Angle     						
+					//get Angle
 
 					if(centerX.length == 2){
 						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						// Converts pixels to inches using the constant from above.
-					Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
+						Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
 						// math brought to you buy Chris and Jones
 						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
@@ -241,15 +247,15 @@ public class Robot extends IterativeRobot {
 
 /*		String autoSelected = SmartDashboard.getString("Select an Auto", "Gear Middle");
 		switch(autoSelected){
-		case "Gear Right :|": 
+		case "Gear Right :|":
 			autonomousCommand = new GearAutonomous("RIGHT");
 			break;
-		case "Gear Left :|": 
-			autonomousCommand = new GearAutonomous("LEFT"); 
+		case "Gear Left :|":
+			autonomousCommand = new GearAutonomous("LEFT");
 			break;
-		case "Gear Middle :|": 
+		case "Gear Middle :|":
 			autonomousCommand = new GearAutonomous("MIDDLE");
-		default: 
+		default:
 			autonomousCommand = new GearAutonomous("MIDDLE");
 		}
 */		if (autonomousCommand != null) autonomousCommand.start();
@@ -269,7 +275,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to 
+		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		//if (autonomousCommand != null) autonomousCommand.cancel();
@@ -286,7 +292,7 @@ public class Robot extends IterativeRobot {
 		Robot.drivetrain.getRightEncoderDistance();
 		Robot.drivetrain.getLeftEncoderDistance();
 
-		SmartDashboard.putBoolean("running", true);   
+		SmartDashboard.putBoolean("running", true);
 		SmartDashboard.putString("Gyro", String.format("%5.1f", RobotMap.gyro.getAngle()));
 	}
 
