@@ -149,7 +149,7 @@ public class Robot extends IterativeRobot {
 					continue;
 				}
 				VisionPipeline.process(mat);
-				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 10);
+				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 5);
 				//get distance from target || or length between contours         				
 
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
@@ -177,6 +177,7 @@ public class Robot extends IterativeRobot {
 					if(centerX.length == 2){
 						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						// Converts pixels to inches using the constant from above.
+					Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
 						// math brought to you buy Chris and Jones
 						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
