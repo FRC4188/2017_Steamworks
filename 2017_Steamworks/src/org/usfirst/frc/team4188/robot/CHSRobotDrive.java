@@ -84,22 +84,21 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	}
     	SmartDashboard.putNumber("PID", output);
     	switch(driveType){
-    	case turnToAngle:
+    	  case turnToAngle:
     	
     		super.setLeftRightMotorOutputs(output,-output);
-    		
         	robotDrive2.setLeftRightMotorOutputs(output, -output);
-        	robotDrive3.setLeftRightMotorOutputs(-output,output);
-    	
-    	case driveToDistance:
+        	robotDrive3.setLeftRightMotorOutputs(output,-output);
+        	break;
+        	
+    	  case driveToDistance:
     		
         	super.setLeftRightMotorOutputs(output,output);
-       
         	robotDrive2.setLeftRightMotorOutputs(output,output);
         	robotDrive3.setLeftRightMotorOutputs(output, output);
-        break;
+            break;
         
-    	case driveToDistanceTwoEncoder:
+    	  case driveToDistanceTwoEncoder:
     		double outputConstant;
     		if(Robot.drivetrain.getLeftEncoderDistance()<Robot.drivetrain.getRightEncoderDistance()){
     			outputConstant = 1.05;
@@ -114,11 +113,6 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     		
     		robotDrive2.setLeftRightMotorOutputs(outputConstant*output, output);
     		robotDrive3.setLeftRightMotorOutputs(outputConstant*output, output);
-        
-    	
-    		
-    		
-        
     	}
     }
 

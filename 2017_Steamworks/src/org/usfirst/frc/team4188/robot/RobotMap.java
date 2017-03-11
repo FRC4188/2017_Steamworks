@@ -32,7 +32,6 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-
 	public static CANTalon frontRightDriveMotor;
 	public static CANTalon frontLeftDriveMotor;
 	public static CANTalon rearRightDriveMotor;
@@ -47,7 +46,7 @@ public class RobotMap {
 	public static CANTalon shooterTalon;
 	
 	public static CHSRobotDrive driveBase;
-	public static RobotDrive DriveBase;
+	// public static RobotDrive DriveBase;
 	
 	public static ADXRS450_Gyro gyro;
 	
@@ -68,7 +67,7 @@ public class RobotMap {
 	
 
 	
-		public static void init() {
+	public static void init() {
 		// TODO Auto-generated method stub
 		gyro = new ADXRS450_Gyro();
 		
@@ -100,15 +99,11 @@ public class RobotMap {
 		driveBase.setSensitivity(0.5);
 		driveBase.setMaxOutput(1.0);
 		
-		hoodRotation = new CANTalon(18);
 		shooterTalon = new CANTalon(19);
 		
 		gearShift = new DoubleSolenoid(0,1);
 		gearRelease = new DoubleSolenoid(2,3);
-		
-		seatMotorHallSensor = new AnalogTrigger(0);
-        
-		}
+	}
 		
 
 

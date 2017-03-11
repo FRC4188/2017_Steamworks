@@ -26,8 +26,8 @@ public class AimHighGoal extends Command {
 	
 	//PID tuned for practice bot
 	private static final double KP = 0.03;//0.015
-	private static final double KI = 0.0;//0.0
-	private static final double KD = 0.0;//0.0
+	private static final double KI = 0.0001;//0.0
+	private static final double KD = 0.00001;//0.0
 	 
 	private double angle;
 	private double tolerance;
@@ -44,27 +44,26 @@ public class AimHighGoal extends Command {
     	SmartDashboard.putString("Aim Status", "Initializing");
     	
     	CHSRobotDrive.setPIDType(PIDType.turnToAngle);
-    	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
+    	//gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
     	//new CameraLightsOff();
     	
-    	//angle = Robot.getAngleToGoal();
+    	//angle = Robot.getAimError();
+    	angle = 30;
+    	//SmartDashboard.putNumber("Final Angle", createFinalAngle(Robot.getAimError()));
+    	//SmartDashboard.putNumber("Dynamic Change Angle",Robot.getAimError());
+    	//angle = 90.0;
     	
-    	angle = 90;
-    	
-    	Robot.drivetrain.gyroReset();
+        Robot.drivetrain.gyroReset();
+
 		gyroPIDController.setAbsoluteTolerance(tolerance);
-		SmartDashboard.putNumber("SETPOINT", angle);
 		gyroPIDController.setSetpoint(angle);
-		gyroPIDController.enable();	
+		gyroPIDController.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putString("Aim Status", "Running");
-   
-    	
-		
-    }
+   }
     
        public double createFinalAngle(double dynamicChangeAngle){
     	if(a == 0){

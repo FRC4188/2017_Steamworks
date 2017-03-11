@@ -17,54 +17,54 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveTrain extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
 	CANTalon frontRight = RobotMap.frontRightDriveMotor;
 	CANTalon frontLeft = RobotMap.frontLeftDriveMotor;
 	CANTalon rearRight = RobotMap.rearRightDriveMotor;
 	CANTalon rearLeft = RobotMap.rearLeftDriveMotor;
-	
+
 	CANTalon middleRight = RobotMap.middleRightDriveMotor;
 	CANTalon middleLeft = RobotMap.middleLeftDriveMotor;
-	
+
 	CHSRobotDrive driveBase = RobotMap.driveBase;
-	RobotDrive driveBase2 = RobotMap.DriveBase;
+	//RobotDrive driveBase2 = RobotMap.DriveBase;
 	ADXRS450_Gyro gyro = RobotMap.gyro;
 	DoubleSolenoid gearShift = RobotMap.gearShift;
-    
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(new ManualDrive());
-    }
-    public void init(){
-    	RobotMap.gyro.reset();
-    }
-    public double xthr;
-    public double ythr;
-    public double twthr;
-    public double throttle;
-    public double direction;
-    
-    public void mecanumDrive(double x, double y, double twist, double direction, double throttle){
-    	
-    driveBase.mecanumDrive_Cartesian(x*throttle, y*throttle, twist*throttle, direction);
-    		
-    }
-    
-    public void autoDrive(double magnitude, double direction, double rotation){
-    	driveBase.mecanumDrive_Polar(magnitude, direction, rotation);
-    	
-    }
-    
-    public void arcadeDrive(double x, double twist, double throttle){
-    	driveBase.arcadeDrive(x*throttle, twist*throttle);
-    }
-    
-    public void tankDrive(double leftValue, double rightValue, double throttle){
-    	driveBase.tankDrive(leftValue*throttle, rightValue*throttle);
-    }
-   
+
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		setDefaultCommand(new ManualDrive());
+	}
+	public void init(){
+		RobotMap.gyro.reset();
+	}
+	public double xthr;
+	public double ythr;
+	public double twthr;
+	public double throttle;
+	public double direction;
+
+	public void mecanumDrive(double x, double y, double twist, double direction, double throttle){
+
+		driveBase.mecanumDrive_Cartesian(x*throttle, y*throttle, twist*throttle, direction);
+
+	}
+
+	public void autoDrive(double magnitude, double direction, double rotation){
+		driveBase.mecanumDrive_Polar(magnitude, direction, rotation);
+
+	}
+
+	public void arcadeDrive(double x, double twist, double throttle){
+		driveBase.arcadeDrive(x*throttle, twist*throttle);
+	}
+
+	public void tankDrive(double leftValue, double rightValue, double throttle){
+		driveBase.tankDrive(leftValue*throttle, rightValue*throttle);
+	}
+
 	public void autoDrive(double moveValue, double rotateValue) {
 		// TODO Auto-generated method stub
 		driveBase.arcadeDrive(moveValue, rotateValue);
@@ -84,7 +84,7 @@ public class DriveTrain extends Subsystem {
 		gearShift.set(DoubleSolenoid.Value.kOff);
 	}
 	public void setRampRate(double rampRate){
-		
+
 		frontLeft.setVoltageRampRate(rampRate);
 		frontRight.setVoltageRampRate(rampRate);
 		rearLeft.setVoltageRampRate(rampRate);
@@ -92,6 +92,7 @@ public class DriveTrain extends Subsystem {
 		middleLeft.setVoltageRampRate(rampRate);
 		middleRight.setVoltageRampRate(rampRate);
 	}
+	
 	public void resetEncoders(){
 		rearRight.setPosition(0);
 		rearLeft.setPosition(0);
@@ -106,8 +107,8 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putNumber("Encoder Left Distance", distance);
 		return distance;
 	}
-	
-	
-	
+
+
+
 }
 
