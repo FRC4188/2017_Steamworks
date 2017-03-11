@@ -18,50 +18,50 @@ public class TurnRight extends Command {
 	public PIDController gyroPIDController;
 
 	//PID tuned for practice bot
-	private  double KP = 0.0; 
-	private  double KI = 0.0; 
-	private  double KD = 0.0; 
+	private  double KP = 0.0;
+	private  double KI = 0.0;
+	private  double KD = 0.0;
 
 	private double angle;
 	private static final double tolerance = 0.25; // to within 1.0 degree
-	private static final int ONE = 1;
-	private static final int TWO = 2;
-	private static final int THREE = 3;
-	
+	// private static final int ONE = 1;
+	// private static final int TWO = 2;
+	// private static final int THREE = 3;
+
 	private int initCount = 0, executeCount = 0;
-	
-	private int bot = ONE; //set bot to ONE, TWO, or THREE to set the PID values for chassis 1.0, 2.0, or 3.0
+
+	// private int bot = ONE; //set bot to ONE, TWO, or THREE to set the PID values for chassis 1.0, 2.0, or 3.0
 
 	private boolean getAngleFromVision = false;
 
     public TurnRight(double targetAngle) {
       // Use requires() here to declare subsystem dependencies
 	  if (Robot.drivetrain == null) {
-		throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
+		  throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
 	  }
-      requires(Robot.drivetrain);
+    requires(Robot.drivetrain);
 	  this.angle = targetAngle;
-	  if(bot == ONE){
-		  KP = .01;
+	  if(Robot.bot == Robot.whichBot.SKETCHY){
+		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;
-		  
-	  }else if(bot == TWO){
-		  KP = .01;
+
+	  }else if(Robot.bot == Robot.whichBot.PRACTICE){
+		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;
-	  }else if(bot == THREE){
-		  KP = .01;
+	  }else if(Robot.bot == Robot.whichBot.PRACTICE){
+		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;
 	  }
-		this.getAngleFromVision  = false; 
-	    
+		this.getAngleFromVision  = false;
+
     }
-    
+
     public TurnRight(){
-    	
-    	this.getAngleFromVision = true; 
+
+    	this.getAngleFromVision = true;
     }
 
     // Called just before this Command runs the first time
@@ -69,12 +69,12 @@ public class TurnRight extends Command {
     	if(this.getAngleFromVision){
     		this.angle = Robot.getAngleToGoal();
     	}
-    	
+
     	SmartDashboard.putString("Aim Status", "Initializing");
     	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
 
     	//angle = Robot.getAngleToGoal();
-    	
+
     	Robot.drivetrain.gyroReset();
    	    CHSRobotDrive.setPIDType(PIDType.turnToAngle);
 
@@ -86,14 +86,14 @@ public class TurnRight extends Command {
      	gyroPIDController.setSetpoint(this.angle);
 
      	gyroPIDController.enable();
-     	
+
      	initCount++;
      	SmartDashboard.putNumber("Init Count", initCount);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
