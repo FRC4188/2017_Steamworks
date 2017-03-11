@@ -22,6 +22,7 @@ public class TurnRight extends Command {
 	private  double KI = 0.0;
 	private  double KD = 0.0;
 
+	private long start = 0l;
 	private double angle;
 	private static final double tolerance = 0.25; // to within 1.0 degree
 	// private static final int ONE = 1;
@@ -42,9 +43,9 @@ public class TurnRight extends Command {
     requires(Robot.drivetrain);
 	  this.angle = targetAngle;
 	  if(Robot.whichBot == Robot.WhichBot.SKETCHY){
-		  KP = 0.01;
-		  KI = 0.0;
-		  KD = 0.0;
+		  KP = 0.02;
+		  KI = 0.002;
+		  KD = 0.002;
 
 	  }else if(Robot.whichBot == Robot.WhichBot.PRACTICE){
 		  KP = 0.01;
@@ -69,7 +70,8 @@ public class TurnRight extends Command {
     	if(this.getAngleFromVision){
     		this.angle = Robot.getAngleToGoal();
     	}
-
+    	this.start = System.currentTimeMillis();
+    	
     	SmartDashboard.putString("Aim Status", "Initializing");
     	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
 
@@ -107,6 +109,8 @@ public class TurnRight extends Command {
     protected void end() {
       gyroPIDController.disable();
       gyroPIDController.free();
+      long elapsed = System.currentTimeMillis()-start;
+      SmartDashboard.putNumber("Turn Right Elapsed", elapsed);
       //RobotMap.driveBase.stopMotor();
       // Set the motors to 0 (stop them)
     }

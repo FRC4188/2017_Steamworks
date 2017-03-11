@@ -16,14 +16,14 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     //static final double minValue = 0.17;
 	protected RobotDrive robotDrive2;
 	protected RobotDrive robotDrive3;
+	private static double outputMin = 0.35;
 	
-    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
-    	super( frontLeft,rearLeft,frontRight, rearRight);
-    }
+//    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
+//    	super( frontLeft,rearLeft,frontRight, rearRight);
+//    }
     
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
     		SpeedController frontRight, SpeedController middleRight){
-    	
     	super(frontLeft, frontRight);
     	robotDrive2 = new RobotDrive(rearLeft, rearRight);
     	
@@ -31,7 +31,18 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	middleRight.setInverted(true);
     	robotDrive3 = new RobotDrive(middleLeft, middleRight);
     	
-  
+    	//the outputMin for SKETCHY is different from the other bots
+    	switch(Robot.whichBot){
+    		case SKETCHY:
+    			outputMin = 0.15;
+    			break;
+    		case PRACTICE:
+    			outputMin = 0.35;
+    			break;
+    		case COMPETITION:
+    			outputMin = 0.35;
+    			break;
+    	}
     }
     
     public void setSafetyEnabled(boolean enabled){
@@ -50,7 +61,6 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	
     }
     
-    private static final double OUTPUT_MIN = 0.35;
     // at 0.05, even the motors with no gears could barely run.
     // same at 0.1
 
@@ -79,8 +89,8 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     }
        
     public void pidWrite(double output){
-    	if (Math.abs(output)< OUTPUT_MIN) {
-    		output = OUTPUT_MIN * Math.signum(output);
+    	if (Math.abs(output)< outputMin) {
+    		output = outputMin * Math.signum(output);
     	}
     	SmartDashboard.putNumber("PID", output);
     	switch(driveType){

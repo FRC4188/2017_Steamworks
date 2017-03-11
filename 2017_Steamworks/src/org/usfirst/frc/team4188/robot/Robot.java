@@ -74,7 +74,8 @@ public class Robot extends IterativeRobot {
 
 	public static VisionThread visionThread;
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
-	public static final double AIM_ERROR = 21.904;
+	public static final double AIM_ERROR = 0.0;//21.904;
+	
 
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
 	public static final double CAMERA_WIDTH = 640;
@@ -174,16 +175,17 @@ public class Robot extends IterativeRobot {
 						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
 					}
 
-	SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
+					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
 					//get distance from target
 
 					distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
-	SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
+					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
 
 					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
 					//get Angle
 
-						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
+					double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
+	
 						// Converts pixels to inches using the constant from above.
 					
 						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
@@ -193,18 +195,17 @@ public class Robot extends IterativeRobot {
 						
 						//AIM_ERROR on chassis 1.0 is 21.904
 
-					
 						//if angle to goal is negative, add the aim error ; else subtract the aim Error
-						if(angleToGoal < 0){
+						if(targetAngle < 0){
 							targetAngle += AIM_ERROR;
 						}else{
 							targetAngle -= AIM_ERROR;
-						
+						}
 					 setAngleToGoal(targetAngle);
-					}
+					
 					SmartDashboard.putString("Target_Angle", String.format("%6.1f", targetAngle));
 				}
-				
+		
 				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 				// Give the output stream a new image to display
 				outputStream.putFrame(mat);
