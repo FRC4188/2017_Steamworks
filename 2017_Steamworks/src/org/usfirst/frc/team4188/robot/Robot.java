@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
 	// PRACTICE is the 2.0 robot that's similar to COMPETITION
 	// SKETCHY is the 1.0 robot
 	public enum WhichBot { COMPETITION, PRACTICE, SKETCHY }
-	public static WhichBot whichBot = WhichBot.PRACTICE;
+	public static WhichBot whichBot = WhichBot.SKETCHY;
 
 	public static DriveTrain drivetrain;
 	public static CameraLights cameraLights;
@@ -124,6 +124,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Gear Left Auto :|", new GearAutonomous("LEFT"));
 
 		SmartDashboard.putData("CHOOSE AN AUTONOMOUS", autoChooser);
+		SmartDashboard.putString("Which Bot", whichBot.toString());
 		RobotMap.gyro.calibrate();
 
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -133,7 +134,8 @@ public class Robot extends IterativeRobot {
 		camera.getProperty("brightness").set(0);
 
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
-
+			double targetAngle = 0;
+			
 			// Get a CvSink. This will capture Mats from the camera
 			CvSink cvSink = CameraServer.getInstance().getVideo();
 			// Setup a CvSource. This will send images back to the Dashboard
@@ -172,38 +174,37 @@ public class Robot extends IterativeRobot {
 						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
 					}
 
-					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
+	SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
 					//get distance from target
 
 					distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
-					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
+	SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
 
 					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
 					//get Angle
 
-					if(centerX.length == 2){
 						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						// Converts pixels to inches using the constant from above.
 					
 						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
-						// math brought to you buy Chris and Jones
-						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
-						angleToGoal = Math.toDegrees(angleToGoal);
-
+						targetAngle = Math.atan(distanceFromCenterInch / distanceFromTarget);
+						targetAngle = Math.toDegrees(targetAngle);
+						
 						//AIM_ERROR on chassis 1.0 is 21.904
 
+					
 						//if angle to goal is negative, add the aim error ; else subtract the aim Error
 						if(angleToGoal < 0){
-							angleToGoal += AIM_ERROR;
+							targetAngle += AIM_ERROR;
 						}else{
-							angleToGoal -= AIM_ERROR;
-						}
+							targetAngle -= AIM_ERROR;
+						
+					 setAngleToGoal(targetAngle);
 					}
-					SmartDashboard.putNumber("Angle to Goal", angleToGoal);
-
+					SmartDashboard.putString("Target_Angle", String.format("%6.1f", targetAngle));
 				}
-
+				
 				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 				// Give the output stream a new image to display
 				outputStream.putFrame(mat);
