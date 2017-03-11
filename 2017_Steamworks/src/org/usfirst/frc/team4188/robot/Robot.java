@@ -282,7 +282,7 @@ public class Robot extends IterativeRobot {
 		Robot.drivetrain.getLeftEncoderDistance();
 
 		SmartDashboard.putBoolean("running", true);   
-
+		SmartDashboard.putString("Gyro", String.format("%5.1f", RobotMap.gyro.getAngle()));
 	}
 
 	/**

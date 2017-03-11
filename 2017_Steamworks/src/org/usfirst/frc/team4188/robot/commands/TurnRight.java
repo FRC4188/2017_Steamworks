@@ -23,10 +23,12 @@ public class TurnRight extends Command {
 	private  double KD = 0.0; 
 
 	private double angle;
-	private static final double tolerance = 1.0; // to within 1.0 degree
+	private static final double tolerance = 0.25; // to within 1.0 degree
 	private static final int ONE = 1;
 	private static final int TWO = 2;
 	private static final int THREE = 3;
+	
+	private int initCount = 0, executeCount = 0;
 	
 	private int bot = ONE; //set bot to ONE, TWO, or THREE to set the PID values for chassis 1.0, 2.0, or 3.0
 
@@ -62,21 +64,25 @@ public class TurnRight extends Command {
     	Robot.drivetrain.gyroReset();
    	    CHSRobotDrive.setPIDType(PIDType.turnToAngle);
 
-     	SmartDashboard.putNumber("SETPOINT", angle);
+     	SmartDashboard.putNumber("SETPOINT", this.angle);
 
      	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
      	gyroPIDController.setAbsoluteTolerance(tolerance);
 
-     	gyroPIDController.setSetpoint(angle);
+     	gyroPIDController.setSetpoint(this.angle);
 
      	gyroPIDController.enable();
+     	
+     	initCount++;
+     	SmartDashboard.putNumber("Init Count", initCount);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putString("Aim Status", "Running");
-    	SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
-    	SmartDashboard.putNumber("Gyro Value = ", RobotMap.gyro.getAngle());
+    	//SmartDashboard.putString("Aim Status", "Running");
+    	//SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
+    	//executeCount++;
+    	//SmartDashboard.putNumber("ExecuteCount", executeCount);
     }
 
     // Make this return true when this Command no longer needs to run execute()
