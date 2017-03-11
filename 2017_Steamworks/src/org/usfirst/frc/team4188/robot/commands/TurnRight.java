@@ -41,16 +41,16 @@ public class TurnRight extends Command {
 	  }
     requires(Robot.drivetrain);
 	  this.angle = targetAngle;
-	  if(Robot.bot == Robot.whichBot.SKETCHY){
+	  if(Robot.whichBot == Robot.WhichBot.SKETCHY){
 		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;
 
-	  }else if(Robot.bot == Robot.whichBot.PRACTICE){
+	  }else if(Robot.whichBot == Robot.WhichBot.PRACTICE){
 		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;
-	  }else if(Robot.bot == Robot.whichBot.PRACTICE){
+	  }else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 		  KP = 0.01;
 		  KI = 0.0;
 		  KD = 0.0;

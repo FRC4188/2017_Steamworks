@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
 	// PRACTICE is the 2.0 robot that's similar to COMPETITION
 	// SKETCHY is the 1.0 robot
 	public enum WhichBot { COMPETITION, PRACTICE, SKETCHY }
-	public static bot whichBot = PRACTICE;
+	public static WhichBot whichBot = WhichBot.PRACTICE;
 
 	public static DriveTrain drivetrain;
 	public static CameraLights cameraLights;
@@ -155,6 +155,7 @@ public class Robot extends IterativeRobot {
 					continue;
 				}
 				VisionPipeline.process(mat);
+
 				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 5);
 				//get distance from target || or length between contours         				
 
@@ -183,7 +184,8 @@ public class Robot extends IterativeRobot {
 					if(centerX.length == 2){
 						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						// Converts pixels to inches using the constant from above.
-						Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
+					
+						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
 						// math brought to you buy Chris and Jones
 						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
