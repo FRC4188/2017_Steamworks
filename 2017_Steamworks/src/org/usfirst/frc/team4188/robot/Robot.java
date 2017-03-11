@@ -74,8 +74,10 @@ public class Robot extends IterativeRobot {
 	public static final double CAMERA_WIDTH = 640;
 	Command autonomousCommand;
 	//Command gearAutonomous;
+	//SendableChooser<GearAutonomous> autoChooser;
 	SendableChooser autoChooser;
 
+	
 	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
 	NetworkTable table;
@@ -98,7 +100,7 @@ public class Robot extends IterativeRobot {
 		gearManipulation = new GearManipulation();
 		drivetrain = new DriveTrain();
 		cameraLights = new CameraLights();
-		autoChooser = new SendableChooser();
+		cameraLights.cameraLightsOn();
 		//gearAutonomous = new GearAutonomous();
 		climber.init();
 		shooter.init();
@@ -110,17 +112,19 @@ public class Robot extends IterativeRobot {
 		drivetrain.init();
 		oi = new OI();
 
-		autoChooser.addObject("Gear Right :|", new GearAutonomousRight());
-		autoChooser.addObject("Gear Left :|", new GearAutonomousLeft());
-		autoChooser.addDefault("Gear Center :|", new GearAutonomousMiddle());
-
-		SmartDashboard.putData("AUTONOMOUS", autoChooser);
+		autoChooser = new SendableChooser();
+		autoChooser.addDefault("Gear Center Auto :|", new GearAutonomous("MIDDLE"));
+		autoChooser.addObject("Gear Right Auto :|", new GearAutonomous("RIGHT"));
+		autoChooser.addObject("Gear Left Auto :|", new GearAutonomous("LEFT"));
+		
+		SmartDashboard.putData("CHOOSE AN AUTONOMOUS", autoChooser);
 		RobotMap.gyro.calibrate();
 
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.getProperty("contrast").set(10);
+		camera.getProperty("sharpness").set(100);
 		camera.getProperty("saturation").set(100);
-		camera.getProperty("brightness").set(10);
+		camera.getProperty("brightness").set(0);
 
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
 
@@ -234,7 +238,7 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = (Command) autoChooser.getSelected();
 		Robot.drivetrain.resetEncoders();
 
-		String autoSelected = SmartDashboard.getString("Select an Auto", "Gear Middle");
+/*		String autoSelected = SmartDashboard.getString("Select an Auto", "Gear Middle");
 		switch(autoSelected){
 		case "Gear Right :|": 
 			autonomousCommand = new GearAutonomous("RIGHT");
@@ -247,7 +251,7 @@ public class Robot extends IterativeRobot {
 		default: 
 			autonomousCommand = new GearAutonomous("MIDDLE");
 		}
-		if (autonomousCommand != null) autonomousCommand.start();
+*/		if (autonomousCommand != null) autonomousCommand.start();
 
 	}
 

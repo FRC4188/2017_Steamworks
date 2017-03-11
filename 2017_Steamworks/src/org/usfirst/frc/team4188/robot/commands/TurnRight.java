@@ -32,6 +32,8 @@ public class TurnRight extends Command {
 	
 	private int bot = ONE; //set bot to ONE, TWO, or THREE to set the PID values for chassis 1.0, 2.0, or 3.0
 
+	private boolean getAngleFromVision = false;
+
     public TurnRight(double targetAngle) {
       // Use requires() here to declare subsystem dependencies
 	  if (Robot.drivetrain == null) {
@@ -43,6 +45,7 @@ public class TurnRight extends Command {
 		  KP = .01;
 		  KI = 0.0;
 		  KD = 0.0;
+		  
 	  }else if(bot == TWO){
 		  KP = .01;
 		  KI = 0.0;
@@ -52,10 +55,21 @@ public class TurnRight extends Command {
 		  KI = 0.0;
 		  KD = 0.0;
 	  }
+		this.getAngleFromVision  = false; 
+	    
+    }
+    
+    public TurnRight(){
+    	
+    	this.getAngleFromVision = true; 
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	if(this.getAngleFromVision){
+    		this.angle = Robot.getAngleToGoal();
+    	}
+    	
     	SmartDashboard.putString("Aim Status", "Initializing");
     	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
 
@@ -79,10 +93,7 @@ public class TurnRight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//SmartDashboard.putString("Aim Status", "Running");
-    	//SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
-    	//executeCount++;
-    	//SmartDashboard.putNumber("ExecuteCount", executeCount);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -94,9 +105,10 @@ public class TurnRight extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	gyroPIDController.disable();
+      gyroPIDController.disable();
       gyroPIDController.free();
-			// Set the motors to 0 (stop them)
+      //RobotMap.driveBase.stopMotor();
+      // Set the motors to 0 (stop them)
     }
 
     // Called when another command which requires one or more of the same

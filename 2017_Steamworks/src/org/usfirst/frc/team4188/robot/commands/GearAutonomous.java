@@ -23,9 +23,13 @@ public class GearAutonomous extends CommandGroup {
 			Robot.drivetrain.resetEncoders();
 			//addSequential(new EncoderDriveToDistance(8.8,1.0),3);
 			addSequential(new EncoderDriveToDistance(6.6, 1.0),3);
+		
+			addSequential(new TurnRight(Robot.getAngleToGoal()));
 		}
 		else if(position.equalsIgnoreCase("MIDDLE")){
 			addSequential(new EncoderDriveToDistance(70.0/12.0,0.4));
+			
+			addSequential(new TurnRight(Robot.getAngleToGoal()));
 		}
 		else if(position.equalsIgnoreCase("LEFT")){
 			Robot.drivetrain.resetEncoders();
@@ -35,6 +39,8 @@ public class GearAutonomous extends CommandGroup {
 			Robot.drivetrain.resetEncoders();
 			//addSequential(new EncoderDriveToDistance(71.5/12.0,1.0),3);
 			addSequential(new EncoderDriveToDistance(3.3,1.0),3);
+		
+			addSequential(new TurnRight(Robot.getAngleToGoal()));
 		}
 	}
 

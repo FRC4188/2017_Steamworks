@@ -138,8 +138,9 @@ public class OI {
 		//           pilot8.whenPressed(new CameraLightsOn());
 		//           pilot7.whenPressed(new CameraLightsOff());
 
-		pilot9.whenPressed(new TurnRight(90));
-
+		pilot9.whenPressed(new TurnRight());
+		pilot10.whenPressed(new TurnRight(90));
+		
 		copilot7.whileHeld(new ShootFuel());
 		copilot8.whileHeld(new RunFuelElevator());
 		copilot8.whenReleased(new FuelElevatorOff());
