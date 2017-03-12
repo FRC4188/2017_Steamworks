@@ -37,7 +37,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     			outputMin = 0.15;
     			break;
     		case PRACTICE:
-    			outputMin = 0.35;
+    			outputMin = 0.15;
     			break;
     		case COMPETITION:
     			outputMin = 0.35;
@@ -77,10 +77,12 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	switch (driveType) {
     	case turnToAngle:
         	SmartDashboard.putString("Setting PIDType =", "turnToAngle");
+        	outputMin = .15;
         	break;
     
     	case driveToDistance:
         	SmartDashboard.putString("Setting PIDType =", "driveToDistance");
+        	outputMin = .35;
         	break;
     	case driveToDistanceTwoEncoder:
     		SmartDashboard.putString("Setting PIDType =", "driveToDistance");

@@ -150,6 +150,11 @@ public class OI {
 		copilot7.whenPressed(new IntakeOn("reverse"));  
 		copilot9.whenPressed(new IntakeOff());
 
+		 pilot6.whileHeld(new GearRelease());
+	     pilot6.whenReleased(new GearOff());
+	     pilot5.whileHeld(new GearRetract());
+         pilot5.whenReleased(new GearOff());
+	
 //		copilot8.whileHeld(new RunFuelElevator());
 //		copilot8.whenReleased(new FuelElevatorOff());
 //		copilot2.toggleWhenPressed(new IntakeOn());

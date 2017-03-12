@@ -42,10 +42,10 @@ public class TurnRight extends Command {
 			KI = 0.002;
 			KD = 0.002;
 
-		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){
-			KP = 0.01;
-			KI = 0.0;
-			KD = 0.0;
+		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
+			KP = 0.008;
+			KI = 0.0006;
+			KD = 0.0000;
 		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 			KP = 0.01;
 			KI = 0.0;
@@ -68,6 +68,8 @@ public class TurnRight extends Command {
 		gyroPIDController.setAbsoluteTolerance(tolerance);
 
 		gyroPIDController.setSetpoint(Robot.getAngleToGoal());
+
+		//gyroPIDController.setSetpoint(10);
 
 		gyroPIDController.enable();
 

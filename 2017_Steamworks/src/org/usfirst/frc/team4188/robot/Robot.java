@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
 	// PRACTICE is the 2.0 robot that's similar to COMPETITION
 	// SKETCHY is the 1.0 robot
 	public enum WhichBot { COMPETITION, PRACTICE, SKETCHY }
-	public static WhichBot whichBot = WhichBot.SKETCHY;
+	public static WhichBot whichBot = WhichBot.PRACTICE;
 
 	public static DriveTrain drivetrain;
 	public static CameraLights cameraLights;
@@ -64,35 +64,28 @@ public class Robot extends IterativeRobot {
 	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
-	public static  AnalogInput seatMotorHallSensor;
+	//public static  AnalogInput seatMotorHallSensor;
 	public static Shooter shooter;
 	public static FuelElevator fuelElevator;
-	public static Shooter spinTurret;
-	public static GripPipeline vision;
-	private static Mat mat;
-	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
-
-	public static VisionThread visionThread;
-	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
-	public static final double AIM_ERROR = 21.904;
+	//public static Shooter spinTurret;
 	
-
-	public static final double WIDTH_BETWEEN_TARGET = 8.5;
-	public static final double CAMERA_WIDTH = 640;
+	private static GripPipeline vision;
+	private static Mat mat;
+	private static double angleToGoal, lengthBetweenContours, distanceFromTarget;
+	private static VisionThread visionThread;
+	private static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
+	private static final double CAMERA_OFFSET = 21.904-2.5;
+	private static final double WIDTH_BETWEEN_TARGET = 8.5;
+	private static final double CAMERA_WIDTH = 640;
+//	private static final int IMG_WIDTH = 640;
+//	private static final int IMG_HEIGHT = 480;
+	
 	Command autonomousCommand;
-	//Command gearAutonomous;
-	//SendableChooser<GearAutonomous> autoChooser;
 	SendableChooser autoChooser;
-
-
-	private static final int IMG_WIDTH = 640;
-	private static final int IMG_HEIGHT = 480;
 	NetworkTable table;
 
-
-
 	public Robot() {
-		table = NetworkTable.getTable("GRIP/myContoursReport");
+		table = NetworkTable.getTable("GRIP/targets");
 	}
 
 	/*
@@ -108,23 +101,23 @@ public class Robot extends IterativeRobot {
 		drivetrain = new DriveTrain();
 		cameraLights = new CameraLights();
 		cameraLights.cameraLightsOn();
+		intake = new BallIntake();
+		fuelElevator = new FuelElevator();
+
 		//gearAutonomous = new GearAutonomous();
 		climber.init();
 		shooter.init();
-		intake = new BallIntake();
-		shooter = new Shooter();
-		fuelElevator = new FuelElevator();
 		fuelElevator.init();
-		spinTurret = new Shooter();
+		//spinTurret = new Shooter();
 		drivetrain.init();
 		oi = new OI();
 
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Gear Center Auto :|", new GearAutonomous("MIDDLE"));
+		autoChooser.addDefault("Gear Center Auto :|", new GearAutonomous("RIGHT"));
 		autoChooser.addObject("Gear Right Auto :|", new GearAutonomous("RIGHT"));
 		autoChooser.addObject("Gear Left Auto :|", new GearAutonomous("LEFT"));
 
-		SmartDashboard.putData("CHOOSE AN AUTONOMOUS", autoChooser);
+		SmartDashboard.putData("CHOOSE AN AUTONOMOUS MODE", autoChooser);
 		SmartDashboard.putString("Which Bot", whichBot.toString());
 		RobotMap.gyro.calibrate();
 
@@ -136,7 +129,7 @@ public class Robot extends IterativeRobot {
 		camera.getProperty("brightness").set(0);
 
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
-			double targetAngle = 0;
+			double error = 0;
 			
 			// Get a CvSink. This will capture Mats from the camera
 			CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -171,10 +164,8 @@ public class Robot extends IterativeRobot {
 
 					Imgcodecs.imwrite("output.png", mat);
 
-					if(centerX.length == 2){
-						// subtracts one another to get length in pixels
-						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
-					}
+					// subtracts one another to get length in pixels
+					lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
 
 					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
 					//get distance from target
@@ -191,20 +182,20 @@ public class Robot extends IterativeRobot {
 					
 						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
-						targetAngle = Math.atan(distanceFromCenterInch / distanceFromTarget);
-						targetAngle = Math.toDegrees(targetAngle);
+						error = Math.atan(distanceFromCenterInch / distanceFromTarget);
+						error = Math.toDegrees(error);
 						
 						//AIM_ERROR on chassis 1.0 is 21.904
 
 						//if angle to goal is negative, add the aim error ; else subtract the aim Error
-						if(targetAngle < 0){
-							targetAngle += AIM_ERROR;
+						if(error < 0){
+							error += CAMERA_OFFSET;
 						}else{
-							targetAngle -= AIM_ERROR;
+							error -= CAMERA_OFFSET;
 						}
-					 setAngleToGoal(targetAngle);
+					 setAngleToGoal(error);
 				
-					SmartDashboard.putString("Target_Angle", String.format("%6.1f", targetAngle));
+					SmartDashboard.putString("Aim_Error", String.format("%6.1f", error));
 				}
 		
 				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
