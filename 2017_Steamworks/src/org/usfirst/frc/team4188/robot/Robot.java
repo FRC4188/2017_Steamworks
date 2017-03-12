@@ -128,6 +128,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Which Bot", whichBot.toString());
 		RobotMap.gyro.calibrate();
 
+		//camera settings
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.getProperty("contrast").set(10);
 		camera.getProperty("sharpness").set(100);
