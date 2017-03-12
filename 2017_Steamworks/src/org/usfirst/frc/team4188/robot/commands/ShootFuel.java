@@ -9,10 +9,14 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShootFuel extends Command {
 
-    public ShootFuel() {
+	public String direction;
+	
+    public ShootFuel(String direction) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	this.direction = direction;
     }
+    
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -20,7 +24,11 @@ public class ShootFuel extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooter.shootFuel(0.75);
+    	if(direction.equalsIgnoreCase("forward"))
+    	Robot.shooter.shootFuel(0.4);
+    	else if (direction.equalsIgnoreCase("reverse")){
+    		Robot.shooter.shootFuel(-0.4);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

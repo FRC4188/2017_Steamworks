@@ -9,9 +9,12 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class IntakeOn extends Command {
 
-    public IntakeOn() {
+    private String direction;
+
+	public IntakeOn(String direction) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	this.direction = direction;
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +23,10 @@ public class IntakeOn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.IntakeOn();
+    	if(direction.equals("forward"))
+    		Robot.intake.IntakeOn();
+    	else if(direction.equalsIgnoreCase("reverse"))
+    		Robot.intake.IntakeReverse();
     }
 
     // Make this return true when this Command no longer needs to run execute()

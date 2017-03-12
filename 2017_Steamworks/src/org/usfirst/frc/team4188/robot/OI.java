@@ -141,15 +141,26 @@ public class OI {
 		pilot9.whenPressed(new TurnRight(Robot.getAngleToGoal()));
 		pilot10.whenPressed(new TurnRight(90));
 		
-		copilot7.whileHeld(new ShootFuel());
-		copilot8.whileHeld(new RunFuelElevator());
-		copilot8.whenReleased(new FuelElevatorOff());
-		copilot2.toggleWhenPressed(new IntakeOn());
-		copilot3.toggleWhenPressed(new IntakeOff());
-		copilot6.whileHeld(new GearRelease());
-		copilot6.whenReleased(new GearOff());
-		copilot5.whileHeld(new GearRetract());
-		copilot5.whenReleased(new GearOff());
+		//buttons 5-8 (new gear pickup)
+		copilot6.whileHeld(new ShootFuel("forward"));
+		copilot8.whileHeld(new ShootFuel("reverse"));
+		
+		copilot5.whenPressed(new IntakeOn("forward"));
+		
+		copilot7.whenPressed(new IntakeOn("reverse"));  
+		copilot9.whenPressed(new IntakeOff());
+
+//		copilot8.whileHeld(new RunFuelElevator());
+//		copilot8.whenReleased(new FuelElevatorOff());
+//		copilot2.toggleWhenPressed(new IntakeOn());
+//		copilot3.toggleWhenPressed(new IntakeOff());
+//		copilot6.whileHeld(new GearRelease());
+//		copilot6.whenReleased(new GearOff());
+//		copilot5.whileHeld(new GearRetract());
+//		copilot5.whenReleased(new GearOff());
+//		
+		//add in a button for intake, intake reverse
+		//add in shooter stuffs
 
 	}
 
