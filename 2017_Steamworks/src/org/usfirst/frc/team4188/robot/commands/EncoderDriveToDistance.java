@@ -24,7 +24,7 @@ public class EncoderDriveToDistance extends Command {
     double speed;
 	public EncoderDriveToDistance(double distance, double speed) {
     	this.distance = distance;
-    	//this.speed = -speed;
+    	this.speed = -speed;
     	requires(Robot.drivetrain);
     }
 
@@ -32,7 +32,6 @@ public class EncoderDriveToDistance extends Command {
     protected void initialize() {
     	
     	CHSRobotDrive.setPIDType(PIDType.driveToDistanceTwoEncoder);
-    	drivePID = new PIDController(KP,KI,KD,RobotMap.rearRightDriveMotor, RobotMap.driveBase);
     	drivePID.setAbsoluteTolerance(1.0);
     	drivePID.setSetpoint(distance);
     	drivePID.enable();

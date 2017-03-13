@@ -7,20 +7,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class IntakeOn extends Command {
+public class RunGearManipulationUpDown extends Command {
 
-    public IntakeOn() {
+    public RunGearManipulationUpDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.gearManipulation);
     }
 
-    // Called just before this Command runs the first time
+ // Called just before this Command runs the first time
     protected void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intake.IntakeOn();
+    	//Robot.gearManipulation.runGearUpDown(-Robot.oi.copilotJoystick.getY()*Robot.oi.copilotJoystick.getThrottle());
+    	Robot.gearManipulation.runGearUpDown(Robot.oi.copilotController.getRawAxis(1));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,3 +39,4 @@ public class IntakeOn extends Command {
     protected void interrupted() {
     }
 }
+

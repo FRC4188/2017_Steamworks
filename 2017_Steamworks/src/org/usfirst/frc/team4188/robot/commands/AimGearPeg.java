@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class TurnRight extends Command {
+public class AimGearPeg extends Command {
 	double finalAngle;
 
 	public PIDController gyroPIDController;
@@ -30,7 +30,7 @@ public class TurnRight extends Command {
 
 	private int initCount = 0, executeCount = 0;
 
-	public TurnRight(double tolerance) {
+	public AimGearPeg(double tolerance) {
 		// Use requires() here to declare subsystem dependencies
 		if (Robot.drivetrain == null) {
 			throw new NullPointerException("Robot.drivetrain is null, Vineeth.");

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4188.robot.subsystems;
 
 import org.usfirst.frc.team4188.robot.RobotMap;
+import org.usfirst.frc.team4188.robot.commands.RunGearManipulationUpDown;
 
 import com.ctre.CANTalon;
 
@@ -13,8 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GearManipulation extends Subsystem {
 
 
-		CANTalon motorLeftRight = RobotMap.gearLeftRight;
-		CANTalon motorUpDown = RobotMap.gearUpDown;
+		CANTalon gearMotorUpDown = RobotMap.shooterTalon;
 		DoubleSolenoid gearRelease = RobotMap.gearRelease;
 
 	    // Put methods for controlling this subsystem
@@ -24,7 +24,7 @@ public class GearManipulation extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new RunGearManipulationUpDown());
     }
     
     public void runGearUp(double speed){
@@ -50,18 +50,14 @@ public class GearManipulation extends Subsystem {
     	motorUpDown.set(0);
     }
     public void runGearUpDown(double speed){
-    	motorUpDown.set(speed);
+    	gearMotorUpDown.set(speed);
     	
     }
-    public void runGearLeftRight(double speed){
-    	motorLeftRight.set(speed);
-    }
+  
     public void stopGearUpDown(){
-    	motorUpDown.set(0);
+    	gearMotorUpDown.set(0);
     }
-    public void stopGearRightLeft(){
-    	motorLeftRight.set(0);
-    }
+   
     public void deployV(){
     	gearRelease.set(DoubleSolenoid.Value.kForward);
    

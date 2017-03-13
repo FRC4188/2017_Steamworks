@@ -16,14 +16,14 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     //static final double minValue = 0.17;
 	protected RobotDrive robotDrive2;
 	protected RobotDrive robotDrive3;
-	private static double outputMin = 0.35;
-	
-//    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
-//    	super( frontLeft,rearLeft,frontRight, rearRight);
-//    }
+	private static double outputMin;
+    public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
+    	super( frontLeft,rearLeft,frontRight, rearRight);
+    }
     
     public CHSRobotDrive(SpeedController rearLeft, SpeedController frontLeft, SpeedController middleLeft,SpeedController rearRight,
     		SpeedController frontRight, SpeedController middleRight){
+    	
     	super(frontLeft, frontRight);
     	robotDrive2 = new RobotDrive(rearLeft, rearRight);
     	
@@ -61,6 +61,7 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	
     }
     
+    private static final double OUTPUT_MIN = 0.35;
     // at 0.05, even the motors with no gears could barely run.
     // same at 0.1
 
@@ -91,26 +92,27 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     }
        
     public void pidWrite(double output){
-    	if (Math.abs(output)< outputMin) {
-    		output = outputMin * Math.signum(output);
+    	if (Math.abs(output)< OUTPUT_MIN) {
+    		output = OUTPUT_MIN * Math.signum(output);
     	}
     	SmartDashboard.putNumber("PID", output);
     	switch(driveType){
-    	  case turnToAngle:
+    	case turnToAngle:
     	
     		super.setLeftRightMotorOutputs(output,-output);
+    		
         	robotDrive2.setLeftRightMotorOutputs(output, -output);
-        	robotDrive3.setLeftRightMotorOutputs(output,-output);
-        	break;
-        	
-    	  case driveToDistance:
+        	robotDrive3.setLeftRightMotorOutputs(-output,output);
+    	
+    	case driveToDistance:
     		
         	super.setLeftRightMotorOutputs(output,output);
+       
         	robotDrive2.setLeftRightMotorOutputs(output,output);
         	robotDrive3.setLeftRightMotorOutputs(output, output);
-            break;
+        break;
         
-    	  case driveToDistanceTwoEncoder:
+    	case driveToDistanceTwoEncoder:
     		double outputConstant;
     		if(Robot.drivetrain.getLeftEncoderDistance()<Robot.drivetrain.getRightEncoderDistance()){
     			outputConstant = 1.05;
@@ -125,6 +127,11 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     		
     		robotDrive2.setLeftRightMotorOutputs(outputConstant*output, output);
     		robotDrive3.setLeftRightMotorOutputs(outputConstant*output, output);
+        
+    	
+    		
+    		
+        
     	}
     }
 

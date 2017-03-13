@@ -53,17 +53,20 @@ public class AimHighGoal extends Command {
     	//SmartDashboard.putNumber("Dynamic Change Angle",Robot.getAimError());
     	//angle = 90.0;
     	
-        Robot.drivetrain.gyroReset();
-
+    	Robot.drivetrain.gyroReset();
 		gyroPIDController.setAbsoluteTolerance(tolerance);
+		SmartDashboard.putNumber("SETPOINT", angle);
 		gyroPIDController.setSetpoint(angle);
-		gyroPIDController.enable();
+		gyroPIDController.enable();	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putString("Aim Status", "Running");
-   }
+   
+    	
+		
+    }
     
        public double createFinalAngle(double dynamicChangeAngle){
     	if(a == 0){

@@ -25,7 +25,7 @@ public class GearAutonomous extends CommandGroup {
 			Robot.drivetrain.resetEncoders();
 			/////addSequential(new AutoDrive(0,0.8,0.28),3);		 
 			addSequential(new AutoDrive(0,0.85,0.40));		//turn 
-			addSequential(new TurnRight(Robot.getAngleToGoal()));	//align with gear Peg
+			addSequential(new AimGearPeg(Robot.getAngleToGoal()));	//align with gear Peg
 			Robot.drivetrain.resetEncoders();
 			
 			addSequential(new EncoderDriveToDistance(8.8,1.0));	//move forward  about 7.5 feet
@@ -33,7 +33,7 @@ public class GearAutonomous extends CommandGroup {
 			Robot.drivetrain.resetEncoders();
 			//addSequential(new EncoderDriveToDistance(8.8,1.0),3);
 			addSequential(new EncoderDriveToDistance((6.7), 1.0));	//move forward about 12.5 feet
-			addSequential(new TurnRight(Robot.getAngleToGoal()));	//align with gear Peg
+			addSequential(new AimGearPeg(Robot.getAngleToGoal()));	//align with gear Peg
 			
 			Robot.drivetrain.resetEncoders();
 			addSequential(new EncoderDriveToDistance((.7), 1.0));	//move forward about 12.5 feet
@@ -54,11 +54,11 @@ public class GearAutonomous extends CommandGroup {
 			Robot.drivetrain.resetEncoders();
 			addSequential(new AutoDrive(0,-0.8,0.50),6);		//turn 
 			addSequential(new EncoderDriveToDistance(8.8,1.0),2);	//move forward  about 7.5 feet
-			addSequential(new TurnRight(Robot.getAngleToGoal()));	//align with gear Peg
+			addSequential(new AimGearPeg(Robot.getAngleToGoal()));	//align with gear Peg
 			Robot.drivetrain.resetEncoders();
 			addSequential(new EncoderDriveToDistance((9.22), 1.0),3);	//move forward about 12.5 feet
 			
-	SmartDashboard.putString("Auto Version","Left" );																
+	SmartDashboard.putString("Auto Version", position );																
 			
 		}
 	}

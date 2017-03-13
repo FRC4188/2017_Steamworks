@@ -60,16 +60,15 @@ public class Robot extends IterativeRobot {
 	public static CameraLights cameraLights;
 	public static OI oi;
 	public static GearManipulation gearManipulation;
-
+	
 	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
-	//public static  AnalogInput seatMotorHallSensor;
+	public static  AnalogInput seatMotorHallSensor;
 	public static Shooter shooter;
 	public static FuelElevator fuelElevator;
-	//public static Shooter spinTurret;
-	
-	private static GripPipeline vision;
+	public static Shooter spinTurret;
+	public static GripPipeline vision;
 	private static Mat mat;
 	private static double angleToGoal, lengthBetweenContours, distanceFromTarget;
 	private static VisionThread visionThread;
@@ -87,14 +86,18 @@ public class Robot extends IterativeRobot {
 	public Robot() {
 		table = NetworkTable.getTable("GRIP/targets");
 	}
+	
+	//private VisionThread visionThread;
+	
 
-	/*
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	public void robotInit() {
+    /**
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
+     */
+    public void robotInit() {
+		oi = new OI();
 		RobotMap.init();
-
+		
 		shooter = new Shooter();
 		climber = new Climber();
 		gearManipulation = new GearManipulation();
@@ -113,9 +116,12 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Gear Center Auto :|", new GearAutonomous("RIGHT"));
-		autoChooser.addObject("Gear Right Auto :|", new GearAutonomous("RIGHT"));
-		autoChooser.addObject("Gear Left Auto :|", new GearAutonomous("LEFT"));
+		autoChooser.addObject("Vision based Gear Center Auto :|", new GearAutonomous("RIGHT"));
+		autoChooser.addObject("Vision based Gear Right Auto :|", new GearAutonomous("RIGHT"));
+		autoChooser.addObject("Vision based Gear Left Auto :|", new GearAutonomous("LEFT"));
+		autoChooser.addObject("Gear Right Auto", new GearAutonomousRight());
+	    autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
+	    autoChooser.addDefault("Gear Center Auto", new GearAutonomousMiddle());
 
 		SmartDashboard.putData("CHOOSE AN AUTONOMOUS MODE", autoChooser);
 		SmartDashboard.putString("Which Bot", whichBot.toString());
@@ -163,27 +169,32 @@ public class Robot extends IterativeRobot {
 					SmartDashboard.putBoolean("Found two rectangles", true);
 
 					Imgcodecs.imwrite("output.png", mat);
-
-					// subtracts one another to get length in pixels
-					lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
-
+					
+						if(centerX.length == 2){
+							// subtracts one another to get length in pixels
+							lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);         						
+						}
+					
 					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
-					//get distance from target
-
+//get distance from target
+					
 					distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
 					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
-
+					
 					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
-					//get Angle
-
-					double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
-	
+//get Angle     						
+					
+					if(centerX.length == 2){
+						double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						// Converts pixels to inches using the constant from above.
 					
 						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
 						double distanceFromCenterInch = distanceFromCenterPixels * constant;
-						error = Math.atan(distanceFromCenterInch / distanceFromTarget);
-						error = Math.toDegrees(error);
+						// math brought to you buy Chris and Jones
+						angleToGoal = Math.atan(distanceFromCenterInch / distanceFromTarget);
+						angleToGoal = Math.toDegrees(angleToGoal);
+						 
+						//AIM_ERROR on chassis 1.0 is 21.904
 						
 						//AIM_ERROR on chassis 1.0 is 21.904
 
@@ -201,6 +212,7 @@ public class Robot extends IterativeRobot {
 				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
 				// Give the output stream a new image to display
 				outputStream.putFrame(mat);
+			}
 			}
 		});
 
@@ -237,14 +249,14 @@ public class Robot extends IterativeRobot {
 	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
-	public void autonomousInit() {
-		autonomousCommand = (Command) autoChooser.getSelected();
-		Robot.drivetrain.resetEncoders();
-
-/*		String autoSelected = SmartDashboard.getString("Select an Auto", "Gear Middle");
-		switch(autoSelected){
-		case "Gear Right :|":
-			autonomousCommand = new GearAutonomous("RIGHT");
+    public void autonomousInit() {
+        autonomousCommand = (Command) autoChooser.getSelected();
+        Robot.drivetrain.resetEncoders();
+        
+		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		switch(autoSelected) {
+		case "My Auto":
+			autonomousCommand = new MyAutoCommand();
 			break;
 		case "Gear Left :|":
 			autonomousCommand = new GearAutonomous("LEFT");
@@ -256,54 +268,108 @@ public class Robot extends IterativeRobot {
 		}
 */		if (autonomousCommand != null) autonomousCommand.start();
 
-	}
+    /**
+     * This function is called periodically during autonomous
+     */
+    }
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+        Robot.drivetrain.getRightEncoderDistance();
+        Robot.drivetrain.getLeftEncoderDistance();
+      //gearAutonomous.start();
+     //robotVision.periodic();
+        
+    }
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-		Robot.drivetrain.getRightEncoderDistance();
-		Robot.drivetrain.getLeftEncoderDistance();
-		//gearAutonomous.start();
-
-	}
+	
+	
 
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		//if (autonomousCommand != null) autonomousCommand.cancel();
-		//}
-		Robot.drivetrain.setRampRate(12/0.1);//MaxVoltage/rampTime was 12/0.2
-		Robot.drivetrain.resetEncoders();
-	}
+        // teleop starts running. If you want the autonomous to 
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        //if (autonomousCommand != null) autonomousCommand.cancel();
+    //}
+    	Robot.drivetrain.setRampRate(12/0.1);//MaxVoltage/rampTime was 12/0.2
+    	Robot.drivetrain.resetEncoders();
+    }
 
-	/**
-	 * This function is called periodically during operator control
-	 */
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-		Robot.drivetrain.getRightEncoderDistance();
-		Robot.drivetrain.getLeftEncoderDistance();
-
-		SmartDashboard.putBoolean("running", true);
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+        Robot.drivetrain.getRightEncoderDistance();
+        Robot.drivetrain.getLeftEncoderDistance();
+        SmartDashboard.putBoolean("running", true);
 		SmartDashboard.putString("Gyro", String.format("%5.1f", RobotMap.gyro.getAngle()));
-	}
-
-	/**
-	 * This function is called periodically during test mode
-	 */
-
-	public static Mat getMat(){
-
-		return mat;
-
-	}
-
-	public void testPeriodic() {
-		LiveWindow.run();
-	}
-
+        
+        //robotVision.periodic();
+        
+     /*   while(isEnabled() && isOperatorControl()){
+        	RobotMap.seatMotorHallSensor.setLimitsVoltage(3.5,5.0);
+        	SmartDashboard.putBoolean("Is it in the Window", RobotMap.seatMotorHallSensor.getInWindow());
+        	
+        	if(RobotMap.seatMotorHallSensor.getInWindow()){
+        		
+        	   RobotMap.hoodRotation.set(0);
+        		
+        	}
+        	
+        	else{
+        		RobotMap.hoodRotation.set(-1);
+        	}	
+        	
+        	RobotMap.seatMotorHallSensor.free();
+        	
+        }
+     */   
+        
+        /* boolean blockForward, blockReverse;
+        int pos = 0;
+        double speed = 1.0;
+        //Robot.shooter.counter.reset();
+        
+        while(isEnabled() && isOperatorControl()){
+        	
+        	pos = shooter.getPosition();
+        	SmartDashboard.putNumber("Position", pos);
+        	
+        	if(pos >= 175)
+        		blockForward = true;
+        	else{       		
+        		blockForward = false;	
+        	}
+        	
+        	if(pos <= 0)
+        		blockReverse = true;
+            else {
+            	blockReverse = false;
+            }
+        	
+        	if(blockForward)
+        		speed = -1;
+        	if(blockReverse)
+        		speed = 1;
+    */    	
+       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
+     SmartDashboard.putBoolean("running", true);   
+     
+    }
+    
+    /**
+     * This function is called periodically during test mode
+     */
+    
+    public static Mat getMat(){
+    	
+    	return mat;
+    	
+    }
+    
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
+    
 }
