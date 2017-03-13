@@ -13,69 +13,101 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class TurnRight extends Command {
-	double finalAngle;
+	double angle;
 
 	public PIDController gyroPIDController;
 
 	//PID tuned for practice bot
-	private static final double KP = 0.01;//0.015
-	private static final double KI = 0.0000;//0.0
-	private static final double KD = 0.000;//0.0
+	private  double KP = 0.0;
+	private  double KI = 0.0;
+	private  double KD = 0.0;
 
-	private double angle;
-	private static final double tolerance = 1.0; // to within 1.0 degree
+	private long start = 0l;
+	private static final double tolerance = 0.25; // to within 1.0 degree
+	// private static final int ONE = 1;
+	// private static final int TWO = 2;
+	// private static final int THREE = 3;
 
-    public TurnRight(double angle) {
-      // Use requires() here to declare subsystem dependencies
-			if (Robot.drivetrain == null) {
-				throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
-			}
-    	requires(Robot.drivetrain);
-			this.angle = angle;
-			CHSRobotDrive.setPIDType(PIDType.turnToAngle);
-    }
+	private int initCount = 0, executeCount = 0;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	SmartDashboard.putString("Aim Status", "Initializing");
-    	SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
+	public TurnRight(double setpoint) {
+		// Use requires() here to declare subsystem dependencies
+		if (Robot.drivetrain == null) {
+			throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
+		}
+		this.angle = setpoint; 
+		requires(Robot.drivetrain);
 
-    	angle = Robot.getAngleToGoal();
-    	Robot.drivetrain.gyroReset();
+		if(Robot.whichBot == Robot.WhichBot.SKETCHY){
+			KP = 0.02;
+			KI = 0.002;
+			KD = 0.002;
 
-     	SmartDashboard.putNumber("SETPOINT", angle);
+		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
+//			KP = 0.008;
+//			KI = 0.0006;
+//			KD = 0.0000;
+			
+			KP = 0.015;
+			KI = 0.0002;
+			KD = 0.0;
+		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
+			KP = 0.02;
+			KI = 0.0;
+			KD = 0.0;
+		}
+	}
 
-     	gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
-     	gyroPIDController.setAbsoluteTolerance(tolerance);
+	// Called just before this Command runs the first time
+	protected void initialize() {
 
-     	gyroPIDController.setSetpoint(90);
+		this.start = System.currentTimeMillis();
 
-     	gyroPIDController.enable();
-    }
+		SmartDashboard.putString("Aim Status", "Initializing");
+		SmartDashboard.putString("Control Mode", "Left = " + RobotMap.frontLeftDriveMotor.getControlMode());;
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	SmartDashboard.putString("Aim Status", "Running");
-    	SmartDashboard.putString("Output Voltage", String.format("Left = %7.3f, Right = %7.3f",RobotMap.frontLeftDriveMotor.getOutputVoltage(),RobotMap.frontRightDriveMotor.getOutputVoltage()));
-    }
+		Robot.drivetrain.gyroReset();
+		CHSRobotDrive.setPIDType(PIDType.turnToAngle);
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	boolean onTarget = gyroPIDController.onTarget();
-    	SmartDashboard.putString("Aim Status", "On Target =" + onTarget) ;
-    	return onTarget;
-    }
+		gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
+		gyroPIDController.setAbsoluteTolerance(tolerance);
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	gyroPIDController.disable();
-      gyroPIDController.free();
-			// Set the motors to 0 (stop them)
-    }
+		gyroPIDController.setSetpoint(this.angle);
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+		//gyroPIDController.setSetpoint(10);
+
+		gyroPIDController.enable();
+
+		initCount++;
+		SmartDashboard.putNumber("Init Count", initCount);
+	}
+
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		boolean onTarget = gyroPIDController.onTarget();
+		SmartDashboard.putString("Aim Status", "On Target =" + onTarget) ;
+		return onTarget;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+		gyroPIDController.disable();
+		gyroPIDController.free();
+
+		long elapsed = System.currentTimeMillis()-start; //time that the PID has been running
+		SmartDashboard.putNumber("Turn Right Elapsed", elapsed);
+		//RobotMap.driveBase.stopMotor();
+		// Set the motors to 0 (stop them)
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		end();
+	}
 }

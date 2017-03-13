@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class StopGearUpDown extends Command {
+public class IntakeReverse extends Command {
 
-    public StopGearUpDown() {
+    public IntakeReverse() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -20,7 +20,7 @@ public class StopGearUpDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.gearManipulation.stopGearUpDown();
+    	Robot.intake.IntakeReverse();
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -7,20 +7,21 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class RunGearLeftRight extends Command {
+public class RunGearManipulationUpDown extends Command {
 
-    public RunGearLeftRight() {
+    public RunGearManipulationUpDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
-    // Called just before this Command runs the first time
+ // Called just before this Command runs the first time
     protected void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.gearManipulation.runGearLeftRight(Robot.oi.copilotJoystick.getX()*Robot.oi.copilotJoystick.getThrottle());
+    	//Robot.gearManipulation.runGearUpDown(-Robot.oi.copilotJoystick.getY()*Robot.oi.copilotJoystick.getThrottle());
+    	Robot.gearManipulation.runGearUpDown(Robot.oi.copilotController.getRawAxis(1));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,3 +38,4 @@ public class RunGearLeftRight extends Command {
     protected void interrupted() {
     }
 }
+

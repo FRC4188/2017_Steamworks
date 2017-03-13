@@ -5,8 +5,10 @@ import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ManualDrive extends Command {
 	CHSJoystick pilotController = Robot.oi.pilotController;
 	CHSJoystick pilotJoystick = Robot.oi.pilotJoystick;
+	XboxController pilotXboxSample = Robot.oi.pilotXboxSample;
 	
     public ManualDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -29,7 +32,19 @@ public class ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(0), pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0, 0.0);
+    
     	
+    	double rotateConstant = 0.85;
+    	if(pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5>0 && !((pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5)>0)){
+    		rotateConstant = 0.85+(0.15*(pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5)) ;
+    	}
+    	if((pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5>0) && !((pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5)>0)){
+    		rotateConstant = 0.85-(0.35*(pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5));
+    	}
+    	Robot.drivetrain.arcadeDrive(pilotXboxSample.getY(Hand.kLeft), -pilotXboxSample.getX(Hand.kRight)*rotateConstant, 1.0);
+    	
+    	
+    	/**	
     	if(pilotController.getIsXbox()){
     	Robot.drivetrain.arcadeDrive(-pilotController.getRawAxis(1), -pilotController.getRawAxis(4)*0.85 , 1.0);
     	}
@@ -46,6 +61,10 @@ public class ManualDrive extends Command {
     		Robot.drivetrain.arcadeDrive(-pilotController.getYOutput(), rotateValue, pilotController.getThrottle());
     	
     	}
+    	**/
+    	
+    	
+    	
     	//Robot.drivetrain.mecanumDrive(pilotJoystick.getX(), pilotJoystick.getY(), pilotJoystick.getTwist(), pilotJoystick.getThrottle(), 0 );
     	
     									// **************Field Oriented*************//
