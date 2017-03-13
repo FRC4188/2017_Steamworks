@@ -6,6 +6,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -49,7 +50,7 @@ public class RobotMap {
 	public static CHSRobotDrive driveBase;
 	public static RobotDrive DriveBase;
 	
-	public static ADXRS450_Gyro gyro;
+	public static AnalogGyro gyro;
 	
 	public static Relay cameraLights;
 	public static Relay intakeRelay;
@@ -70,7 +71,7 @@ public class RobotMap {
 	
 		public static void init() {
 		// TODO Auto-generated method stub
-		gyro = new ADXRS450_Gyro();
+		gyro = new AnalogGyro(0);
 		
 		cameraLights= new Relay(0);
 		intakeRelay = new Relay(1);
@@ -106,7 +107,7 @@ public class RobotMap {
 		gearShift = new DoubleSolenoid(0,1);
 		gearRelease = new DoubleSolenoid(2,3);
 		
-		seatMotorHallSensor = new AnalogTrigger(0);
+		//seatMotorHallSensor = new AnalogTrigger(0);
         
 		}
 		
