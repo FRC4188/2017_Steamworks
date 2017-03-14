@@ -48,8 +48,8 @@ public class TurnRight extends Command {
 //			KI = 0.0006;
 //			KD = 0.0000;
 			
-			KP = 0.015;
-			KI = 0.0002;
+			KP = 0.010;
+			KI = 0.00001;
 			KD = 0.0;
 		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 			KP = 0.02;
