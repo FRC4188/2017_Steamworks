@@ -100,12 +100,12 @@ public class DriveTrain extends Subsystem {
 		rearLeft.setPosition(0);
 	}
 	public double getRightEncoderDistance(){
-		double distance = ((4*Math.PI)*rearRight.getPosition());
+		double distance = rearRight.getPosition();
 		SmartDashboard.putNumber("Encoder Right Distance", distance);
 		return distance;
 	}
 	public double getLeftEncoderDistance(){
-		double distance = ((4*Math.PI)*rearLeft.getPosition());
+		double distance = -rearLeft.getPosition();
 		SmartDashboard.putNumber("Encoder Left Distance", distance);
 		return distance;
 	}

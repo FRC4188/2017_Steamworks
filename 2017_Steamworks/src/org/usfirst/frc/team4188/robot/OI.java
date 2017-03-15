@@ -182,20 +182,20 @@ public class OI {
 //
 //          // pilot1.toggleWhenPressed(new IntakeOn());
 //          // pilot2.toggleWhenPressed(new IntakeOff());
-           pilot9.whenPressed(new TurnRight(Robot.getAngleToGoal()));
-           pilot6.whenPressed(new TurnRight(90));
-           pilot5.whenPressed(new TurnRight(-90));
-           
-           pilot10.whenPressed(new GyroReset());
-           
+//           pilot9.whenPressed(new TurnRight(Robot.getAngleToGoal()));
+//           pilot6.whenPressed(new TurnRight(90));
+//           pilot5.whenPressed(new TurnRight(-90));
+//           
+//           pilot10.whenPressed(new GyroReset());
+//           
 //           pilot9.whileHeld(new GearShiftIn());
 //           pilot9.whenReleased(new GearShiftOff());
 //           pilot10.whileHeld(new GearShiftOut());
 //           pilot10.whenReleased(new GearShiftOff());
            
-           pilot8.whenPressed(new CameraLightsOn());
-           pilot7.whenPressed(new CameraLightsOff());
-           //copilot1.whenPressed(new AimHighGoal(1.0));
+//           pilot8.whenPressed(new CameraLightsOn());
+//           pilot7.whenPressed(new CameraLightsOff());
+//           //copilot1.whenPressed(new AimHighGoal(1.0));
           
            /**
            copilot1.whileHeld(new ShootFuel());
@@ -210,23 +210,26 @@ public class OI {
            copilot11.whenPressed(new AimHighGoal(1.0));
       
            **/
-           
-           copilot7.whileHeld(new ShootFuel());
-           copilot8.whileHeld(new RunFuelElevator());
-           copilot8.whenReleased(new FuelElevatorOff());
-          
-           /*
-           copilot2.toggleWhenPressed(new IntakeOn());
-           copilot3.toggleWhenPressed(new IntakeOff());
-           */
-           copilot2.whileHeld(new IntakeOn());
-           copilot2.whenReleased(new IntakeOff());
-           
-           copilot6.whileHeld(new GearRelease());
-           copilot6.whenReleased(new GearOff());
-           copilot5.whileHeld(new GearRetract());
-           copilot5.whenReleased(new GearOff());
-           
+
+        pilot5.whenPressed(new DriveToDistance(10, 0.6));
+        pilot6.whenPressed(new DriveStraightToDistance(10,0.6));
+        
+//           copilot7.whileHeld(new ShootFuel());
+//           copilot8.whileHeld(new RunFuelElevator());
+//           copilot8.whenReleased(new FuelElevatorOff());
+//          
+//           /*
+//           copilot2.toggleWhenPressed(new IntakeOn());
+//           copilot3.toggleWhenPressed(new IntakeOff());
+//           */
+//           copilot2.whileHeld(new IntakeOn());
+//           copilot2.whenReleased(new IntakeOff());
+//           
+//           copilot6.whileHeld(new GearRelease());
+//           copilot6.whenReleased(new GearOff());
+//           copilot5.whileHeld(new GearRetract());
+//           copilot5.whenReleased(new GearOff());
+//           
        }
    
 		
