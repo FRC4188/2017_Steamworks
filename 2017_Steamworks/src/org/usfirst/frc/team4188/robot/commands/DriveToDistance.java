@@ -18,19 +18,22 @@ public class DriveToDistance extends Command {
 	private static final double KP = 0.03;
 	private static final double KI = 0.0;
 	private static final double KD = 0.0;
-	PIDController drivePID = new PIDController(KP,KI,KD,Robot.robotVision, RobotMap.driveBase);
-    
+	PIDController drivePID;
+   
     double distance;
     double speed;
 	public DriveToDistance(double distance, double speed) {
     	this.distance = distance;
-    	this.speed = speed;
+    	this.speed = -speed;
     	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	CHSRobotDrive.setPIDType(PIDType.driveToDistance);
+    	Robot.drivetrain.resetEncoders();
+    	
+    	CHSRobotDrive.setPIDType(PIDType.driveToDistanceTwoEncoder);
+    	drivePID = new PIDController(KP,KI,KD,RobotMap.rearRightDriveMotor, RobotMap.driveBase);
     	drivePID.setAbsoluteTolerance(1.0);
     	drivePID.setSetpoint(distance);
     	drivePID.enable();
@@ -49,10 +52,12 @@ public class DriveToDistance extends Command {
     protected void end() {
     	drivePID.disable();
     	drivePID.free();
-    }
+    	//Robot.drivetrain.resetEncoders();
+        }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }
