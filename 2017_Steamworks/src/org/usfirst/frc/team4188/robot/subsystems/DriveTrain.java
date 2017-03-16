@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveTrain extends Subsystem {
-    
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	CANTalon frontRight = RobotMap.frontRightDriveMotor;
@@ -109,8 +108,5 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putNumber("Encoder Left Distance", distance);
 		return distance;
 	}
-	
-	
-	
 }
 

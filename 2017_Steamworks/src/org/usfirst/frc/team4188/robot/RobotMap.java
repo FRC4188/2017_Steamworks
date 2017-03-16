@@ -72,6 +72,7 @@ public class RobotMap {
 		public static void init() {
 		// TODO Auto-generated method stub
 		gyro = new AnalogGyro(0);
+		gyro.calibrate();
 		
 		cameraLights= new Relay(0);
 		intakeRelay = new Relay(1);

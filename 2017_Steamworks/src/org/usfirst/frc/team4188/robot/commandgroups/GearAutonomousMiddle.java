@@ -1,41 +1,29 @@
 package org.usfirst.frc.team4188.robot.commandgroups;
 
 import org.usfirst.frc.team4188.robot.Robot;
+import org.usfirst.frc.team4188.robot.commands.AutoDrive;
+import org.usfirst.frc.team4188.robot.commands.Delay;
+import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4188.robot.commands.TurnRight;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class GearAutonomousMiddle extends CommandGroup {
-
+public double angle = Robot.getAngleToGoal();
+	
     public GearAutonomousMiddle() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
+    //distance, speed
+    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6)); //drive about 4 feet 
+    	addSequential(new Delay(0.5));
+    	System.out.println(angle);
+    	addSequential(new TurnRight(angle));
+    	addSequential(new DriveStraightToDistance(20.0/12.0, 0.6)); //drive about 2 feet
 
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-    	
-    	
-    	
-    	
-    	
-    	//addSequential(new EncoderDriveToDistance((78.0/12.0), 0.8));
-    	addSequential(new DriveToDistance(70.0/12.0,0.4));
-    	//addSequential(new EncoderDriveToAngle(36, 0.8));
-    	//Robot.drivetrain.resetEncoders();
-    	//addSequential(new EncoderDriveToAngle(20,0.8));
+    
     }
 }

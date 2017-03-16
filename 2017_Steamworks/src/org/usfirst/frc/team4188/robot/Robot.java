@@ -71,8 +71,8 @@ public class Robot extends IterativeRobot {
 	
 	public static VisionThread visionThread;
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
-//	public static final double AIM_ERROR = 0;
-	public static final double AIM_ERROR = 21.904;
+	public static final double AIM_ERROR = 0.0;
+//	public static final double AIM_ERROR = 21.904;
 
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
 	public static final double CAMERA_WIDTH = 640;
@@ -121,12 +121,7 @@ public class Robot extends IterativeRobot {
         
         oi = new OI();
 		
-        
-        
-    
-        	
-        	
-        
+
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
@@ -136,7 +131,7 @@ public class Robot extends IterativeRobot {
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
       //SmartDashboard.putData("Vision2", robotVision);
-         RobotMap.gyro.calibrate();
+        
          
         // UsbCamera camera;
          // Set the resolution
@@ -196,7 +191,21 @@ public class Robot extends IterativeRobot {
 					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
 					//get Angle
 
-					double distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
+					double distanceFromCenterPixels = 0.0;
+					if (false) {
+						// target the center of the two rectangles
+					  distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
+					} else {
+						// target the center of the rightmost rectangle
+					  // figure out which rect is on the right (has greatest X value)
+					  double targetX = 0.0; // x value of the rightmost rectangle
+					  if (centerX[0] > centerX[1]) { 
+						  targetX = centerX[0];
+					  } else {
+						  targetX = centerX[1];
+					  }
+					  distanceFromCenterPixels = targetX - (CAMERA_WIDTH / 2.0);
+					}
 	
 						// Converts pixels to inches using the constant from above.
 					
@@ -343,9 +352,9 @@ Robot.angleToGoal = angleToGoal;
 	 */
     public void autonomousInit() {
 //        autonomousCommand = (Command) autoChooser.getSelected();
-        autonomousCommand = new GearAutonomousRight();
+        autonomousCommand = new GearAutonomousMiddle();
         Robot.drivetrain.resetEncoders();
-        
+       
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
@@ -396,55 +405,6 @@ Robot.angleToGoal = angleToGoal;
      
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
         
-        //robotVision.periodic();
-        
-     /*   while(isEnabled() && isOperatorControl()){
-        	RobotMap.seatMotorHallSensor.setLimitsVoltage(3.5,5.0);
-        	SmartDashboard.putBoolean("Is it in the Window", RobotMap.seatMotorHallSensor.getInWindow());
-        	
-        	if(RobotMap.seatMotorHallSensor.getInWindow()){
-        		
-        	   RobotMap.hoodRotation.set(0);
-        		
-        	}
-        	
-        	else{
-        		RobotMap.hoodRotation.set(-1);
-        	}	
-        	
-        	RobotMap.seatMotorHallSensor.free();
-        	
-        }
-     */   
-        
-        /* boolean blockForward, blockReverse;
-        int pos = 0;
-        double speed = 1.0;
-        //Robot.shooter.counter.reset();
-        
-        while(isEnabled() && isOperatorControl()){
-        	
-        	pos = shooter.getPosition();
-        	SmartDashboard.putNumber("Position", pos);
-        	
-        	if(pos >= 175)
-        		blockForward = true;
-        	else{       		
-        		blockForward = false;	
-        	}
-        	
-        	if(pos <= 0)
-        		blockReverse = true;
-            else {
-            	blockReverse = false;
-            }
-        	
-        	if(blockForward)
-        		speed = -1;
-        	if(blockReverse)
-        		speed = 1;
-    */    	
-       // shooter.hoodRotation.set(shooter.checkDirectionChange(speed));
      SmartDashboard.putBoolean("running", true);   
      
     }

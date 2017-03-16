@@ -50,7 +50,9 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     	
     }
     
-    private static final double OUTPUT_MIN = 0.23;
+//    private static final double OUTPUT_MIN = 0.23;
+  private static final double OUTPUT_MIN = 0.345;
+
     // at 0.05, even the motors with no gears could barely run.
     // same at 0.1
 

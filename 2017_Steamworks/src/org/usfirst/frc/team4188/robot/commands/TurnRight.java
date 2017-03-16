@@ -80,6 +80,7 @@ public class TurnRight extends Command {
 
 		initCount++;
 		SmartDashboard.putNumber("Init Count", initCount);
+		SmartDashboard.putNumber("Output Voltage", RobotMap.frontRightDriveMotor.getOutputVoltage());
 	}
 
 	// Called repeatedly when this Command is scheduled to run

@@ -211,9 +211,15 @@ public class OI {
       
            **/
 
-        pilot5.whenPressed(new DriveToDistance(10, 0.6));
-        pilot6.whenPressed(new DriveStraightToDistance(10,0.6));
+        pilot5.whenPressed(new DriveStraightToDistance(20, 1));
+       // pilot8.whenPressed(new DriveStraightToDistance(3, 0.6));
+        pilot7.whenPressed(new DriveStraightToDistance(2, 0.6));
         
+        //67/13.9
+//        pilot6.whenPressed(new DriveStraightToDistance(4.82,0.6));
+        	pilot6.whenPressed(new DriveStraightToDistance((60.0/13.9),0.6));
+
+        pilot10.whenPressed(new GyroReset());
 //           copilot7.whileHeld(new ShootFuel());
 //           copilot8.whileHeld(new RunFuelElevator());
 //           copilot8.whenReleased(new FuelElevatorOff());
