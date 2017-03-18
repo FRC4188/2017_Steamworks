@@ -45,7 +45,7 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 	public CHSJoystick pilotJoystick;
-	public CHSJoystick copilotController;
+	public Joystick copilotController;
 	public CHSJoystick pilotController;
 	public XboxController pilotXboxSample;
 	//0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0
@@ -94,7 +94,7 @@ public class OI {
 	//	pilotController = new CHSJoystick(0,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
 		pilotXboxSample = new XboxController(0);
 		//pilotJoystick = new CHSJoystick(0);
-		copilotController = new CHSJoystick(1,4,12,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0,-12.0,12.0,1,1.0);
+		copilotController = new Joystick(1);
 		//copilotController = new Joystick(1);
 		/*		
 		pilot1 = new JoystickButton(pilotController, 1);
