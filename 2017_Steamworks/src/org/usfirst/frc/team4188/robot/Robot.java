@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
 	
 	public static VisionThread visionThread;
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
-	public static final double AIM_ERROR = 0.0;
+	public static final double AIM_ERROR = -11.0;
 //	public static final double AIM_ERROR = 21.904;
 
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
@@ -125,9 +125,9 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
-        autoChooser.addDefault("Gear Right Auto", new GearAutonomousRight());
-        autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
-        autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
+        autoChooser.addObject("Gear Right Auto-", new GearAutonomousRight());
+        autoChooser.addObject("Gear Left Auto-", new GearAutonomousLeft());
+        autoChooser.addDefault("Gear Center Auto-", new GearAutonomousMiddle());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
       //SmartDashboard.putData("Vision2", robotVision);
@@ -351,8 +351,8 @@ Robot.angleToGoal = angleToGoal;
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-//        autonomousCommand = (Command) autoChooser.getSelected();
-        autonomousCommand = new GearAutonomousMiddle();
+        autonomousCommand = (Command) autoChooser.getSelected();
+//        autonomousCommand = new GearAutonomousMiddle();
         Robot.drivetrain.resetEncoders();
        
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");

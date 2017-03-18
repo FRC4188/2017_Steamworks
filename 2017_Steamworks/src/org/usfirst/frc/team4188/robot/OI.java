@@ -136,106 +136,58 @@ public class OI {
         pilot12 = new JoystickButton(pilotXboxSample, 12);
         SmartDashboard.putData(Scheduler.getInstance());
         
-       /** 
-       pilot1.whenPressed(new CameraLightsOn());
-       pilot2.whenPressed(new CameraLightsOff());
-          **/
-       /**  
-       pilot3.whileHeld(new GearRelease());
-       pilot3.whenReleased(new GearOff());
-       pilot4.whileHeld(new GearRetract());
-       pilot4.whenReleased(new GearOff());
-      
-       // pilot1.whileHeld(new GearRelease());
+        pilot6.whileHeld(new GearRelease());
+        pilot6.whenReleased(new GearOff());
+        pilot5.whileHeld(new GearRetract());
+        pilot5.whenReleased(new GearOff());
        
-       RunFuelElevator lift = new RunFuelElevator();
-       pilot5.whenPressed(lift);
-       pilot6.cancelWhenPressed(lift);
-       
-       //copilot7.whileHeld(new GetVisionValues());
- /**       
-       copilot9.whenPressed(new AimHighGoal(4.0));
-                  
-       pilot10.whileHeld(new IntakeOn());
-       pilot10.whenReleased(new IntakeOff());
- 
-       
-//      
-       copilot1.whenPressed(new IntakeOn());
-       copilot2.whenPressed(new IntakeOff());
-       
-       copilot3.whenPressed(lift);
-       copilot4.cancelWhenPressed(lift);
-      
-       pilot7.toggleWhenPressed(new ClimbSlow());
-       pilot8.toggleWhenPressed(new ClimbFast());
-       pilot9.toggleWhenPressed(new ClimberOff()); 
-       **/                  
-       
-//    	   pilot6.whileHeld(new GearRelease());
-//           pilot6.whenReleased(new GearOff());
-//           pilot5.whileHeld(new GearRetract());
-//           pilot5.whenReleased(new GearOff());
-//          
-//           pilot4.toggleWhenPressed(new ClimbFast());
-//           pilot3 .toggleWhenPressed(new ClimberOff());
-//
-//          // pilot1.toggleWhenPressed(new IntakeOn());
-//          // pilot2.toggleWhenPressed(new IntakeOff());
-//           pilot9.whenPressed(new TurnRight(Robot.getAngleToGoal()));
-//           pilot6.whenPressed(new TurnRight(90));
-//           pilot5.whenPressed(new TurnRight(-90));
-//           
-//           pilot10.whenPressed(new GyroReset());
-//           
-//           pilot9.whileHeld(new GearShiftIn());
-//           pilot9.whenReleased(new GearShiftOff());
-//           pilot10.whileHeld(new GearShiftOut());
-//           pilot10.whenReleased(new GearShiftOff());
-           
-//           pilot8.whenPressed(new CameraLightsOn());
-//           pilot7.whenPressed(new CameraLightsOff());
-//           //copilot1.whenPressed(new AimHighGoal(1.0));
-          
-           /**
-           copilot1.whileHeld(new ShootFuel());
-           copilot2.whileHeld(new RunFuelElevator());
-           copilot3.toggleWhenPressed(new IntakeOn());
-           copilot4.toggleWhenPressed(new IntakeOff());
-           
-           copilot6.whileHeld(new GearRelease());
-           copilot6.whenReleased(new GearOff());
-           copilot5.whileHeld(new GearRetract());
-           copilot5.whenReleased(new GearOff());
-           copilot11.whenPressed(new AimHighGoal(1.0));
-      
-           **/
-
-        pilot5.whenPressed(new DriveStraightToDistance(20, 1));
-       // pilot8.whenPressed(new DriveStraightToDistance(3, 0.6));
-        pilot7.whenPressed(new DriveStraightToDistance(2, 0.6));
         
-        //67/13.9
-//        pilot6.whenPressed(new DriveStraightToDistance(4.82,0.6));
-        	pilot6.whenPressed(new DriveStraightToDistance((60.0/13.9),0.6));
-
-        pilot10.whenPressed(new GyroReset());
-//           copilot7.whileHeld(new ShootFuel());
-//           copilot8.whileHeld(new RunFuelElevator());
-//           copilot8.whenReleased(new FuelElevatorOff());
-//          
-//           /*
-//           copilot2.toggleWhenPressed(new IntakeOn());
-//           copilot3.toggleWhenPressed(new IntakeOff());
-//           */
-//           copilot2.whileHeld(new IntakeOn());
-//           copilot2.whenReleased(new IntakeOff());
+        pilot3.toggleWhenPressed(new ClimbFast());
+        pilot2.toggleWhenPressed(new ClimberOff());
+        pilot1.toggleWhenPressed(new ClimbSlow());
+        
+        pilot9.whileHeld(new GearShiftIn());
+        pilot9.whenReleased(new GearShiftOff());
+        pilot10.whileHeld(new GearShiftOut());
+        pilot10.whenReleased(new GearShiftOff());
+        
+        pilot8.whenPressed(new CameraLightsOn());
+        pilot7.whenPressed(new CameraLightsOff());
+        //copilot1.whenPressed(new AimHighGoal(1.0));
+       
+        /**
+        copilot1.whileHeld(new ShootFuel());
+        copilot2.whileHeld(new RunFuelElevator());
+        copilot3.toggleWhenPressed(new IntakeOn());
+        copilot4.toggleWhenPressed(new IntakeOff());
+        
+        copilot6.whileHeld(new GearRelease());
+        copilot6.whenReleased(new GearOff());
+        copilot5.whileHeld(new GearRetract());
+        copilot5.whenReleased(new GearOff());
+        copilot11.whenPressed(new AimHighGoal(1.0));
+   
+        **/
+        
+      //  copilot7.whileHeld(new ShootFuel());
+        copilot8.whileHeld(new RunFuelElevator());
+        copilot8.whenReleased(new FuelElevatorOff());
+       
+        /*
+        copilot2.toggleWhenPressed(new IntakeOn());
+        copilot3.toggleWhenPressed(new IntakeOff());
+        */
+        copilot2.whileHeld(new IntakeOn());
+        copilot2.whenReleased(new IntakeOff());
+        copilot3.whileHeld(new IntakeReverse());
+        copilot3.whenReleased(new IntakeOff());
+        copilot6.whileHeld(new GearRelease());
+        copilot6.whenReleased(new GearOff());
+        copilot5.whileHeld(new GearRetract());
+        copilot5.whenReleased(new GearOff());
 //           
-//           copilot6.whileHeld(new GearRelease());
-//           copilot6.whenReleased(new GearOff());
-//           copilot5.whileHeld(new GearRetract());
-//           copilot5.whenReleased(new GearOff());
-//           
+        
+        
        }
    
 		

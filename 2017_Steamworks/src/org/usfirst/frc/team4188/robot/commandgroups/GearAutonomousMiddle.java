@@ -18,11 +18,12 @@ public double angle = Robot.getAngleToGoal();
 	
     public GearAutonomousMiddle() {
     //distance, speed
-    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6)); //drive about 4 feet 
-    	addSequential(new Delay(0.5));
-    	System.out.println(angle);
-    	addSequential(new TurnRight(angle));
-    	addSequential(new DriveStraightToDistance(20.0/12.0, 0.6)); //drive about 2 feet
+    	addSequential(new DriveStraightToDistance((72.0/12.0), 0.6)); //drive about 4 feet 
+//    	System.out.println(angle);
+    	//addSequential(new DriveStraightToDistance((36.0/12.0), 0.6));
+    	//addSequential(new Delay(1.0));
+    	//addSequential(new TurnRight(Robot.getAngleToGoal()));
+    	addSequential(new DriveStraightToDistance(29/12.0, 0.6)); //drive about 2.75 feet
 
     
     }

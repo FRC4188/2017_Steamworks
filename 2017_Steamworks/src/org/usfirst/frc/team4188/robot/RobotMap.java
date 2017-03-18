@@ -71,7 +71,7 @@ public class RobotMap {
 	
 		public static void init() {
 		// TODO Auto-generated method stub
-		gyro = new AnalogGyro(0);
+		gyro = new AnalogGyro(1);
 		gyro.calibrate();
 		
 		cameraLights= new Relay(0);
@@ -107,6 +107,8 @@ public class RobotMap {
 		
 		gearShift = new DoubleSolenoid(0,1);
 		gearRelease = new DoubleSolenoid(2,3);
+		
+		
 		
 		//seatMotorHallSensor = new AnalogTrigger(0);
         
