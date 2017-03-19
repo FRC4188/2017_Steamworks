@@ -12,6 +12,7 @@ public class RunGearManipulationUpDown extends Command {
     public RunGearManipulationUpDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.gearManipulation);
     }
 
  // Called just before this Command runs the first time

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4188.robot.subsystems;
 
 import org.usfirst.frc.team4188.robot.RobotMap;
+import org.usfirst.frc.team4188.robot.commands.RunGearManipulationUpDown;
 
 import com.ctre.CANTalon;
 
@@ -24,6 +25,7 @@ public class GearManipulation extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new RunGearManipulationUpDown());
     }
     
    

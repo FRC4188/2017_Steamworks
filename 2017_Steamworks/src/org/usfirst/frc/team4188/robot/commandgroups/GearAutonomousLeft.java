@@ -12,11 +12,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GearAutonomousLeft extends CommandGroup {
 
     public GearAutonomousLeft() {
-		//distance, speed
-    	addSequential(new DriveStraightToDistance(10, 1.0));
+    	//distance, speed
+//    	addSequential(new DriveStraightToDistance((53.0/13.9), 0.6));
+    	addSequential(new DriveStraightToDistance((96.0/12.0), 0.6));
+
     	addSequential(new TurnRight(-60));
-//    	addSequential(new DriveStraightToDistance(2,1.0));
-//    	addSequential(new TurnRight(Robot.getAngleToGoal()));
+    	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
+    	addSequential(new TurnRight(Robot.getAngleToGoal()));
+    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6));
+    	//addSequential(new DriveStraightToDistance(54.0/12.0,0.6));
 
     }
 }
