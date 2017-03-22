@@ -141,7 +141,9 @@ public class OI {
         pilot5.whileHeld(new GearRetract());
         pilot5.whenReleased(new GearOff());
        
-        
+        if(Robot.whichBot == Robot.whichBot.SKETCHY){
+        	pilot4.whenPressed(new TurnRight(Robot.getAngleToGoal()));
+        }
         pilot3.toggleWhenPressed(new ClimbFast());
         pilot2.toggleWhenPressed(new ClimberOff());
         pilot1.toggleWhenPressed(new ClimbSlow());

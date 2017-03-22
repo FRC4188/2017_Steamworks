@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team4188.robot;
 
-
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
@@ -137,8 +137,9 @@ public class Robot extends IterativeRobot {
          // Set the resolution
       	  
    		//camera settings
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.getProperty("contrast").set(10);
+       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+       AxisCamera camera1 = new AxisCamera("cam2", "169.254.117.87");
+ 		camera.getProperty("contrast").set(10);
 		camera.getProperty("sharpness").set(100);
 		camera.getProperty("saturation").set(100);
 		camera.getProperty("brightness").set(0);
@@ -168,13 +169,20 @@ public class Robot extends IterativeRobot {
 				}
 				VisionPipeline.process(mat);
 
-				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(0,0,255), 5);
+				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), -1, new Scalar(0,0,255), 2);
 				//get distance from target || or length between contours         				
 
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
 					Rect r = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1));
 					Rect r1 = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0));
 					double [] centerX = new double[]{r1.x, r.x};
+					
+					System.out.println("Rectangle Center X" + r1.x + "," + r.x);
+					System.out.println("Rectangle Y" + r1.y + "," + r.y);
+					System.out.println("Rectangle Height" + r1.height + "," + r.height);
+					System.out.println("Rectangle Width" + r1.width +"," + r.width);
+					System.out.println("Mat width = " + mat.width() + ", height = " + mat.height());
+					
 					SmartDashboard.putBoolean("Found two rectangles", true);
 
 					Imgcodecs.imwrite("output.png", mat);
@@ -235,90 +243,6 @@ public class Robot extends IterativeRobot {
 
 		visionThread.start();
 	}
-
-/* UsbCamera camera;
-camera = CameraServer.getInstance().startAutomaticCapture();
-camera.setResolution(640, 480);
-camera.getProperty("saturation").set(50);
-camera.getProperty("contrast").set(50);
-camera.getProperty("brightness").set(50);
-
-
-//  robotVision = new Vision2("10.41.88.12");
-// SmartDashboard.putNumber("Distance", robotVision.distance);
-
-//chooser.addObject("My Auto", new MyAutoCommand());
-SmartDashboard.putData("Auto mode", chooser);
-//SmartDashboard.putData("Vision2", robotVision);
-RobotMap.gyro.calibrate();
-
-// UsbCamera camera;
-// Set the resolution
- 
-visionThread = new VisionThread(camera, new GripPipeline(), VisionPipeline ->{	
-	// Get a CvSink. This will capture Mats from the camera
-	CvSink cvSink = CameraServer.getInstance().getVideo();
-	
-	// Setup a CvSource. This will send images back to the Dashboard
-	CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
-
-	// Mats are very memory expensive. Lets reuse this Mat.
-	mat = new Mat();
-
-	// This cannot be 'true'. The program will never exit if it is. This
-	// lets the robot stop this thread when restarting robot code or
-	// deploying.
-	
-	VisionPipeline.process(mat);
-	
-	Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), 0, new Scalar(255,255,255), 100);
-		
-	// Put a rectangle on the image
-		
-		Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
-				new Scalar(0, 0, 255), 5);
-		
-	// Give the output stream a new image to display
-		
-
-//outputStream.putFrame(mat);
-		// Give the output stream a new image to display
-		
-distance = VisionProcessing.distanceFromTarget(VisionPipeline); 
-		angle = VisionProcessing.getAngle(VisionPipeline);
-		Robot.setAimError(angle);
-		lengthBetweenContours = VisionProcessing.returnCenterX(VisionPipeline);
-		SmartDashboard.putNumber("Distance From Target", distance);
-		//SmartDashboard.putNumber("Return Center X of Target",VisionProcessing.distanceFromTarget(VisionPipeline));
-		SmartDashboard.putNumber("Change angle", angle);
-		SmartDashboard.putNumber("Length Between Contours", VisionProcessing.returnCenterX(VisionPipeline));
-		//SmartDashboard.putNumber("Area for Contour 1", Imgproc.boundingRect(vision.filterContoursOutput.get(0)).area());
-		//SmartDashboard.putNumber("Area for Contour 2", Imgproc.boundingRect(vision.filterContoursOutput.get(1)).area());
-		SmartDashboard.putString("Vision Status", "Running");
-
-
-
-b		//}
-});
-
-visionThread.start();
-*/    
-/**
- AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.41.88.11");
- camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
- 
- visionThread = new VisionThread( new Vision2("10.41.88.11") -> {
-     while (!Thread.interrupted()) {
-        
-         }
-  });
-
- visionThread.start();
-**/
-
-
-
-
 
 public static double getAngleToGoal() {
 return angleToGoal;
