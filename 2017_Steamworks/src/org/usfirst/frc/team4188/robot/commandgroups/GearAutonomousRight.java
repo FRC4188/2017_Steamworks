@@ -19,7 +19,7 @@ public class GearAutonomousRight extends CommandGroup {
 //    	addSequential(new DriveStraightToDistance((53.0/13.9), 0.6));
     	addSequential(new DriveStraightToDistance((92.0/12.0), 0.6));
 
-    	addSequential(new TurnRight(-60));
+    	addSequential(new TurnRight(-56));
     	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
     	addSequential(new TurnRight(Robot.getAngleToGoal()));
     	addSequential(new DriveStraightToDistance((39.0/12.0), 0.6));

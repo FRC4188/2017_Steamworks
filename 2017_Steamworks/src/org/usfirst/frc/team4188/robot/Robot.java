@@ -138,8 +138,7 @@ public class Robot extends IterativeRobot {
       	  
    		//camera settings
        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-       AxisCamera camera1 = new AxisCamera("cam2", "169.254.117.87");
- 		camera.getProperty("contrast").set(10);
+        camera.getProperty("contrast").set(10);
 		camera.getProperty("sharpness").set(100);
 		camera.getProperty("saturation").set(100);
 		camera.getProperty("brightness").set(0);
@@ -147,6 +146,11 @@ public class Robot extends IterativeRobot {
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
 			double error = 0;
 			
+			AxisCamera axisCamera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
+			camera.setResolution(640, 480);
+			CvSink cvSink1 = CameraServer.getInstance().getVideo();
+			CvSource outputStream1 = CameraServer.getInstance().putVideo("Gear Pickup", 320, 240);
+
 			// Get a CvSink. This will capture Mats from the camera
 			CvSink cvSink = CameraServer.getInstance().getVideo();
 			// Setup a CvSource. This will send images back to the Dashboard
