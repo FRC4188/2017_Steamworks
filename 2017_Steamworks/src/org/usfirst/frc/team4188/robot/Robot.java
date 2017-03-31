@@ -16,7 +16,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.CameraServer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -70,7 +74,8 @@ public class Robot extends IterativeRobot {
 	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
 	
 	public static VisionThread visionThread;
-	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI);
+	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
+	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
 	public static final double AIM_ERROR = -11.0;
 //	public static final double AIM_ERROR = 21.904;
 
@@ -177,66 +182,74 @@ public class Robot extends IterativeRobot {
 				//get distance from target || or length between contours         				
 
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
-					Rect r = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(1));
-					Rect r1 = Imgproc.boundingRect(VisionPipeline.filterContoursOutput.get(0));
-					double [] centerX = new double[]{r1.x, r.x};
-					
-					System.out.println("Rectangle Center X" + r1.x + "," + r.x);
-					System.out.println("Rectangle Y" + r1.y + "," + r.y);
-					System.out.println("Rectangle Height" + r1.height + "," + r.height);
-					System.out.println("Rectangle Width" + r1.width +"," + r.width);
-					System.out.println("Mat width = " + mat.width() + ", height = " + mat.height());
-					
-					SmartDashboard.putBoolean("Found two rectangles", true);
-
-					Imgcodecs.imwrite("output.png", mat);
-
-					// subtracts one another to get length in pixels
-					lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
-
-					SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
-					//get distance from target
-
-					distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
-					SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
-
-					double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
-					//get Angle
-
-					double distanceFromCenterPixels = 0.0;
-					if (false) {
-						// target the center of the two rectangles
-					  distanceFromCenterPixels= ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
-					} else {
-						// target the center of the rightmost rectangle
-					  // figure out which rect is on the right (has greatest X value)
-					  double targetX = 0.0; // x value of the rightmost rectangle
-					  if (centerX[0] > centerX[1]) { 
-						  targetX = centerX[0];
-					  } else {
-						  targetX = centerX[1];
-					  }
-					  distanceFromCenterPixels = targetX - (CAMERA_WIDTH / 2.0);
-					}
-	
-						// Converts pixels to inches using the constant from above.
-					
-						//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
-						double distanceFromCenterInch = distanceFromCenterPixels * constant;
-						error = Math.atan(distanceFromCenterInch / distanceFromTarget);
-						error = Math.toDegrees(error);
+					List<Rect> rects = getRectangles(VisionPipeline.filterContoursOutput());
+					rects = getTwoBiggest(rects);
+					if(rects != null){
+						//at this point, there are two rectangles with a reasonable aspect ratio
 						
-						//AIM_ERROR on chassis 1.0 is 21.904
-
-						//if angle to goal is negative, add the aim error ; else subtract the aim Error
-						if(error < 0){
-							error += CAMERA_OFFSET;
-						}else{
-							error -= CAMERA_OFFSET;
+						Rect r = rects.get(0);
+						Rect r1 = rects.get(1);
+						
+					
+						double [] centerX = new double[]{r1.x, r.x};
+	
+						//System.out.println("Rectangle Center X" + r1.x + "," + r.x);
+						//System.out.println("Rectangle Y" + r1.y + "," + r.y);
+						System.out.println("Rectangle 1 Height, Width" + r.height + "," + r.width);
+						System.out.println("Rectangle 2 Height, Width" + r1.height + "," + r1.width);
+						
+						System.out.printf("Aspect Ratio 1 = %4.2f\n", (double)r.width/r.height );
+						System.out.printf("Aspect Ratio 2 = %4.2f\n", (double)r1.width/r1.height );
+						//System.out.println("Mat width = " + mat.width() + ", height = " + mat.height());
+						
+						SmartDashboard.putBoolean("Found two rectangles", true);
+	
+						Imgcodecs.imwrite("output.png", mat);
+	
+						// subtracts one another to get length in pixels
+						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
+	
+						SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
+						//get distance from target
+	
+						distanceFromTarget = DISTANCE_CONSTANT / lengthBetweenContours;
+						SmartDashboard.putNumber("DistanceFromTarget",distanceFromTarget);
+	
+						double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
+						//get Angle
+	
+						double distanceFromCenterPixels = 0.0;
+						// target the center of the rightmost rectangle
+						// figure out which rect is on the right (has greatest X value)
+						double targetX = 0.0; // x value of the rightmost rectangle
+						if (centerX[0] > centerX[1]) { 
+							targetX = centerX[0];
+						} 
+						else{
+							targetX = centerX[1];
 						}
-					 setAngleToGoal(error);
-				
-					SmartDashboard.putString("Aim_Error", String.format("%6.1f", error));
+						distanceFromCenterPixels = targetX - (CAMERA_WIDTH / 2.0);
+		
+							// Converts pixels to inches using the constant from above.
+						
+							//Imgproc.drawMarker(mat,distanceFromCenterPixels, new Scalar(255,255,255));
+							double distanceFromCenterInch = distanceFromCenterPixels * constant;
+							error = Math.atan(distanceFromCenterInch / distanceFromTarget);
+							error = Math.toDegrees(error);
+							
+							//AIM_ERROR on chassis 1.0 is 21.904
+	
+							//if angle to goal is negative, add the aim error ; else subtract the aim Error
+							if(error < 0){
+								error += CAMERA_OFFSET;
+							}else{
+						
+								error -= CAMERA_OFFSET;
+							}
+						 setAngleToGoal(error);
+					
+						SmartDashboard.putString("Aim_Error", String.format("%6.1f", error));
+					}
 				}
 		
 				//Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HLS);
@@ -250,6 +263,54 @@ public class Robot extends IterativeRobot {
 
 public static double getAngleToGoal() {
 return angleToGoal;
+}
+
+//returns a list of rectangles with a reasonable aspect ratio
+public static List<Rect> getRectanglesByAspectRatio (ArrayList<MatOfPoint> contours){
+	List<Rect> rectangleList = new ArrayList<Rect>();
+	if(!contours.isEmpty() && contours.size() >= 2) {
+		
+		for(MatOfPoint contour: contours){
+			Rect rect = Imgproc.boundingRect(contour);
+			double aspectRatio = (double)rect.width/rect.height;
+			
+			if(aspectRatio > 0.3 && aspectRatio < 0.6){
+				rectangleList.add(rect);
+			}
+		}
+	
+	}
+
+	return rectangleList;
+}
+public static List<Rect> getRectangles (ArrayList<MatOfPoint> contours){
+	List<Rect> rectangleList = new ArrayList<Rect>();
+	if(!contours.isEmpty() && contours.size() >= 2) {		
+		for(MatOfPoint contour: contours){
+			Rect rect = Imgproc.boundingRect(contour);
+			rectangleList.add(rect);
+		}
+	}
+	return rectangleList;
+}
+public static List<Rect> getTwoBiggest(List<Rect> before){
+	List<Rect> after = null; 
+	
+	if(before.size() == 2){		
+		after = before;	
+	}
+	else if(before.size() > 2){
+		after = new ArrayList<Rect>();
+		List<SortableRect> sortableList = new ArrayList<SortableRect>();
+		for(Rect r: before){
+			sortableList.add(new SortableRect(r));
+		}
+		java.util.Collections.sort(sortableList);
+		after.add(sortableList.get(0).getRect());
+		after.add(sortableList.get(1).getRect());
+	}
+		
+	return after;
 }
 
 public static void setAngleToGoal(double angleToGoal) {
