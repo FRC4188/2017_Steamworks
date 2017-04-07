@@ -179,10 +179,10 @@ public class OI {
         copilot2.toggleWhenPressed(new IntakeOn());
         copilot3.toggleWhenPressed(new IntakeOff());
         */
-        copilot2.whileHeld(new IntakeOn());
-        copilot2.whenReleased(new IntakeOff());
-        copilot3.whileHeld(new IntakeReverse());
+        copilot3.whileHeld(new IntakeOn());
         copilot3.whenReleased(new IntakeOff());
+        copilot2.whileHeld(new IntakeReverse());
+        copilot2.whenReleased(new IntakeOff());
         copilot6.whileHeld(new GearRelease());
         copilot6.whenReleased(new GearOff());
         copilot5.whileHeld(new GearRetract());

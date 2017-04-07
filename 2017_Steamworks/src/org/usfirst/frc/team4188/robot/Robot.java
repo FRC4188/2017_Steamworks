@@ -8,6 +8,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -57,6 +58,9 @@ public class Robot extends IterativeRobot {
 	public enum WhichBot { COMPETITION, PRACTICE, SKETCHY }
 	public static WhichBot whichBot = WhichBot.PRACTICE;
 
+	public enum PowerState{NORMAL, POWERCONSERVING}
+	public static PowerState powerState = PowerState.NORMAL; 
+	
 	public static DriveTrain drivetrain;
 	public static CameraLights cameraLights;
 	public static OI oi;
@@ -70,6 +74,8 @@ public class Robot extends IterativeRobot {
 	public static FuelElevator fuelElevator;
 	public static Shooter spinTurret;
 	public static GripPipeline vision;
+
+
 	private static Mat mat;
 	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
 	
@@ -152,6 +158,7 @@ public class Robot extends IterativeRobot {
 			double error = 0;
 			
 			AxisCamera axisCamera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
+			axisCamera.setFPS(10);
 			camera.setResolution(640, 480);
 			CvSink cvSink1 = CameraServer.getInstance().getVideo();
 			CvSource outputStream1 = CameraServer.getInstance().putVideo("Gear Pickup", 320, 240);
@@ -394,7 +401,35 @@ Robot.angleToGoal = angleToGoal;
      
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
         
-     SmartDashboard.putBoolean("running", true);   
+        //SmartDashboard.putNumber("Current Voltage Output", RobotMap.pdp.getVoltage());
+        //SmartDashboard.putNumber("Total Current Output", RobotMap.pdp.getTotalCurrent());
+        
+        System.out.println("Current Voltage Output: " + RobotMap.pdp.getVoltage());
+        System.out.println("Total Current Output: " + RobotMap.pdp.getTotalCurrent());
+        
+       
+        Robot.gearManipulation.getEncoderValue();
+        
+        SmartDashboard.putBoolean("running", true); 
+        
+        if(powerState == PowerState.NORMAL){
+        	if(RobotMap.pdp.getVoltage() < 7.3){
+        		Robot.drivetrain.conservePower(true);
+        		powerState = PowerState.POWERCONSERVING;
+        	}
+        }
+        if(powerState == PowerState.POWERCONSERVING){
+        	//Robot.drivetrain.conservePower(false);
+        	//powerState = PowerState.NORMAL;
+        	
+        	
+        	if(Math.abs(Robot.oi.pilotXboxSample.getY(Hand.kLeft))<0.3){
+        			Robot.drivetrain.conservePower(false);
+        			powerState = PowerState.NORMAL;
+        		
+        	}
+        	
+        }
      
     }
     

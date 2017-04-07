@@ -43,11 +43,11 @@ public class CHSRobotDrive extends RobotDrive implements PIDOutput {
     }
 
     public void arcadeDrive(double moveValue, double rotateValue){
-    	super.arcadeDrive(moveValue, rotateValue);
+    	super.arcadeDrive(moveValue*RobotMap.betaValue, rotateValue*RobotMap.betaValue);
     	
-    	robotDrive2.arcadeDrive(moveValue, rotateValue);
-    	robotDrive3.arcadeDrive(moveValue, rotateValue);
-    	
+    	robotDrive2.arcadeDrive(moveValue*RobotMap.betaValue, rotateValue*RobotMap.betaValue);
+    	robotDrive3.arcadeDrive(moveValue*RobotMap.alphaValue, rotateValue*RobotMap.alphaValue);
+    	//robotDrive3.arcadeDrive(moveValue*RobotMap.betaValue, rotateValue*RobotMap.betaValue);
     }
     
 //    private static final double OUTPUT_MIN = 0.23;

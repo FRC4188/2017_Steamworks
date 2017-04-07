@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
@@ -63,14 +64,22 @@ public class RobotMap {
 	public static PIDController driveAimPIDController;
 	
 	public static DoubleSolenoid gearShift;
+	
 	public static DoubleSolenoid gearRelease;
 	
 	public static AnalogTrigger seatMotorHallSensor;
 	
+	public static PowerDistributionPanel pdp;
+	
+	public static double betaValue;
+	public static double alphaValue;
 
 	
 		public static void init() {
 		// TODO Auto-generated method stub
+		
+		alphaValue = 1;	
+		betaValue = 1;
 		gyro = new AnalogGyro(1);
 		gyro.calibrate();
 		
@@ -104,10 +113,14 @@ public class RobotMap {
 		
 		hoodRotation = new CANTalon(18);
 		shooterTalon = new CANTalon(19);
-		
+		shooterTalon.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		shooterTalon.enableLimitSwitch(true, true);
+		shooterTalon.ConfigFwdLimitSwitchNormallyOpen(true);
+		shooterTalon.ConfigRevLimitSwitchNormallyOpen(true);
 		gearShift = new DoubleSolenoid(0,1);
 		gearRelease = new DoubleSolenoid(2,3);
 		
+		pdp = new PowerDistributionPanel();
 		
 		
 		//seatMotorHallSensor = new AnalogTrigger(0);

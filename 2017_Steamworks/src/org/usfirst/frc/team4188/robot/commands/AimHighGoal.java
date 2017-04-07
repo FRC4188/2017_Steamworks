@@ -23,7 +23,7 @@ public class AimHighGoal extends Command {
 	private  double KD = 0.0;
 
 	private long start = 0l;
-	private static final double tolerance = 0.25; // to within 1.0 degree
+	private static final double tolerance = 0.5; // to within 1.0 degree
 	// private static final int ONE = 1;
 	// private static final int TWO = 2;
 	// private static final int THREE = 3;

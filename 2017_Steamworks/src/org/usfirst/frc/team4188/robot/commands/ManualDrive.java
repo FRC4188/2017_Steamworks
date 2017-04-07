@@ -2,6 +2,7 @@ package org.usfirst.frc.team4188.robot.commands;
 
 import org.usfirst.frc.team4188.robot.CHSJoystick;
 import org.usfirst.frc.team4188.robot.Robot;
+import org.usfirst.frc.team4188.robot.Robot.PowerState;
 import org.usfirst.frc.team4188.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -33,14 +34,21 @@ public class ManualDrive extends Command {
     protected void execute() {
     	//Robot.drivetrain.mecanumDrive(pilotController.getRawAxis(0), pilotController.getRawAxis(1), pilotController.getRawAxis(2), 1.0, 0.0);
     
-    	
+    	double moveValue;
+    	double rotateValue;
     	double rotateConstant = 0.85;
+    	double brownOutConstant = 1.0;
+    
     	if(pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5>0 && !((pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5)>0)){
     		rotateConstant = 0.85+(0.15*(pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5)) ;
     	}
     	if((pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5>0) && !((pilotXboxSample.getTriggerAxis(Hand.kRight)-0.5)>0)){
     		rotateConstant = 0.85-(0.35*(pilotXboxSample.getTriggerAxis(Hand.kLeft)-0.5));
     	}
+    	
+    	
+    	
+    	
     	Robot.drivetrain.arcadeDrive(pilotXboxSample.getY(Hand.kLeft), -pilotXboxSample.getX(Hand.kRight)*rotateConstant, 1.0);
     	
     	

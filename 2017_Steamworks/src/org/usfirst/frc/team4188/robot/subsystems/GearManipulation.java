@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //15 17
 /**
  *
@@ -52,6 +53,14 @@ public class GearManipulation extends Subsystem {
     	gearRelease.set(DoubleSolenoid.Value.kOff);
     	
     	
+    }
+    
+    public void resetEncoder(){
+    	gearMotorUpDown.setPosition(0);
+    }
+    
+    public void getEncoderValue(){
+    	SmartDashboard.putNumber("Position of Gear Intake",gearMotorUpDown.getPosition());
     }
 }
 

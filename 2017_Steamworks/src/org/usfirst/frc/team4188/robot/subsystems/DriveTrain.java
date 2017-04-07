@@ -34,6 +34,8 @@ public class DriveTrain extends Subsystem {
 	AnalogGyro gyro = RobotMap.gyro;
 	
 	DoubleSolenoid gearShift = RobotMap.gearShift;
+	
+	
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -107,6 +109,19 @@ public class DriveTrain extends Subsystem {
 		double distance = -rearLeft.getPosition();
 		SmartDashboard.putNumber("Encoder Left Distance", distance);
 		return distance;
+	}
+	
+	public void conservePower(boolean on){
+		if(on){
+			RobotMap.alphaValue = 0;
+			RobotMap.betaValue = 0.9;
+			
+		}
+		else{
+			RobotMap.alphaValue = 1;
+			RobotMap.betaValue = 1;
+		}
+		
 	}
 }
 
