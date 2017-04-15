@@ -30,22 +30,22 @@ public class AimHighGoal extends Command {
 
 	private int initCount = 0, executeCount = 0;
 
-	public AimHighGoal() {
+	public AimHighGoal(double setPoint) {
 		// Use requires() here to declare subsystem dependencies
 		if (Robot.drivetrain == null) {
 			throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
 		}
 		requires(Robot.drivetrain);
-
+		this.finalAngle = setPoint;
 //		if(Robot.whichBot == Robot.WhichBot.SKETCHY){
 //			KP = 0.02;
 //			KI = 0.002;
 //			KD = 0.002;
 
 //		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
-			KP = 0.008;
-			KI = 0.0006;
-			KD = 0.0000;
+		KP = 0.010;
+		KI = 0.00001;
+		KD = 0.0;
 //		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 //			KP = 0.01;
 //			KI = 0.0;
@@ -67,7 +67,7 @@ public class AimHighGoal extends Command {
 		gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
 		gyroPIDController.setAbsoluteTolerance(tolerance);
 
-		gyroPIDController.setSetpoint(-45);
+		gyroPIDController.setSetpoint(this.finalAngle);
 
 		//gyroPIDController.setSetpoint(10);
 

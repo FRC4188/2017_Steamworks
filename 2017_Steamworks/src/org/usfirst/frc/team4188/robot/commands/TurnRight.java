@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class TurnRight extends Command {
-	double angle;
+	
 
 	public PIDController gyroPIDController;
 
@@ -23,19 +23,19 @@ public class TurnRight extends Command {
 	private  double KD = 0.0;
 
 	private long start = 0l;
-	private static final double tolerance = 0.25; // to within 1.0 degree
+	private static final double tolerance = 0.5; // to within 1.0 degree
 	// private static final int ONE = 1;
 	// private static final int TWO = 2;
 	// private static final int THREE = 3;
 
 	private int initCount = 0, executeCount = 0;
 
-	public TurnRight(double setpoint) {
+	public TurnRight() {
 		// Use requires() here to declare subsystem dependencies
 		if (Robot.drivetrain == null) {
 			throw new NullPointerException("Robot.drivetrain is null, Vineeth.");
 		}
-		this.angle = setpoint; 
+		
 		requires(Robot.drivetrain);
 
 		if(Robot.whichBot == Robot.WhichBot.SKETCHY){
@@ -71,8 +71,10 @@ public class TurnRight extends Command {
 
 		gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
 		gyroPIDController.setAbsoluteTolerance(tolerance);
-
-		gyroPIDController.setSetpoint(this.angle);
+		SmartDashboard.putNumber("Turn Right Angle", Robot.getAngleToGoal());
+		System.out.println("Turn Right Angle " +Robot.getAngleToGoal());
+		SmartDashboard.putNumber("testVariable" , Robot.testVariable);
+		gyroPIDController.setSetpoint(Robot.getAngleToGoal());
 
 		//gyroPIDController.setSetpoint(10);
 

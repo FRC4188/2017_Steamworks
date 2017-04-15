@@ -140,10 +140,13 @@ public class OI {
         pilot6.whenReleased(new GearOff());
         pilot5.whileHeld(new GearRetract());
         pilot5.whenReleased(new GearOff());
+        
+        
        
-        if(Robot.whichBot == Robot.whichBot.SKETCHY){
-        	pilot4.whenPressed(new TurnRight(Robot.getAngleToGoal()));
-        }
+        	//SmartDashboard.putNumber("OI getAngleToGoal", Robot.getAngleToGoal());
+        	pilot4.whenPressed(new TurnRight());
+        
+        //pilot4.whenPressed(new AimHighGoal());
         pilot3.toggleWhenPressed(new ClimbFast());
         pilot2.toggleWhenPressed(new ClimberOff());
         pilot1.toggleWhenPressed(new ClimbSlow());

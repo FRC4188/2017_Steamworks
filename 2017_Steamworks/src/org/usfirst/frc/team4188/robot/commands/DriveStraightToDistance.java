@@ -56,6 +56,8 @@ public class DriveStraightToDistance extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.autoDrive(0, 0);
+    	new AimHighGoal(0);
+    
 
     }
 

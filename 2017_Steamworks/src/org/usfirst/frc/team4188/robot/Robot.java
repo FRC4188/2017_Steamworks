@@ -28,10 +28,14 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.Robot.WhichBot;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightBlueSide;
+import org.usfirst.frc.team4188.robot.commandgroups.DriveStraightEncGyroPID;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
-import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRight;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightRedSide;
+import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
+import org.usfirst.frc.team4188.robot.commands.TurnRight;
 import org.usfirst.frc.team4188.robot.subsystems.CameraLights;
 import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
@@ -78,11 +82,14 @@ public class Robot extends IterativeRobot {
 
 	private static Mat mat;
 	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
+	public static double error;
+	
 	
 	public static VisionThread visionThread;
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
 	public static final double AIM_ERROR = -11.0;
+	public static double testVariable;
 //	public static final double AIM_ERROR = 21.904;
 
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
@@ -93,7 +100,7 @@ public class Robot extends IterativeRobot {
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
-	private static final double CAMERA_OFFSET = 21.904;
+	private static final double CAMERA_OFFSET = 28.0;
 	NetworkTable table;
 	
 	
@@ -136,14 +143,17 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
-        autoChooser.addObject("Gear Right Auto-", new GearAutonomousRight());
-        autoChooser.addObject("Gear Left Auto-", new GearAutonomousLeft());
-        autoChooser.addDefault("Gear Center Auto-", new GearAutonomousMiddle());
+        autoChooser.addObject("Gear Right Red Auto", new GearAutonomousRightRedSide());
+        autoChooser.addObject("Gear Right Blue Auto", new GearAutonomousRightBlueSide());
+        autoChooser.addDefault("Gear Center Auto", new GearAutonomousMiddle());
+        autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
+        autoChooser.addObject("Gear Autonomous Testing", new DriveStraightEncGyroPID());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
+        SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
       //SmartDashboard.putData("Vision2", robotVision);
         
-         
+         SmartDashboard.putData("Turn to Vision Angle", new TurnRight());
         // UsbCamera camera;
          // Set the resolution
       	  
@@ -155,7 +165,7 @@ public class Robot extends IterativeRobot {
 		camera.getProperty("brightness").set(0);
 
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
-			double error = 0;
+			
 			
 			AxisCamera axisCamera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
 			axisCamera.setFPS(10);
@@ -215,6 +225,7 @@ public class Robot extends IterativeRobot {
 	
 						// subtracts one another to get length in pixels
 						lengthBetweenContours = Math.abs(centerX[0] - centerX[1]);
+						
 	
 						SmartDashboard.putNumber("Length Between Contours", lengthBetweenContours);
 						//get distance from target
@@ -228,14 +239,18 @@ public class Robot extends IterativeRobot {
 						double distanceFromCenterPixels = 0.0;
 						// target the center of the rightmost rectangle
 						// figure out which rect is on the right (has greatest X value)
-						double targetX = 0.0; // x value of the rightmost rectangle
+						double targetX = lengthBetweenContours/2; // x value of the rightmost rectangle
+						/*
 						if (centerX[0] > centerX[1]) { 
 							targetX = centerX[0];
 						} 
 						else{
 							targetX = centerX[1];
 						}
+						*/
 						distanceFromCenterPixels = targetX - (CAMERA_WIDTH / 2.0);
+						
+						
 		
 							// Converts pixels to inches using the constant from above.
 						
@@ -256,6 +271,7 @@ public class Robot extends IterativeRobot {
 						 setAngleToGoal(error);
 					
 						SmartDashboard.putString("Aim_Error", String.format("%6.1f", error));
+						testVariable = 7;
 					}
 				}
 		
@@ -269,7 +285,7 @@ public class Robot extends IterativeRobot {
 	}
 
 public static double getAngleToGoal() {
-return angleToGoal;
+return Robot.angleToGoal;
 }
 
 //returns a list of rectangles with a reasonable aspect ratio
@@ -321,7 +337,9 @@ public static List<Rect> getTwoBiggest(List<Rect> before){
 }
 
 public static void setAngleToGoal(double angleToGoal) {
+SmartDashboard.putNumber("setAngleToGoal", angleToGoal);
 Robot.angleToGoal = angleToGoal;
+SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
 }
 
 	/**
@@ -375,6 +393,7 @@ Robot.angleToGoal = angleToGoal;
         Scheduler.getInstance().run();
         Robot.drivetrain.getRightEncoderDistance();
         Robot.drivetrain.getLeftEncoderDistance();
+        SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
       //gearAutonomous.start();
      //robotVision.periodic();
         
@@ -398,14 +417,16 @@ Robot.angleToGoal = angleToGoal;
         Scheduler.getInstance().run();
         Robot.drivetrain.getRightEncoderDistance();
         Robot.drivetrain.getLeftEncoderDistance();
+        SmartDashboard.putNumber("setAngleToAngle to goal in Teleop Periodic", Robot.getAngleToGoal());
      
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
+        
         
         //SmartDashboard.putNumber("Current Voltage Output", RobotMap.pdp.getVoltage());
         //SmartDashboard.putNumber("Total Current Output", RobotMap.pdp.getTotalCurrent());
         
-        System.out.println("Current Voltage Output: " + RobotMap.pdp.getVoltage());
-        System.out.println("Total Current Output: " + RobotMap.pdp.getTotalCurrent());
+        //System.out.println("Current Voltage Output: " + RobotMap.pdp.getVoltage());
+       // System.out.println("Total Current Output: " + RobotMap.pdp.getTotalCurrent());
         
        
         Robot.gearManipulation.getEncoderValue();
@@ -413,7 +434,7 @@ Robot.angleToGoal = angleToGoal;
         SmartDashboard.putBoolean("running", true); 
         
         if(powerState == PowerState.NORMAL){
-        	if(RobotMap.pdp.getVoltage() < 7.3){
+        	if(RobotMap.pdp.getVoltage() < 7.0){
         		Robot.drivetrain.conservePower(true);
         		powerState = PowerState.POWERCONSERVING;
         	}
