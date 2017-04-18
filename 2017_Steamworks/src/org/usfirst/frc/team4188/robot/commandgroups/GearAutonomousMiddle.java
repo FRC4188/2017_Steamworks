@@ -5,6 +5,8 @@ import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4188.robot.commands.GearRelease;
+import org.usfirst.frc.team4188.robot.commands.GearRetract;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -26,9 +28,12 @@ public double angle = Robot.getAngleToGoal();
     	//addSequential(new Delay(1.0));
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((12.0/12.0), 0.6));
-    	addSequential(new TurnRight());
-    	addSequential(new DriveStraightToDistance(20.0/12.0, 0.6)); //drive about 2.75 feet was at 0.6
-
+    	//addSequential(new TurnRight());
+    	addSequential(new DriveStraightToDistance(20.0/12.0, 0.6),3); //drive about 2.75 feet was at 0.6
+    	addSequential(new Delay(1));
+    	addSequential(new GearRetract());
+    	addSequential(new AutoDrive(-0.5,0,1));
+    	addSequential(new GearRelease());
     	/**
     	addSequential(new DriveStraightToDistance(45.0/12.0,0.6));
     	addSequential(new TurnRight());

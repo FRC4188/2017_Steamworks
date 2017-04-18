@@ -81,7 +81,7 @@ public class RobotMap {
 		alphaValue = 1;	
 		betaValue = 1;
 		gyro = new AnalogGyro(1);
-		gyro.calibrate();
+//		gyro.calibrate(); believe that gyro already does this
 		
 		cameraLights= new Relay(0);
 		intakeRelay = new Relay(1);

@@ -49,7 +49,7 @@ public class TurnRight extends Command {
 //			KD = 0.0000;
 			
 			KP = 0.010;
-			KI = 0.00001;
+			KI = 0.0003;
 			KD = 0.0;
 		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 			KP = 0.02;
@@ -68,8 +68,10 @@ public class TurnRight extends Command {
 
 		Robot.drivetrain.gyroReset();
 		CHSRobotDrive.setPIDType(PIDType.turnToAngle);
+		
 
 		gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
+		gyroPIDController.setOutputRange(-0.5, 0.5);
 		gyroPIDController.setAbsoluteTolerance(tolerance);
 		SmartDashboard.putNumber("Turn Right Angle", Robot.getAngleToGoal());
 		System.out.println("Turn Right Angle " +Robot.getAngleToGoal());

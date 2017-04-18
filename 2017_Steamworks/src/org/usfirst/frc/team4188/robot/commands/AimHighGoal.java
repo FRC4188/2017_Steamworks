@@ -44,7 +44,7 @@ public class AimHighGoal extends Command {
 
 //		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
 		KP = 0.010;
-		KI = 0.00001;
+		KI = 0.0003;
 		KD = 0.0;
 //		}else if(Robot.whichBot == Robot.WhichBot.COMPETITION){
 //			KP = 0.01;
@@ -65,6 +65,7 @@ public class AimHighGoal extends Command {
 		CHSRobotDrive.setPIDType(PIDType.turnToAngle);
 
 		gyroPIDController = new PIDController(KP, KI, KD, RobotMap.gyro, RobotMap.driveBase);
+		gyroPIDController.setOutputRange(-0.5, 0.5);
 		gyroPIDController.setAbsoluteTolerance(tolerance);
 
 		gyroPIDController.setSetpoint(this.finalAngle);

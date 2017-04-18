@@ -56,9 +56,9 @@ public class GripPipeline implements VisionPipeline {
 //		double[] hslThresholdLuminance = {52.74280575539568, 161.91850594227503};
 //		
 
-		double[] hslThresholdHue = {63, 93};
-		double[] hslThresholdSaturation = {186, 255.0};
-		double[] hslThresholdLuminance = {147, 235};
+		double[] hslThresholdHue = {63, 96};	//after 7:30 63,93
+		double[] hslThresholdSaturation = {219, 255.0}; //after 7:30 186,255.0
+		double[] hslThresholdLuminance = {53, 162}; //after 7:30 147,235
 		
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
