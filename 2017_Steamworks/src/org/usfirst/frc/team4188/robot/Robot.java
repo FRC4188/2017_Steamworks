@@ -29,7 +29,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.Robot.WhichBot;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightBlueSide;
-import org.usfirst.frc.team4188.robot.commandgroups.DriveStraightEncGyroPID;
+import org.usfirst.frc.team4188.robot.commandgroups.TestAutonomous;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightRedSide;
@@ -86,21 +86,30 @@ public class Robot extends IterativeRobot {
 	
 	
 	public static VisionThread visionThread;
+	/**
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
 	public static final double AIM_ERROR = -11.0;
 	public static double testVariable;
+	private static final double CAMERA_OFFSET = 28.0;
 //	public static final double AIM_ERROR = 21.904;
-
+**/
+	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
+	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
+	public static final double AIM_ERROR = -11.0;
+	public static double testVariable;
+	private static final double CAMERA_OFFSET = -6.0;
+	
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
 	public static final double CAMERA_WIDTH = 640;
+	
     Command autonomousCommand;
     //Command gearAutonomous;
     SendableChooser autoChooser;
     
     private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
-	private static final double CAMERA_OFFSET = 28.0;
+	
 	NetworkTable table;
 	
 	
@@ -138,6 +147,7 @@ public class Robot extends IterativeRobot {
         drivetrain.init();
         
         oi = new OI();
+        RobotMap.gyro.calibrate();
 		
 
       //  robotVision = new Vision2("10.41.88.12");
@@ -145,9 +155,9 @@ public class Robot extends IterativeRobot {
         
         autoChooser.addObject("Gear Right Red Auto", new GearAutonomousRightRedSide());
         autoChooser.addObject("Gear Right Blue Auto", new GearAutonomousRightBlueSide());
-        autoChooser.addDefault("Gear Center Auto", new GearAutonomousMiddle());
-        autoChooser.addObject("Gear Left Auto", new GearAutonomousLeft());
-        autoChooser.addObject("Gear Autonomous Testing", new DriveStraightEncGyroPID());
+        autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
+        autoChooser.addDefault("Gear Left Auto", new GearAutonomousLeft());
+        autoChooser.addObject("Gear Autonomous Testing (Testing Left)", new TestAutonomous());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
@@ -236,7 +246,7 @@ public class Robot extends IterativeRobot {
 						double constant = WIDTH_BETWEEN_TARGET / lengthBetweenContours;
 						//get Angle
 	
-						double distanceFromCenterPixels = 0.0;
+						
 						// target the center of the rightmost rectangle
 						// figure out which rect is on the right (has greatest X value)
 						double targetX = lengthBetweenContours/2; // x value of the rightmost rectangle
@@ -248,7 +258,7 @@ public class Robot extends IterativeRobot {
 							targetX = centerX[1];
 						}
 						*/
-						distanceFromCenterPixels = targetX - (CAMERA_WIDTH / 2.0);
+						double distanceFromCenterPixels = ((centerX[0] + centerX[1]) / 2) - (CAMERA_WIDTH / 2);
 						
 						
 		

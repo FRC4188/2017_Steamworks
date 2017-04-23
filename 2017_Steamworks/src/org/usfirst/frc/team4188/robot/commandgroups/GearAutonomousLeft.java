@@ -3,6 +3,7 @@ package org.usfirst.frc.team4188.robot.commandgroups;
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
+import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
 import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.GearRelease;
@@ -35,13 +36,12 @@ public class GearAutonomousLeft extends CommandGroup {
         // arm.
     	addSequential(new DriveStraightToDistance((88.0/12.0), 0.6));
 
-    	addSequential(new AimHighGoal(65));
+    	addSequential(new AimHighGoal(60));
+    	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
     	addSequential(new TurnRight());
-    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6));
-    	addSequential(new Delay(1));
-    	addSequential(new GearRetract());
-    	addSequential(new AutoDrive(-0.5,0,1));
-    	addSequential(new GearRelease());
+    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);
+    	//addSequential(new BackUpReleaseSequence());
+    	
     }
 }

@@ -49,16 +49,16 @@ public class GripPipeline implements VisionPipeline {
 		int cvResizeInterpolation = Imgproc.INTER_LINEAR;
 		cvResize(cvResizeSrc, cvResizeDsize, cvResizeFx, cvResizeFy, cvResizeInterpolation, cvResizeOutput);
 
-		// Step HSL_Threshold0:
+		// Step HSL_Threshold0:	
 		Mat hslThresholdInput = cvResizeOutput;
 //		double[] hslThresholdHue = {63.12949640287769, 95.95925297113753};
 //		double[] hslThresholdSaturation = {167.40107913669064, 255.0};
 //		double[] hslThresholdLuminance = {52.74280575539568, 161.91850594227503};
 //		
 
-		double[] hslThresholdHue = {63, 96};	//after 7:30 63,93
-		double[] hslThresholdSaturation = {219, 255.0}; //after 7:30 186,255.0
-		double[] hslThresholdLuminance = {53, 162}; //after 7:30 147,235
+		double[] hslThresholdHue = {63, 96};//Worlds- 63,96	//after 7:30 63,93 // Einstein Red 63, 96
+		double[] hslThresholdSaturation = {219, 255.0};//Worlds - 219, 255.0 //after 7:30 186,255.0 //Einstein Red 219, 255
+		double[] hslThresholdLuminance = {53,162};//Worlds- 53,162 //after 7:30 147,235 //Einstein Red 40, 180
 		
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 

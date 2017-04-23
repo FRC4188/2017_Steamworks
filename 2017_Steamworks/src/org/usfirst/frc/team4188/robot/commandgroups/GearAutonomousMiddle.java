@@ -2,6 +2,7 @@ package org.usfirst.frc.team4188.robot.commandgroups;
 
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
+import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
 import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.DriveToDistance;
@@ -29,11 +30,8 @@ public double angle = Robot.getAngleToGoal();
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((12.0/12.0), 0.6));
     	//addSequential(new TurnRight());
-    	addSequential(new DriveStraightToDistance(20.0/12.0, 0.6),3); //drive about 2.75 feet was at 0.6
-    	addSequential(new Delay(1));
-    	addSequential(new GearRetract());
-    	addSequential(new AutoDrive(-0.5,0,1));
-    	addSequential(new GearRelease());
+    	addSequential(new DriveStraightToDistance(19.0/12.0, 0.6),3); //drive about 2.75 feet was at 0.6
+    	//addSequential(new BackUpReleaseSequence());
     	/**
     	addSequential(new DriveStraightToDistance(45.0/12.0,0.6));
     	addSequential(new TurnRight());

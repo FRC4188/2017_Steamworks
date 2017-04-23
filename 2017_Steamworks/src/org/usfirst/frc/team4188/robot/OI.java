@@ -2,6 +2,7 @@
 
 package org.usfirst.frc.team4188.robot;
 
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
 import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -144,9 +145,12 @@ public class OI {
         
        
         	//SmartDashboard.putNumber("OI getAngleToGoal", Robot.getAngleToGoal());
+       
         	pilot4.whenPressed(new TurnRight());
         
         //pilot4.whenPressed(new AimHighGoal());
+        	//pilot1.whenPressed(new GearAutonomousLeft());
+        
         pilot3.toggleWhenPressed(new ClimbFast());
         pilot2.toggleWhenPressed(new ClimberOff());
         pilot1.toggleWhenPressed(new ClimbSlow());
