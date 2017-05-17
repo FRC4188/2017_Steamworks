@@ -41,6 +41,7 @@ import org.usfirst.frc.team4188.robot.subsystems.Climber;
 import org.usfirst.frc.team4188.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4188.robot.subsystems.FuelElevator;
 import org.usfirst.frc.team4188.robot.subsystems.GearManipulation;
+import org.usfirst.frc.team4188.robot.subsystems.PixyProcessing;
 import org.usfirst.frc.team4188.robot.subsystems.Shooter;
 import org.usfirst.frc.team4188.robot.subsystems.BallIntake;
 import org.usfirst.frc.team4188.robot.subsystems.Vision2;
@@ -86,6 +87,8 @@ public class Robot extends IterativeRobot {
 	
 	
 	public static VisionThread visionThread;
+	
+	public static PixyProcessing pixyProcessing;
 	/**
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
@@ -148,7 +151,7 @@ public class Robot extends IterativeRobot {
         
         oi = new OI();
         RobotMap.gyro.calibrate();
-		
+        pixyProcessing = new PixyProcessing();
 
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
@@ -431,6 +434,7 @@ SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
      
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
         
+       // pixyProcessing.periodic();
         
         //SmartDashboard.putNumber("Current Voltage Output", RobotMap.pdp.getVoltage());
         //SmartDashboard.putNumber("Total Current Output", RobotMap.pdp.getTotalCurrent());

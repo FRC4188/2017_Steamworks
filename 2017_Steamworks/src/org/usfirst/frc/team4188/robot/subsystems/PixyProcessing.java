@@ -30,13 +30,13 @@ public class PixyProcessing extends Subsystem {
 	public void periodic(){
 		for(int i = 0; i< packet.length; i++){
 			try {
-				packet[i-1]= pixy1.readPacket(i);
+				packet[i]= pixy1.readPacket(1);
 			} catch (PixyException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				SmartDashboard.putString("Pixy Error: " + i, "exception");
 			}
-			if(packet[i-1]==null) {
+			if(packet[i]==null) {
 				SmartDashboard.putString("Pixy Error: " + i, "true");
 				continue;
 			}
@@ -59,4 +59,3 @@ public class PixyProcessing extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
 }
-
