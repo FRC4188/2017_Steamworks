@@ -36,8 +36,8 @@ public class GearAutonomousLeft extends CommandGroup {
         // arm.
     	addSequential(new DriveStraightToDistance((88.0/12.0), 0.6));
 
-    	addSequential(new AimHighGoal(60));
-    	addSequential(new TurnRight());
+    	addSequential(new AimHighGoal(60),1);
+    	//addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);

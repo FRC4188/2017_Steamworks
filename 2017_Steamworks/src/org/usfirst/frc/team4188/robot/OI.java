@@ -151,6 +151,7 @@ public class OI {
         //pilot4.whenPressed(new AimHighGoal());
         	//pilot1.whenPressed(new GearAutonomousLeft());
         
+        	
         pilot3.toggleWhenPressed(new ClimbFast());
         pilot2.toggleWhenPressed(new ClimberOff());
         pilot1.toggleWhenPressed(new ClimbSlow());
@@ -160,8 +161,7 @@ public class OI {
         pilot10.whileHeld(new GearShiftOut());
         pilot10.whenReleased(new GearShiftOff());
         
-        pilot8.whenPressed(new CameraLightsOn());
-        pilot7.whenPressed(new CameraLightsOff());
+        pilot7.whenPressed(new DriveToTarget(0.5));
         //copilot1.whenPressed(new AimHighGoal(1.0));
        
         /**
@@ -182,10 +182,13 @@ public class OI {
         copilot8.whileHeld(new RunFuelElevator());
         copilot8.whenReleased(new FuelElevatorOff());
        
+        
         /*
         copilot2.toggleWhenPressed(new IntakeOn());
         copilot3.toggleWhenPressed(new IntakeOff());
         */
+        pilot9.whenPressed(new CameraLightsOn());
+        pilot10.whenPressed(new CameraLightsOff());
         copilot3.whileHeld(new IntakeOn());
         copilot3.whenReleased(new IntakeOff());
         copilot2.whileHeld(new IntakeReverse());

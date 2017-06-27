@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.CameraServer;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class Robot extends IterativeRobot {
 	public static Vision2 robotVision;
 	public static Climber climber;
 	public static BallIntake intake;
-	public static  AnalogInput seatMotorHallSensor;
+	public static AnalogInput seatMotorHallSensor;
 	public static Shooter shooter;
 	public static FuelElevator fuelElevator;
 	public static Shooter spinTurret;
@@ -210,7 +211,7 @@ public class Robot extends IterativeRobot {
 
 				Imgproc.drawContours(mat, VisionPipeline.filterContoursOutput(), -1, new Scalar(0,0,255), 2);
 				//get distance from target || or length between contours         				
-
+				
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
 					List<Rect> rects = getRectangles(VisionPipeline.filterContoursOutput());
 					rects = getTwoBiggest(rects);
@@ -219,9 +220,11 @@ public class Robot extends IterativeRobot {
 						
 						Rect r = rects.get(0);
 						Rect r1 = rects.get(1);
+						Rect giantRect = new Rect(new Point(r.x, r.y), new Point(r1.x+r1.width, r1.y+r1.height));
 						
-					
-						double [] centerX = new double[]{r1.x, r.x};
+						Imgproc.rectangle(mat, new Point(r.x,r.y), new Point(r1.x+r1.width,r1.y+r1.height), new Scalar(0,0,255), 5);
+						
+						double [] centerX = new double[]{r1.x+r1.width, r.x};
 	
 						//System.out.println("Rectangle Center X" + r1.x + "," + r.x);
 						//System.out.println("Rectangle Y" + r1.y + "," + r.y);
@@ -434,7 +437,7 @@ SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
      
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
         
-       // pixyProcessing.periodic();
+      //  pixyProcessing.periodic();
         
         //SmartDashboard.putNumber("Current Voltage Output", RobotMap.pdp.getVoltage());
         //SmartDashboard.putNumber("Total Current Output", RobotMap.pdp.getTotalCurrent());
@@ -442,7 +445,7 @@ SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
         //System.out.println("Current Voltage Output: " + RobotMap.pdp.getVoltage());
        // System.out.println("Total Current Output: " + RobotMap.pdp.getTotalCurrent());
         
-       
+      
         Robot.gearManipulation.getEncoderValue();
         
         SmartDashboard.putBoolean("running", true); 
