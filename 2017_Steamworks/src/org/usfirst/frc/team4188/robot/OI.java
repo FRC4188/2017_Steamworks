@@ -3,6 +3,7 @@
 package org.usfirst.frc.team4188.robot;
 
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
+import org.usfirst.frc.team4188.robot.commandgroups.TestAutonomous;
 import org.usfirst.frc.team4188.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -161,7 +162,7 @@ public class OI {
         pilot10.whileHeld(new GearShiftOut());
         pilot10.whenReleased(new GearShiftOff());
         
-        pilot7.whenPressed(new DriveToTarget(0.5));
+   //     pilot7.whenPressed(new DriveToTarget(0.5));
         //copilot1.whenPressed(new AimHighGoal(1.0));
        
         /**
@@ -198,7 +199,8 @@ public class OI {
         copilot5.whileHeld(new GearRetract());
         copilot5.whenReleased(new GearOff());
 //           
-        
+    SmartDashboard.putData("DriveToTarget---", new DriveToTarget(0.6, 9));    
+    SmartDashboard.putData("TestAutoCenter", new TestAutonomous());    
         
        }
    

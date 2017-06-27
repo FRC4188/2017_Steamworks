@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.*;
 import org.usfirst.frc.team4188.robot.CHSRobotDrive;
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.RobotMap;
+import org.usfirst.frc.team4188.robot.commandgroups.TestAutonomous;
 import org.usfirst.frc.team4188.robot.CHSRobotDrive.PIDType;
 
 import com.ctre.CANTalon;
@@ -17,26 +18,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveToTarget extends Command {
 
-    double distance;
-    double speed;
-    /*FUDGE_FACTOR is based upon real world results driving 5 feet at a speed of 0.6
-    	The fudge factor is tuned for 5 feet other distances will require manual adjustment
-    	2 feet goes approx. 31 inches
-    	3 feet goes approx. 42 inches
-    */
+    double speed, currentMax;
     
-    //static final double FUDGE_FACTOR = 0.68;
-	public DriveToTarget( double speed) {
+	public DriveToTarget(double speed, double currentMax) {
 
     	this.speed = speed;
+    	this.currentMax = currentMax;
     	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.resetEncoders();
     	RobotMap.gyro.reset();
-    	
+    	//new TestAutonomous();
+    
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -45,19 +40,19 @@ public class DriveToTarget extends Command {
     	Robot.drivetrain.autoDrive(this.speed, (angle/60));
     	SmartDashboard.putNumber("ANGLE", angle);
     	System.out.println(angle);
+    	SmartDashboard.putNumber("OutputCurrent---", RobotMap.frontRightDriveMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("CurrentMax---", currentMax);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return false;
+    	return RobotMap.frontRightDriveMotor.getOutputCurrent() > currentMax;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.autoDrive(0, 0);
-    	
-    
-
+    	new AimHighGoal(0);
     }
 
     // Called when another command which requires one or more of the same

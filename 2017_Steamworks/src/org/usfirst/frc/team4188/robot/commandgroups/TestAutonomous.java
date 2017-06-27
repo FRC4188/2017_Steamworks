@@ -4,6 +4,7 @@ import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
+import org.usfirst.frc.team4188.robot.commands.DriveToTarget;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -30,19 +31,18 @@ public class TestAutonomous extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	
-   
-       
-    	
-    
-    //	addSequential(new BackUpReleaseSequence());
-    	addSequential(new DriveStraightToDistance((80.0/12.0), 0.6));
 
-    	addSequential(new AimHighGoal(60),2);
-    	//addSequential(new TurnRight());
+    	/*section that I commented -Victoria    	
+    	addSequential(new DriveStraightToDistance((88.0/12.0), 0.6));
+
+    	addSequential(new AimHighGoal(60));
     	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);
+    //	addSequential(new BackUpReleaseSequence());
+    */
+    	addSequential(new DriveToTarget(0.6, 12), 1.5);
+    	addSequential(new DriveToTarget(0.6, 4));
     	
     }
 }
