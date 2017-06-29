@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
 
 	private static Mat mat;
 	private static double distance, angleToGoal, lengthBetweenContours, distanceFromTarget;
-	public static double error;
+	public static double error, newError;
 	
 	
 	public static VisionThread visionThread;
@@ -100,8 +100,10 @@ public class Robot extends IterativeRobot {
 **/
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
-	public static final double AIM_ERROR = -11.0;
+	public static final double AIM_ERROR = 60.0;
 	public static double testVariable;
+	private static double turnValue;
+	
 //	private static final double CAMERA_OFFSET = -6.0;
 	private static final double CAMERA_OFFSET = 0.0;
 	
@@ -182,9 +184,7 @@ public class Robot extends IterativeRobot {
 		visionThread = new VisionThread(camera , new GripPipeline(), VisionPipeline -> {
 			
 			
-			AxisCamera axisCamera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
-			axisCamera.setFPS(10);
-			camera.setResolution(640, 480);
+			AxisCamera axisCamera = CameraServer.getInstance().addAxisCamera("axis-camera.local");			camera.setResolution(640, 480);
 			CvSink cvSink1 = CameraServer.getInstance().getVideo();
 			CvSource outputStream1 = CameraServer.getInstance().putVideo("Gear Pickup", 320, 240);
 
@@ -226,7 +226,11 @@ public class Robot extends IterativeRobot {
 						Imgproc.rectangle(mat, new Point(r.x,r.y), new Point(r1.x+r1.width,r1.y+r1.height), new Scalar(0,0,255), 5);
 						
 						double [] centerX = new double[]{r1.x+r1.width, r.x};
-	
+						double newCenterX = giantRect.x + (giantRect.width/2);
+						SmartDashboard.putNumber("GiantRect",distanceFromTarget);
+						newError = newCenterX - 320 + AIM_ERROR;
+						setTurnValue(newError);
+						
 						//System.out.println("Rectangle Center X" + r1.x + "," + r.x);
 						//System.out.println("Rectangle Y" + r1.y + "," + r.y);
 						System.out.println("Rectangle 1 Height, Width" + r.height + "," + r.width);
@@ -359,7 +363,19 @@ Robot.angleToGoal = angleToGoal;
 SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
 }
 
-	/**
+public static void setTurnValue(double turnValue) {
+//SmartDashboard.putNumber("setAngleToGoal", angleToGoal);
+	Robot.turnValue = turnValue;
+//SmartDashboard.putNumber("Class Variable setAngleToGoal", Robot.angleToGoal);
+}
+
+public static double getTurnValue() {
+	return Robot.turnValue;
+}
+
+
+
+/**
      * This function is called once each time the robot enters Disabled mode.
      * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.

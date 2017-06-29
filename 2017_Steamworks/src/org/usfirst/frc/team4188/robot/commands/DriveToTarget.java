@@ -36,9 +36,12 @@ public class DriveToTarget extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double angle = Robot.getAngleToGoal()*-1;
-    	Robot.drivetrain.autoDrive(this.speed, (angle/60));
+//    	double angle = Robot.getAngleToGoal()*-1;
+    	double angle = Robot.getTurnValue()*-1;
+//    	Robot.drivetrain.autoDrive(this.speed, 10);
+    	Robot.drivetrain.autoDrive(this.speed, (angle*.005));
     	SmartDashboard.putNumber("ANGLE", angle);
+    	SmartDashboard.putNumber("AngleDivided", angle*.005);
     	System.out.println(angle);
     	SmartDashboard.putNumber("OutputCurrent---", RobotMap.frontRightDriveMotor.getOutputCurrent());
     	SmartDashboard.putNumber("CurrentMax---", currentMax);

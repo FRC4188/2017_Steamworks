@@ -6,6 +6,7 @@ import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
 import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
+import org.usfirst.frc.team4188.robot.commands.DriveToTarget;
 import org.usfirst.frc.team4188.robot.commands.GearRelease;
 import org.usfirst.frc.team4188.robot.commands.GearRetract;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
@@ -34,14 +35,22 @@ public class GearAutonomousLeft extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightToDistance((88.0/12.0), 0.6));
+    	addSequential(new DriveStraightToDistance((80.0/12.0), 0.6));
+    	addSequential(new AimHighGoal(60));
+    	addSequential(new DriveToTarget(0.5, 12), 1.5);
+    	addSequential(new DriveToTarget(0.5, 6));
 
-    	addSequential(new AimHighGoal(60),1);
+    	addSequential(new BackUpReleaseSequence());
+    	//new GearAutonomousMiddle();
+
+    	
+    	
+/*    	addSequential(new AimHighGoal(60),1);
     	//addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);
     	//addSequential(new BackUpReleaseSequence());
     	
-    }
+*/    }
 }
