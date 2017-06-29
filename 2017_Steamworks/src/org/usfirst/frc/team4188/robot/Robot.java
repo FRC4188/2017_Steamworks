@@ -102,7 +102,8 @@ public class Robot extends IterativeRobot {
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
 	public static final double AIM_ERROR = -11.0;
 	public static double testVariable;
-	private static final double CAMERA_OFFSET = -6.0;
+//	private static final double CAMERA_OFFSET = -6.0;
+	private static final double CAMERA_OFFSET = 0.0;
 	
 	public static final double WIDTH_BETWEEN_TARGET = 8.5;
 	public static final double CAMERA_WIDTH = 640;

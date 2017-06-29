@@ -163,6 +163,7 @@ public class OI {
         pilot10.whenReleased(new GearShiftOff());
         
    //     pilot7.whenPressed(new DriveToTarget(0.5));
+        pilot7.whenPressed(new AimHighGoal(90));
         //copilot1.whenPressed(new AimHighGoal(1.0));
        
         /**

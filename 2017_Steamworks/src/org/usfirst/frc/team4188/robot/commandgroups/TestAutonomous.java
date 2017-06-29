@@ -31,8 +31,7 @@ public class TestAutonomous extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-
-    	/*section that I commented -Victoria    	
+  	
     	addSequential(new DriveStraightToDistance((88.0/12.0), 0.6));
 
     	addSequential(new AimHighGoal(60));
@@ -40,9 +39,7 @@ public class TestAutonomous extends CommandGroup {
     	addSequential(new TurnRight());
     	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);
     //	addSequential(new BackUpReleaseSequence());
-    */
-    	addSequential(new DriveToTarget(0.6, 12), 1.5);
-    	addSequential(new DriveToTarget(0.6, 4));
+
     	
     }
 }
