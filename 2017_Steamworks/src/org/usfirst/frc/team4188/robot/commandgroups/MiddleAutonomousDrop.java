@@ -35,8 +35,8 @@ public class MiddleAutonomousDrop extends CommandGroup {
     	addSequential(new DriveToTarget(0.6));
     	addSequential(new BackUpReleaseSequence(60/12));
     	addSequential(new AimHighGoal(-90));
-    	addSequential(new DriveStraightToDistance(96/12.0,0.7));
-    	addSequential(new AimHighGoal(90));
+    	addSequential(new DriveStraightToDistance(108/12.0,0.7));
+    	addSequential(new AimHighGoal(95));
     	addSequential(new DriveStraightToDistance(400/12,0.9));
     //	addSequential(new BackUpReleaseSequence());
 
