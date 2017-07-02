@@ -23,7 +23,7 @@ public class AimHighGoal extends Command {
 	private  double KD = 0.0;
 
 	private long start = 0l;
-	private static final double tolerance = 0.5; // to within 1.0 degree
+	private static final double tolerance = 2.0; // to within 1.0 degree
 	// private static final int ONE = 1;
 	// private static final int TWO = 2;
 	// private static final int THREE = 3;
@@ -43,8 +43,8 @@ public class AimHighGoal extends Command {
 //			KD = 0.002;
 
 //		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
-		KP = 0.01;
-		KI = 0.0005;
+		KP = 0.05;
+		KI = 0.0;
 	//	KP = 0.02;
 		//KI =0.0003;
 		KD = 0.0;
@@ -57,7 +57,7 @@ public class AimHighGoal extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
+		System.out.println("Aim High Goal");
 		this.start = System.currentTimeMillis();
 
 		SmartDashboard.putString("Aim Status", "Initializing");

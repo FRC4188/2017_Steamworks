@@ -30,7 +30,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.Robot.WhichBot;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightBlueSide;
-import org.usfirst.frc.team4188.robot.commandgroups.TestAutonomous;
+import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDrop;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightRedSide;
@@ -118,6 +118,7 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 480;
 	
 	NetworkTable table;
+	public static boolean foundRects;
 	
 	
 	
@@ -164,7 +165,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Gear Right Blue Auto", new GearAutonomousRightBlueSide());
         autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
         autoChooser.addDefault("Gear Left Auto", new GearAutonomousLeft());
-        autoChooser.addObject("Gear Autonomous Testing (Testing Left)", new TestAutonomous());
+        autoChooser.addObject("Gear Autonomous Middle With Drop", new MiddleAutonomousDrop());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());
@@ -218,7 +219,7 @@ public class Robot extends IterativeRobot {
 					rects = getTwoBiggest(rects);
 					if(rects != null){
 						//at this point, there are two rectangles with a reasonable aspect ratio
-						
+						foundRects = true;
 						Rect r = rects.get(0);
 						Rect r1 = rects.get(1);
 						Rect giantRect = new Rect(new Point(r.x, r.y), new Point(r1.x+r1.width, r1.y+r1.height));
@@ -233,11 +234,11 @@ public class Robot extends IterativeRobot {
 						
 						//System.out.println("Rectangle Center X" + r1.x + "," + r.x);
 						//System.out.println("Rectangle Y" + r1.y + "," + r.y);
-						System.out.println("Rectangle 1 Height, Width" + r.height + "," + r.width);
-						System.out.println("Rectangle 2 Height, Width" + r1.height + "," + r1.width);
-						
-						System.out.printf("Aspect Ratio 1 = %4.2f\n", (double)r.width/r.height );
-						System.out.printf("Aspect Ratio 2 = %4.2f\n", (double)r1.width/r1.height );
+//						System.out.println("Rectangle 1 Height, Width" + r.height + "," + r.width);
+//						System.out.println("Rectangle 2 Height, Width" + r1.height + "," + r1.width);
+//						
+//						System.out.printf("Aspect Ratio 1 = %4.2f\n", (double)r.width/r.height );
+//						System.out.printf("Aspect Ratio 2 = %4.2f\n", (double)r1.width/r1.height );
 						//System.out.println("Mat width = " + mat.width() + ", height = " + mat.height());
 						
 						SmartDashboard.putBoolean("Found two rectangles", true);
@@ -293,6 +294,9 @@ public class Robot extends IterativeRobot {
 					
 						SmartDashboard.putString("Aim_Error", String.format("%6.1f", error));
 						testVariable = 7;
+					}
+					else{
+						foundRects = false;
 					}
 				}
 		

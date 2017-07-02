@@ -17,6 +17,7 @@ double time;
     // Called just before this Command runs the first time
     protected void initialize() {
     	Timer.delay(time);
+    	System.out.println("Delay");
         
     }
 

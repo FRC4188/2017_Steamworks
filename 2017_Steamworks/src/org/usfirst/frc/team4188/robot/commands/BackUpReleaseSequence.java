@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class BackUpReleaseSequence extends CommandGroup {
 
-    public BackUpReleaseSequence() {
+    public BackUpReleaseSequence(double backUpDistance) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,7 +27,8 @@ public class BackUpReleaseSequence extends CommandGroup {
     	addSequential(new Delay(0.5));
     	addSequential(new GearRelease());
     	addSequential(new Delay(0.3));
-    	addSequential(new AutoDrive(-0.5,0,1));
+    	//addSequential(new AutoDrive(-0.5,0,1.5));
+    	addSequential(new DriveStraightToDistance(backUpDistance,-0.6));
     	addSequential(new GearRetract());
     }
 }

@@ -36,6 +36,7 @@ public class DriveStraightToDistance extends Command {
     protected void initialize() {
     	Robot.drivetrain.resetEncoders();
     	RobotMap.gyro.reset();
+    	System.out.println("Drive Straight To Distance");
     	
     }
 
@@ -44,12 +45,12 @@ public class DriveStraightToDistance extends Command {
     	double angle = RobotMap.gyro.getAngle();
     	Robot.drivetrain.autoDrive(this.speed, angle/10);
     	SmartDashboard.putNumber("ANGLE", angle);
-    	System.out.println(angle);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	double distance = Math.max(Robot.drivetrain.getRightEncoderDistance(), Robot.drivetrain.getRightEncoderDistance());
+    	double distance = Math.max(Robot.drivetrain.getLeftEncoderDistance(), Robot.drivetrain.getRightEncoderDistance());
     	return distance >= this.distance;
     }
 

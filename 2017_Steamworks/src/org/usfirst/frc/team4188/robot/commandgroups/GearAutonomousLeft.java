@@ -4,6 +4,7 @@ import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
+import org.usfirst.frc.team4188.robot.commands.CheckForTargetsWhileTurning;
 import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.DriveToTarget;
@@ -37,10 +38,14 @@ public class GearAutonomousLeft extends CommandGroup {
         // arm.
     	addSequential(new DriveStraightToDistance((80.0/12.0), 0.6));
     	addSequential(new AimHighGoal(60));
-    	addSequential(new DriveToTarget(0.5, 12), 1.5);
-    	addSequential(new DriveToTarget(0.5, 6));
-
-    	addSequential(new BackUpReleaseSequence());
+    	//addSequential(new CheckForTargetsWhileTurning());
+    	addSequential(new Delay(0.5));
+    	System.out.println("Drive To Target");
+    	addSequential(new DriveToTarget(0.5));
+    	
+    	addSequential(new BackUpReleaseSequence(30/12));
+    	addSequential(new AimHighGoal(-60));
+    	addSequential(new DriveStraightToDistance((370/12.0), 0.9));
     	//new GearAutonomousMiddle();
 
     	

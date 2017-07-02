@@ -10,11 +10,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CheckForTargetsWhileTurning extends Command {
 	String direction;	
 
-    public CheckForTargetsWhileTurning(String direction) {
+    public CheckForTargetsWhileTurning() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.drivetrain);
-    	this.direction = direction;
+    
     }
 
     // Called just before this Command runs the first time
@@ -23,13 +22,12 @@ public class CheckForTargetsWhileTurning extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double rotate = direction == "right" ? -0.6 : 0.6;
-		Robot.drivetrain.autoDrive(0.0, rotate);
+    	
     }
     
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-		return (Robot.robotVision.numParticles > 0);
+		return Robot.foundRects;
     }
 
     // Called once after isFinished returns true
