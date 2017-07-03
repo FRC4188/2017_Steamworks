@@ -36,7 +36,7 @@ public class GearAutonomousLeft extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightToDistance((80.0/12.0), 0.6));
+    	addSequential(new DriveStraightToDistance((82.0/12.0), 0.6));
     	addSequential(new AimHighGoal(60));
     	//addSequential(new CheckForTargetsWhileTurning());
     	addSequential(new Delay(0.5));

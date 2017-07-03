@@ -43,7 +43,7 @@ public class DriveStraightToDistance extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double angle = RobotMap.gyro.getAngle();
-    	Robot.drivetrain.autoDrive(this.speed, angle/10);
+    	Robot.drivetrain.autoDrive(this.speed, angle/12);
     	SmartDashboard.putNumber("ANGLE", angle);
     	
     }

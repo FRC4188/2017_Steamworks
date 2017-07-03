@@ -29,11 +29,10 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.Robot.WhichBot;
-import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightBlueSide;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightSide;
 import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDrop;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
-import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightRedSide;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
@@ -104,6 +103,8 @@ public class Robot extends IterativeRobot {
 	public static double testVariable;
 	private static double turnValue;
 	
+
+	
 //	private static final double CAMERA_OFFSET = -6.0;
 	private static final double CAMERA_OFFSET = 0.0;
 	
@@ -161,8 +162,8 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
-        autoChooser.addObject("Gear Right Red Auto", new GearAutonomousRightRedSide());
-        autoChooser.addObject("Gear Right Blue Auto", new GearAutonomousRightBlueSide());
+     
+        autoChooser.addObject("Gear Right Auto", new GearAutonomousRightSide());
         autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
         autoChooser.addDefault("Gear Left Auto", new GearAutonomousLeft());
         autoChooser.addObject("Gear Autonomous Middle With Drop", new MiddleAutonomousDrop());
@@ -216,8 +217,9 @@ public class Robot extends IterativeRobot {
 				
 				if(!VisionPipeline.filterContoursOutput.isEmpty() && VisionPipeline.filterContoursOutput.size() >= 2) {
 					List<Rect> rects = getRectangles(VisionPipeline.filterContoursOutput());
-					rects = getTwoBiggest(rects);
-					if(rects != null){
+					
+					if(rects.size() == 2){
+						//rects = getTwoBiggest(rects);
 						//at this point, there are two rectangles with a reasonable aspect ratio
 						foundRects = true;
 						Rect r = rects.get(0);
@@ -297,6 +299,7 @@ public class Robot extends IterativeRobot {
 					}
 					else{
 						foundRects = false;
+						turnValue = 0;
 					}
 				}
 		

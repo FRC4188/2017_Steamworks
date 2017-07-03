@@ -44,7 +44,10 @@ public class DriveToTarget extends Command {
     
 //    	double angle = Robot.getAngleToGoal()*-1;
     	double angle = Robot.getTurnValue()*-1;
+//    	System.out.println("Angle = " + angle);
 //    	Robot.drivetrain.autoDrive(this.speed, 10);
+    	System.out.println("Angle = " + Robot.getAngleToGoal());
+    	System.out.println("Turn Value = " + (angle*0.005));
     	Robot.drivetrain.autoDrive(this.speed, (angle*.005));
     	SmartDashboard.putNumber("ANGLE", angle);
     	SmartDashboard.putNumber("AngleDivided", angle*.005);
