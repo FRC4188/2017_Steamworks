@@ -30,8 +30,11 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4188.robot.Robot.WhichBot;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightSide;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightSideNoDriveAround;
 import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDrop;
+import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDropRight;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeftNoDriveAround;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
@@ -99,7 +102,7 @@ public class Robot extends IterativeRobot {
 **/
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
-	public static final double AIM_ERROR = 60.0;
+	public static final double AIM_ERROR = 40.0;
 	public static double testVariable;
 	private static double turnValue;
 	
@@ -162,11 +165,18 @@ public class Robot extends IterativeRobot {
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
         
+     //with drive around
+        autoChooser.addObject("Gear Right Auto With Drive", new GearAutonomousRightSide());
+        autoChooser.addObject("Gear Middle Auto With Drive Left", new MiddleAutonomousDrop());
+        autoChooser.addObject("Gear Middle Auto With Drive Right", new MiddleAutonomousDropRight());
+        autoChooser.addDefault("Gear Left Auto With Drive", new GearAutonomousLeft());
      
-        autoChooser.addObject("Gear Right Auto", new GearAutonomousRightSide());
-        autoChooser.addObject("Gear Center Auto", new GearAutonomousMiddle());
-        autoChooser.addDefault("Gear Left Auto", new GearAutonomousLeft());
-        autoChooser.addObject("Gear Autonomous Middle With Drop", new MiddleAutonomousDrop());
+     //without drive around
+        autoChooser.addObject("Gear Middle Auto With No Drive Around", new GearAutonomousMiddle());
+        autoChooser.addObject("Gear Right Auto With No Drive Around", new GearAutonomousRightSideNoDriveAround());
+        autoChooser.addObject("Gear Left Auto With No Drive Around", new GearAutonomousLeftNoDriveAround());
+
+     //do nothing
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());

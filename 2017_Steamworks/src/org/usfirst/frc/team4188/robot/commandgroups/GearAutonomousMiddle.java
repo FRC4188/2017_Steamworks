@@ -42,7 +42,7 @@ public double angle = Robot.getAngleToGoal();
 */
        //DriveToTargetChanges: 
 
-    	addSequential(new DriveToTarget(0.5));
+//    	addSequential(new DriveToTarget(0.5));
     	//addSequential(new BackUpReleaseSequence());
     	
     	//addSequential(new AimHighGoal(-90.0));
