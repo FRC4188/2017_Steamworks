@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,8 +35,10 @@ import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousRightSideNoDri
 import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDrop;
 import org.usfirst.frc.team4188.robot.commandgroups.MiddleAutonomousDropRight;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeft;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeftHitHopper;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousLeftNoDriveAround;
 import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddle;
+import org.usfirst.frc.team4188.robot.commandgroups.GearAutonomousMiddleNoDriveAround;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.AutoDrive;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
@@ -124,8 +127,13 @@ public class Robot extends IterativeRobot {
 	NetworkTable table;
 	public static boolean foundRects;
 	
-	
-	
+	//experimental section with preferences
+	Preferences prefs;
+
+	public static double turnAwayFromGoalAngle;
+
+	public static double driveAwayFromPegDistance;
+		
 	public Robot() {
 		table = NetworkTable.getTable("GRIP/myContoursReport");
 	}
@@ -164,6 +172,15 @@ public class Robot extends IterativeRobot {
 
       //  robotVision = new Vision2("10.41.88.12");
       // SmartDashboard.putNumber("Distance", robotVision.distance);
+    
+//experimental section with preferences
+        prefs  = Preferences.getInstance();
+        turnAwayFromGoalAngle = prefs.getDouble("TurnAwayFromGoal1", -60.0);
+        driveAwayFromPegDistance = prefs.getDouble("DriveBackwardsDistance", 0.0);
+
+        turnAwayFromGoalAngle = SmartDashboard.getNumber("TurnAwayFromGoal1", -60.0);
+        driveAwayFromPegDistance = SmartDashboard.getNumber("DriveBackwardsDistance", 0.0);
+        
         
      //with drive around
         autoChooser.addObject("Gear Right Auto With Drive", new GearAutonomousRightSide());
@@ -172,11 +189,12 @@ public class Robot extends IterativeRobot {
         autoChooser.addDefault("Gear Left Auto With Drive", new GearAutonomousLeft());
      
      //without drive around
-        autoChooser.addObject("Gear Middle Auto With No Drive Around", new GearAutonomousMiddle());
+        autoChooser.addObject("Gear Middle Auto With No Drive Around", new GearAutonomousMiddleNoDriveAround());
         autoChooser.addObject("Gear Right Auto With No Drive Around", new GearAutonomousRightSideNoDriveAround());
         autoChooser.addObject("Gear Left Auto With No Drive Around", new GearAutonomousLeftNoDriveAround());
 
      //do nothing
+  //      autoChooser.addDefault("Gear Left Auto Hit Hopper", new GearAutonomousLeftHitHopper());
         
         SmartDashboard.putData("AUTONOMOUS", autoChooser);
         SmartDashboard.putNumber("GYRO VALUE", RobotMap.gyro.getAngle());

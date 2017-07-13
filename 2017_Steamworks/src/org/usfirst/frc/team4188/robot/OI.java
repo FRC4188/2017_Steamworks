@@ -200,6 +200,10 @@ public class OI {
         copilot6.whenReleased(new GearOff());
         copilot5.whileHeld(new GearRetract());
         copilot5.whenReleased(new GearOff());
+        
+        copilot9.whenPressed(new CameraLightsOn());
+        copilot10.whenPressed(new CameraLightsOff());
+        
 //           
     SmartDashboard.putData("DriveToTarget---", new DriveToTarget(0.6));    
     SmartDashboard.putData("TestAutoCenter", new MiddleAutonomousDrop());    
