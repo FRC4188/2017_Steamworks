@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 **/
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
-	public static final double AIM_ERROR = 40.0;
+	public static final double AIM_ERROR = 20.0;
 	public static double testVariable;
 	private static double turnValue;
 	
@@ -476,6 +476,7 @@ public static double getTurnValue() {
     //}
     	Robot.drivetrain.setRampRate(12/0.1);//MaxVoltage/rampTime was 12/0.2
     	Robot.drivetrain.resetEncoders();
+    	RobotMap.gyro.reset();
     }
 
     /**

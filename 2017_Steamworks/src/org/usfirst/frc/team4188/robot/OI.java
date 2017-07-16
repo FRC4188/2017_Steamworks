@@ -207,6 +207,7 @@ public class OI {
 //           
     SmartDashboard.putData("DriveToTarget---", new DriveToTarget(0.6));    
     SmartDashboard.putData("TestAutoCenter", new MiddleAutonomousDrop());    
+    SmartDashboard.putData("Test90Turn", new AimHighGoal(90));    
         
        }
    

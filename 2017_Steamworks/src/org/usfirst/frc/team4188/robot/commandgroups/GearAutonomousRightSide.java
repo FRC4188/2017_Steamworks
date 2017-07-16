@@ -20,7 +20,8 @@ public class GearAutonomousRightSide extends CommandGroup {
     	//distance, speed
 //    	addSequential(new DriveStraightToDistance((53.0/13.9), 0.6));
     	addSequential(new DriveStraightToDistance((82.0/12.0), 0.6));
-    	addSequential(new AimHighGoal(-59));
+    	addSequential(new AimHighGoal(-50));
+//    	addSequential(new TurnRight()); 	
     	addSequential(new CheckForTargetsWhileTurning());
     	addSequential(new Delay(1));
     	
