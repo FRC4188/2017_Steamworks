@@ -36,26 +36,20 @@ public class GearAutonomousLeft extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveStraightToDistance((82.0/12.0), 0.6));
-    	addSequential(new AimHighGoal(59));
-    	//addSequential(new CheckForTargetsWhileTurning());
-    	addSequential(new Delay(1));
-    	System.out.println("Drive To Target");
-    	addSequential(new DriveToTarget(0.5));
     	
-    	addSequential(new BackUpReleaseSequence(30/12));
+    	
+    	addSequential(new DriveStraightToDistance((71/12.0), 0.75));
+    	addSequential(new Delay(.2));
+    	
+    	addSequential(new AimHighGoal(60));
+    	addSequential(new CheckForTargetsWhileTurning());
+    	addSequential(new Delay(.75));
+    	
+    	System.out.println("Drive To Target");
+    	addSequential(new DriveToTarget(0.6));
+    	
+    	addSequential(new BackUpReleaseSequence(32/12));
     	addSequential(new AimHighGoal(-60));
     	addSequential(new DriveStraightToDistance((370/12.0), 0.9));
-    	//new GearAutonomousMiddle();
-
-    	
-    	
-/*    	addSequential(new AimHighGoal(60),1);
-    	//addSequential(new TurnRight());
-    	addSequential(new DriveStraightToDistance(35.0/12.0,0.6));
-    	addSequential(new TurnRight());
-    	addSequential(new DriveStraightToDistance((48.0/12.0), 0.6),3.0);
-    	//addSequential(new BackUpReleaseSequence());
-    	
-*/    }
+    }
 }

@@ -32,13 +32,14 @@ public class MiddleAutonomousDrop extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
   	
-    	addSequential(new DriveToTarget(0.5));
+    	addSequential(new DriveToTarget(0.55));
     	addSequential(new BackUpReleaseSequence(59/12));
+    	
     	addSequential(new AimHighGoal(-89));
-    	addSequential(new DriveStraightToDistance(120/12.0,0.7));
+    	addSequential(new DriveStraightToDistance((120/12.0),0.7));
+    	
     	addSequential(new AimHighGoal(91.5));
-    	addSequential(new DriveStraightToDistance(450/12,0.9));
-    //	addSequential(new BackUpReleaseSequence());
+    	addSequential(new DriveStraightToDistance(450/12,0.95));
 
     	
     }

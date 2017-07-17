@@ -28,7 +28,7 @@ public class BackUpReleaseSequence extends CommandGroup {
     	addSequential(new GearRelease());
     	addSequential(new Delay(0.3));
     	//addSequential(new AutoDrive(-0.5,0,1.5));
-    	addSequential(new DriveStraightToDistance(backUpDistance,-0.6));
+    	addSequential(new DriveStraightToDistance(backUpDistance,-0.7));
     	addSequential(new GearRetract());
     }
 }

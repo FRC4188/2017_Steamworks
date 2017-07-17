@@ -67,7 +67,7 @@ public class DriveToTarget extends Command {
     	}
 		startDistance=Robot.drivetrain.getRightEncoderDistance();
     	
-    	if (count > 30) {
+    	if (count > 20) {
     		return true;
     	}
     	return false;

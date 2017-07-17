@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 **/
 	public static final double EXPERIMENTAL_CORRECTION = (80.5/73.02);
 	public static final double DISTANCE_CONSTANT= 5280*(3/Math.PI)*EXPERIMENTAL_CORRECTION;
-	public static final double AIM_ERROR = 20.0;
+	public static final double AIM_ERROR = 30.0;
 	public static double testVariable;
 	private static double turnValue;
 	

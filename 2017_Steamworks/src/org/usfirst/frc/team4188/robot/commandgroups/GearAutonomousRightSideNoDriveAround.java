@@ -17,20 +17,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GearAutonomousRightSideNoDriveAround extends CommandGroup {
 
     public GearAutonomousRightSideNoDriveAround() {
-    	//distance, speed
-//    	addSequential(new DriveStraightToDistance((53.0/13.9), 0.6));
-    	addSequential(new DriveStraightToDistance((82.0/12.0), 0.6));
-    	addSequential(new AimHighGoal(-59));
+    	addSequential(new DriveStraightToDistance((72.0/12.0), 0.75));
+    	addSequential(new Delay(.2));
+    	
+    	addSequential(new AimHighGoal(-51.5));
     	addSequential(new CheckForTargetsWhileTurning());
-    	addSequential(new Delay(1));
+    	addSequential(new Delay(.5));
     	
     	System.out.println("Drive To Target");
-    	addSequential(new DriveToTarget(0.5));
+    	addSequential(new DriveToTarget(0.7));
     	
-    	addSequential(new BackUpReleaseSequence(30/12));
- /*   	addSequential(new AimHighGoal(60));
-    	addSequential(new DriveStraightToDistance((370/12.0), 0.9));
-    	//addSequential(new BackUpReleaseSequence());
-*/
+    	addSequential(new BackUpReleaseSequence(32/12));
     }
 }

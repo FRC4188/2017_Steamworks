@@ -204,10 +204,10 @@ public class OI {
         copilot9.whenPressed(new CameraLightsOn());
         copilot10.whenPressed(new CameraLightsOff());
         
-//           
+           
     SmartDashboard.putData("DriveToTarget---", new DriveToTarget(0.6));    
     SmartDashboard.putData("TestAutoCenter", new MiddleAutonomousDrop());    
-    SmartDashboard.putData("Test90Turn", new AimHighGoal(90));    
+    SmartDashboard.putData("Test90Turn", new AimHighGoal(90)); 
         
        }
    
