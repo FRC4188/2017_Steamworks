@@ -56,7 +56,7 @@ public class GripPipeline implements VisionPipeline {
 //		double[] hslThresholdLuminance = {52.74280575539568, 161.91850594227503};
 //		
 
-		double[] hslThresholdHue = {63, 96};//Worlds- 63,96	//after 7:30 63,93 // Einstein Red 63, 96
+		double[] hslThresholdHue = {58, 87};//Worlds- 63,96	//after 7:30 63,93 // Einstein Red 63, 96
 		double[] hslThresholdSaturation = {219, 255.0};//Worlds - 219, 255.0 //after 7:30 186,255.0 //Einstein Red 219, 255
 		double[] hslThresholdLuminance = {53,162};//Worlds- 53,162 //after 7:30 147,235 //Einstein Red 40, 180
 		
@@ -69,7 +69,7 @@ public class GripPipeline implements VisionPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 450.0;
+		double filterContoursMinArea = 25.0;
 		double filterContoursMinPerimeter = 0.0;
 		double filterContoursMinWidth = 0.0;
 		double filterContoursMaxWidth = 1000.0;

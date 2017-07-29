@@ -3,6 +3,7 @@ package org.usfirst.frc.team4188.robot.commandgroups;
 import org.usfirst.frc.team4188.robot.Robot;
 import org.usfirst.frc.team4188.robot.commands.AimHighGoal;
 import org.usfirst.frc.team4188.robot.commands.BackUpReleaseSequence;
+import org.usfirst.frc.team4188.robot.commands.Delay;
 import org.usfirst.frc.team4188.robot.commands.DriveStraightToDistance;
 import org.usfirst.frc.team4188.robot.commands.DriveToTarget;
 import org.usfirst.frc.team4188.robot.commands.TurnRight;
@@ -31,7 +32,9 @@ public class MiddleAutonomousDrop extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-  	
+    	addSequential(new Delay(.25));
+
+    	
     	addSequential(new DriveToTarget(0.55));
     	addSequential(new BackUpReleaseSequence(59/12));
     	

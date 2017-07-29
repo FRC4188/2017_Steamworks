@@ -22,6 +22,8 @@ public class GearAutonomousMiddleNoDriveAround extends CommandGroup {
 public double angle = Robot.getAngleToGoal();
 	
     public GearAutonomousMiddleNoDriveAround() {
+    	addSequential(new Delay(.25));
+    	
     	addSequential(new DriveToTarget(0.55));
     	addSequential(new BackUpReleaseSequence(59/12));
     }
