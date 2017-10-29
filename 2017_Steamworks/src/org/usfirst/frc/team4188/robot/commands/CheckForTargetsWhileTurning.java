@@ -27,7 +27,12 @@ public class CheckForTargetsWhileTurning extends Command {
     
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-		return Robot.foundRects;
+	 if(Math.abs(Robot.getTurnValue()) < 0.6){
+	 	return true;
+    }
+	else{
+	 		return false;
+	 	}
     }
 
     // Called once after isFinished returns true

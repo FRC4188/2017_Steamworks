@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GearAutonomousRightSideNoDriveAround extends CommandGroup {
 
     public GearAutonomousRightSideNoDriveAround() {
-    	addSequential(new DriveStraightToDistance((72.0/12.0), 0.75));
+    	addSequential(new DriveStraightToDistance((68.0/12.0), 0.75));
     	addSequential(new Delay(.2));
     	
     	addSequential(new AimHighGoal(-51.5));

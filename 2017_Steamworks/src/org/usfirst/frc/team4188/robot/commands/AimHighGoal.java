@@ -43,7 +43,7 @@ public class AimHighGoal extends Command {
 //			KD = 0.002;
 
 //		}else if(Robot.whichBot == Robot.WhichBot.PRACTICE){			
-		KP = 0.02;
+		KP = 0.0175;
 		KI = 0.0;
 	//	KP = 0.02;
 		//KI =0.0003;

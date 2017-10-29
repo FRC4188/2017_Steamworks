@@ -42,6 +42,7 @@ public class RobotMap {
 	public static CANTalon middleRightDriveMotor;
 	public static CANTalon middleLeftDriveMotor;
 	
+	public static CANTalon climberTalon2;
 	public static CANTalon climberTalon;
 	public static CANTalon gearLeftRight;
 	public static CANTalon gearUpDown;
@@ -88,6 +89,7 @@ public class RobotMap {
 		fuelElevator = new Relay(2);
 		
 		climberTalon = new CANTalon(17);
+		climberTalon2 = new CANTalon(19);
 		
 		frontLeftDriveMotor = new CANTalon(14);
 		rearLeftDriveMotor = new CANTalon(15);
@@ -111,8 +113,8 @@ public class RobotMap {
 		driveBase.setSensitivity(0.5);
 		driveBase.setMaxOutput(1.0);
 		
-		hoodRotation = new CANTalon(18);
-		shooterTalon = new CANTalon(19);
+		hoodRotation = new CANTalon(21);
+		shooterTalon = new CANTalon(18);
 		shooterTalon.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		shooterTalon.enableLimitSwitch(true, true);
 		shooterTalon.ConfigFwdLimitSwitchNormallyOpen(true);

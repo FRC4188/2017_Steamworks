@@ -39,14 +39,14 @@ public class GearAutonomousLeft extends CommandGroup {
     	
     	
     	addSequential(new DriveStraightToDistance((71/12.0), 0.75));
-    	addSequential(new Delay(.2));
+    	addSequential(new Delay(.5));
     	
     	addSequential(new AimHighGoal(60));
     	addSequential(new CheckForTargetsWhileTurning());
     	addSequential(new Delay(.75));
     	
     	System.out.println("Drive To Target");
-    	addSequential(new DriveToTarget(0.6));
+    	addSequential(new DriveToTarget(0.55));
     	
     	addSequential(new BackUpReleaseSequence(32/12));
     	addSequential(new AimHighGoal(-60));
